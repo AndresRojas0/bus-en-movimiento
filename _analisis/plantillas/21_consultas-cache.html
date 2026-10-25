@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Últimas Consultas</ion-title>
+    </ion-navbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- Tab Sabana -->
+  <ion-card *ngIf="sabana">
+    <ion-item class="card-header">
+        SABANA 
+      <span item-end>
+          {{sabana.fechaConsulta}}
+      </span>
+    </ion-item>
+    <ion-card-content class="card-content">
+      <ion-row (click)="horariosCache_sabana()">
+        <ion-col col-5>
+          <ion-item>
+              <p class="label-cache">Fecha</p>
+              <span class="item-span">{{fecha_cache | date:'dd/MM/yyyy' }}</span>
+          </ion-item>
+          <ion-item>
+              <p class="label-cache">Linea</p>
+              <span class="item-span">{{sabana.linea}}</span>
+          </ion-item>
+      </ion-col> 
+      <ion-col col-7>         
+      <ion-item>
+          <p class="label-cache">Sentido</p>
+          <span class="item-span">{{sabana.sentidoBandera}}</span>
+        </ion-item>
+        <ion-item>
+          <p class="label-cache">Bandera</p>
+          <span class="item-span">{{sabana.bandera}}</span>
+        </ion-item>
+      </ion-col> 
+      <ng-container *ngIf="show">
+        <ion-item class="item-list-b-rel">
+          <p class="label-cache">Banderas Relacionadas</p>
+        </ion-item>
+        <ion-item *ngFor="let item of banderasRelacionadas">           
+          <p class="item-span-check"><ion-icon class="check" name="checkmark"></ion-icon>{{item}}</p>
+        </ion-item>
+      </ng-container>
+      </ion-row>     
+      <div class="icono-desplegar">
+        <ion-icon (click)="toggle()" name="{{iconName}}"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <!-- Tab Servicio/Conductor -->
+  <ion-card *ngIf="servicioCond">
+      <ion-item class="card-header">
+          SERVICIO/CONDUCTOR 
+        <span item-end>
+            {{servicioCond.fechaConsulta}}
+        </span>
+      </ion-item>
+    <ion-card-content class="card-content">
+      <ion-row (click) = "horariosCache_servCond()">
+        <ion-col col-5>
+            <ion-item>
+                <p class="label-cache">Fecha</p>
+                <span class="item-span">{{fecha_cache2 | date:'dd/MM/yyyy' }}</span>
+              </ion-item>
+              <ion-item>
+                <p class="label-cache">Linea</p>
+                <span class="item-span"> {{servicioCond.linea}}</span>
+              </ion-item>
+        </ion-col> 
+        <ion-col col-7>         
+        <ion-item>
+            <p class="label-cache">Servico</p>
+            <span class="item-span"> {{servicioCond.servicio}}</span>
+          </ion-item>
+          <ion-item>
+            <p class="label-cache">Conductor</p>
+            <span class="item-span">{{servicioCond.conductor}}</span>
+          </ion-item>
+        </ion-col> 
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <!-- Tab Servicio por conductor -->
+  <ion-card *ngIf="porConductor">
+    <ion-item class="card-header">
+        BUSQUEDA POR CONDUCTOR 
+      <span item-end>
+          {{porConductor.fechaConsulta}}
+      </span>
+    </ion-item>
+    <ion-card-content class="card-content">
+      <ion-row (click)="horariosCache_porCond()">
+        <ion-col col-5>
+            <ion-item>
+              <p class="label-cache">Fecha</p>
+              <span class="item-span">{{fecha_cache | date:'dd/MM/yyyy' }}</span>
+            </ion-item>
+            <ion-item>
+              <p class="label-cache">Linea</p>
+              <span class="item-span"> {{porConductor.linea}}</span>
+            </ion-item>
+        </ion-col> 
+        <ion-col col-7> 
+          <ion-item>
+            <p class="label-cache">Conductor</p>
+            <span class="item-span">{{porConductor.conductor}}</span>
+          </ion-item> 
+          <ion-item>
+            <p class="label-cache">Servicio</p>
+            <span class="item-span">{{porConductor.servicio}}</span>
+          </ion-item>       
+        </ion-col> 
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <!-- Tab Sector -->
+  <ion-card *ngIf="sector">
+      <ion-item class="card-header">
+          SECTOR 
+        <span item-end>
+            {{sector.fechaConsulta}}
+        </span>
+      </ion-item>
+      <ion-card-content class="card-content">
+          <ion-row (click) = "horariosCache_porSector()">
+              <ion-col col-5>
+                  <ion-item>
+                      <p class="label-cache">Fecha</p>
+                      <span class="item-span">{{fecha_cache3 | date:'dd/MM/yyyy' }}</span>
+                    </ion-item>
+                    <ion-item>
+                      <p class="label-cache">Sector</p>
+                      <span class="item-span"> {{parseSectorAbr.Abreviacion}}</span>
+                    </ion-item>
+              </ion-col> 
+              <ion-col col-7>         
+              <ion-item>
+                  <p class="label-cache">Sentido</p>
+                  <span class="item-span"> {{sector.sentido}}</span>
+                </ion-item>
+                <ion-item>
+                  <p class="label-cache">Tipo Linea</p>
+                  <span class="item-span">{{sector.tipoLinea}}</span>
+                </ion-item>
+              </ion-col> 
+            </ion-row>  
+      </ion-card-content>
+    </ion-card>
+
+  <!-- Pantalla sin consultas -->
+  <ion-list class="sin-consultas" *ngIf="!sabana && !servicioCond && !porConductor && !sector">
+    <ion-item class="item-icon-not-search"no-lines>
+        <ion-label class="label-info">Aún no se realizo ninguna consulta</ion-label>  
+    </ion-item>
+    <ion-item class="item-icon-not-search" no-lines>      
+      <ion-icon class="icon-not-search" name="search"></ion-icon>
+    </ion-item>
+  </ion-list>  
+</ion-content>

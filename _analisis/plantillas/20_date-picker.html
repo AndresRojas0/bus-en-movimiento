@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Calendario</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content [ngClass]="isLandscape ? 'content-landscape' : '' ">
+    <ion-card *ngIf=date (click)="aceptar()" class="card-fecha" [ngClass]="isLandscape ? 'card-fecha-isLandscape' : '' ">
+        <ion-card-content class="content-fecha">
+            <p class="fecha">{{date | date:'dd/MM/yyyy'}}</p>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-calendar [(ngModel)]="date"
+                  [options]="differentOptions"  
+                  (onChange)="onChange($event)">
+    </ion-calendar>
+</ion-content>
+
+<ion-footer *ngIf= "!removerFooter">
+    <ion-toolbar color="primary">
+        <ion-buttons end>
+            <button class="btn-close-datePicker" ion-button (click)="aceptar()">
+                {{'ACCEPT' | translate }}
+            <ion-icon class="icon-close-datePicker" name="md-checkmark"></ion-icon> 
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer> 

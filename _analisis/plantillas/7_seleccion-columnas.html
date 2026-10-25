@@ -1,0 +1,15 @@
+<ion-content>
+  <ion-list no-lines>
+     <!-- <ion-list-header>Columnas a mostrar</ion-list-header>  -->
+    <ion-item color="primary" class="header-selec-col">
+      <h2>Columnas a mostrar</h2>
+    </ion-item>
+    <ion-item *ngFor="let opt of options">
+      <ion-label>{{opt.desc}}</ion-label>
+      <ion-checkbox [(ngModel)]="opt.selected"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <button class="sabana-bandera-button" ion-button round outline block color="primary" (click)="selectOptions()">{{'READY' | translate}}</button>
+    </ion-item>
+  </ion-list>    
+</ion-content>

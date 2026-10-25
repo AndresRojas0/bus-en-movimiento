@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary" [hidden]="removerCabecera">
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="selectColumns()">
+            <ion-icon name="ios-options-outline"></ion-icon>
+          </button>
+        </ion-buttons>
+    </ion-navbar>
+  </ion-toolbar>
+
+  <ion-row class="row-serv-cond" *ngIf= "servicio || conductor">
+    <ion-col col-3 color="primary" *ngIf="servicio"><ion-icon class="icon-serv-cond" color="primary" name="bus"></ion-icon> {{servicio}} </ion-col>
+    <ion-col col-9 color="primary" *ngIf="conductor"><ion-icon class="icon-serv-cond" color="primary" name="contact"></ion-icon> {{conductor}} </ion-col>
+  </ion-row>
+
+  <ion-grid class="cabecera-grilla" *ngIf="data && data.Colulmnas && data.Colulmnas.length > 0">
+    <ion-row class="cabecera-row">
+      <ion-col *ngIf="showColumns.indexOf('service') != -1" [hidden] ="servicio">Serv.</ion-col>
+      <ion-col *ngIf="showColumns.indexOf('departure') != -1">{{'DEPARTURE' | translate }}</ion-col>
+      <ion-col class="dinamica" *ngIf="data.Colulmnas[HederCol1]" (click)="modalSector(HederCol1)"> {{data.Colulmnas[HederCol1].Label}}</ion-col>
+      <ion-col class="dinamica" *ngIf="data.Colulmnas[HederCol2]" (click)="modalSector(HederCol2)"> {{data.Colulmnas[HederCol2].Label}}</ion-col>
+      <ion-col class="dinamica" *ngIf="data.Colulmnas[HederCol3]" (click)="modalSector(HederCol3)"> {{data.Colulmnas[HederCol3].Label}}</ion-col>
+      <ion-col class="dinamica" *ngIf="isLandscape && data.Colulmnas[HederCol4]" (click)="modalSector(HederCol4)"> {{data.Colulmnas[HederCol4].Label}}</ion-col>
+      <ion-col class="dinamica" *ngIf="isLandscape && data.Colulmnas[HederCol5]" (click)="modalSector(HederCol5)"> {{data.Colulmnas[HederCol5].Label}}</ion-col>
+      <ion-col *ngIf="showColumns.indexOf('flag') != -1">Band.</ion-col>
+      <ion-col *ngIf="showColumns.indexOf('arrives') != -1">{{'ARRIVES' | translate }}</ion-col>
+      <ion-col *ngIf="showColumns.indexOf('frecuency') != -1">{{'FREQ' | translate }}</ion-col>
+    </ion-row> 
+  </ion-grid>
+</ion-header>
+
+<ion-content padding class="contenido-grilla-horarios" [ngClass]="removerCabecera ? 'landscape-serv-cond' : '' ">
+  <div class="contenido-grilla" (swipe)="swipeEvent($event)">
+    <ion-grid *ngIf="data && data.Colulmnas && data.Colulmnas.length > 0">
+      <ion-row *ngFor="let item of data.Items" (click)="modalServicio(data,item)"> 
+          <ion-col *ngIf="showColumns.indexOf('service') != -1" [hidden] ="servicio">{{item.Servicio}}</ion-col>
+          <ion-col *ngIf="showColumns.indexOf('departure') != -1">{{item.Sale}}</ion-col>
+          <ion-col *ngIf="item.ColumnasDinamicas[HederCol1]" [ngClass]="{'EsRelevo': item.ColumnasDinamicas[HederCol1] && item.ColumnasDinamicas[HederCol1].EsRelevo}" >  {{item.ColumnasDinamicas[HederCol1].value}}</ion-col>
+          <ion-col *ngIf="item.ColumnasDinamicas[HederCol2]" [ngClass]="{'EsRelevo': item.ColumnasDinamicas[HederCol2] && item.ColumnasDinamicas[HederCol2].EsRelevo}"> {{item.ColumnasDinamicas[HederCol2].value}}</ion-col>
+          <ion-col *ngIf="item.ColumnasDinamicas[HederCol3]" [ngClass]="{'EsRelevo': item.ColumnasDinamicas[HederCol3] && item.ColumnasDinamicas[HederCol3].EsRelevo}" >{{item.ColumnasDinamicas[HederCol3].value}} </ion-col>       
+          <ion-col *ngIf="isLandscape && item.ColumnasDinamicas[HederCol4]"  [ngClass]="{'EsRelevo': item.ColumnasDinamicas[HederCol4] && item.ColumnasDinamicas[HederCol4].EsRelevo}" > {{item.ColumnasDinamicas[HederCol4].value}}</ion-col>
+          <ion-col *ngIf="isLandscape && item.ColumnasDinamicas[HederCol5]"  [ngClass]="{'EsRelevo': item.ColumnasDinamicas[HederCol5] && item.ColumnasDinamicas[HederCol5].EsRelevo}" > {{item.ColumnasDinamicas[HederCol5].value}}</ion-col> 
+
+          <ion-col *ngIf="showColumns.indexOf('flag') != -1">{{item.Bandera}}</ion-col>
+          <ion-col *ngIf="showColumns.indexOf('arrives') != -1">{{item.Llega}}</ion-col>
+          <ion-col *ngIf="showColumns.indexOf('frecuency') != -1">{{item.Diferencia}}</ion-col>
+        </ion-row>
+    </ion-grid> 
+  </div>
+</ion-content>

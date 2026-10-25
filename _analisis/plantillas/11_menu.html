@@ -1,0 +1,18 @@
+
+<ion-menu [content]="NAV">
+    <img src="/assets/imgs/bg-1.jpg" alt="">
+    <ion-list>
+        <ion-item menuClose *ngFor="let p of pages" (click)="goToPage(p)" [hidden] = "!p.permission">
+            <ion-icon class="icon-menu" item-left name="{{ p.icon }}"></ion-icon>
+            {{p.title}}
+        </ion-item>
+    </ion-list>
+    <!-- Número de versión-->
+    <div class="content-version">
+        <div class="version">
+          <p>v {{versionNumber}}</p>
+        </div>
+    </div>
+</ion-menu> 
+
+<ion-nav #NAV [root]="rootPage"></ion-nav>

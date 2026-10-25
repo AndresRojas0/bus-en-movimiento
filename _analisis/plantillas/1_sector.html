@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-navbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding [ngStyle]="{'margin-top': marginTop}">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content     
+            pullingIcon="md-arrow-round-down"
+            pullingText="Desliza para refrescar"
+            refreshingSpinner="bubbles"
+            refreshingText="Limpiando...">
+        </ion-refresher-content>
+      </ion-refresher>
+  <ion-list>
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label class="label-sector">Fecha</ion-label>
+      <ion-input class="input-fecha" [disabled]="true" value="{{_date | date:'dd/MM/yyyy':'es-Ar'}}"></ion-input>
+      <button ion-button icon-only item-end clear="true" (click)="seleccionarFecha()">
+          <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+      </button>        
+    </ion-item>
+    <!-- Sector -->   
+    <form [formGroup]="form" novalidate>
+      <ion-item>
+        <ion-label class="label-sector">Sectores</ion-label>
+        <ionic-selectable     
+          item-content       
+          formControlName="sector_searcheable"
+          [searchFailText]="'NO SE ENCONTRARON SECTORES'"
+          searchPlaceholder="Ingrese 3 o más caracteres"
+          [items]="sectores_searcheables"
+          itemValueField="Id" 
+          itemTextField="Abreviacion"     
+          [canSearch]="true"
+          (onSearch)="busquedaPorSector($event)">
+          <ng-template ionicSelectableItemTemplate let-con="item">
+            {{con.Abreviacion}} 
+          </ng-template>
+        </ionic-selectable> 
+      </ion-item>        
+    </form> 
+
+    <!-- Sentido -->
+    <ion-item>
+        <ion-label class="label-sector">Sentido</ion-label>
+        <ion-select [(ngModel)]="sentido" interface="popover" [disabled]="!_sectores_searcheable">
+            <ion-option value="{{item.Id}}" *ngFor="let item of sentidos">{{item.Descripcion}}</ion-option>
+        </ion-select>
+    </ion-item>
+      <!-- Tipos de Linea -->
+      <ion-item>
+          <ion-label class="label-sector">Tipo de Linea</ion-label>
+          <ion-select [(ngModel)]="tipoLinea" interface="popover" [disabled]="!_sentido">
+              <ion-option value="{{item.Id}}" *ngFor="let item of tipoLineas">{{item.Nombre}}</ion-option>
+          </ion-select>
+      </ion-item>
+
+      <button class="sector-button" ion-button round outline block color="primary" (click)="Buscar()">BUSCAR</button>
+    </ion-list>
+
+</ion-content>

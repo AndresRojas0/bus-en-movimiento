@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Informes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-fab bottom right *ngIf="allowAgregarInforme">
+    <button ion-fab (click)="nuevoInforme()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content     
+        pullingIcon="md-arrow-round-down"
+        pullingText="Desliza para refrescar"
+        refreshingSpinner="bubbles"
+        refreshingText="Recargando Informes...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-card *ngFor="let item of datosInfPorDia" (click)="informe_detalle(item)">
+      <ion-card-content class="card-inf-list">
+        <ion-row class="col-card">
+          <ion-col col-10>
+            <ion-list>
+              <ion-item>
+                <span class="label-fechaHora">{{item.fechaInfraccion}}</span>
+              </ion-item>
+            </ion-list>
+          </ion-col> 
+          <ion-list>
+            <ion-item>
+              <span class="label-informe-list">Conductor</span>
+              <p>{{item.naConductor}}</p>
+            </ion-item>         
+            <ion-item>
+              <span class="label-informe-list">Motivo</span>
+              <p>{{item.descMotivo}}</p>
+            </ion-item>   
+            <ion-item>
+                <span class="label-informe-list">Linea</span>
+                <p>{{item.descLinea}}</p>
+              </ion-item>
+            
+              <ion-item>
+                <span class="label-informe-list">Servicio</span>
+                <p>{{item.servicio}}</p>
+              </ion-item>         
+          </ion-list>         
+        </ion-row>
+      </ion-card-content>  
+    </ion-card>
+
+
+  <ion-list class="sin-consultas" *ngIf="!datosInfPorDia">
+    <ion-item class="item-icon-not-search" no-lines>
+        <ion-label class="label-info">No realizo informes el día de hoy</ion-label>  
+    </ion-item>
+    <ion-item class="item-icon-not-search" no-lines>      
+      <ion-icon class="icon-not-search" name="ios-clipboard-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

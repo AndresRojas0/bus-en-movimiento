@@ -1,0 +1,36 @@
+<ion-content padding class="login-background" >
+
+    <ion-list class="content-login" [ngClass]="isLandscape ? 'content-login-isLandscape' : 'content-login' ">
+        <div class="img-logo">
+            <img src="assets/imgs/rosariobus.png"/>
+        </div>
+
+        <ion-item class="item-login">
+          <ion-icon name="contact" item-start ></ion-icon>
+          <ion-input type="dni" [(ngModel)]="dni" name="dni" placeholder="{{ 'DNI' | translate }}"></ion-input>
+        </ion-item>
+       
+        <ion-item class="item-login">
+          <ion-icon name="lock" item-start></ion-icon>
+          <ion-input [type]="passwordType" [(ngModel)]="password" placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
+          
+          <button ion-button type="button" clear item-end (click)="togglePassword()" [color]="passwordShow === true ? 'dark' : 'gray' " item-end>
+            <ion-icon class="eye" name="eye"></ion-icon>
+          </button>
+        </ion-item> 
+        
+
+        <ion-item class="item-recordar" no-lines>
+          <ion-label class="label-recordar">{{ 'REMEMBER' | translate }}</ion-label>
+          <ion-checkbox class="check-remember" color="yellow" [(ngModel)]="_remember" (ionChange)="rememberCredentials()" [disabled]="!dni || !password"></ion-checkbox>
+        </ion-item>
+        
+        <div class="recaptcha">
+          <re-captcha class="g-recaptcha" (resolved)="resolved($event)" name="captchaValue" *ngIf="captchaVisible" siteKey="6LdugHMUAAAAAPIJReRrzeDjs9QZUoKvpiV5C6Ns"></re-captcha>
+        </div>
+
+        <div padding>
+          <button [disabled]="!dni || !password" ion-button round outline block color="light" (click)="doLogin()">{{ 'LOGIN_BUTTON' | translate }}</button>
+        </div>
+    </ion-list> 
+</ion-content>

@@ -1,0 +1,22 @@
+
+<!-- Todos los Conductores -->
+<form [formGroup]="form" novalidate class="form-conductores-searcheables">
+  <ion-item no-lines>
+    <!-- <ion-label class="label-conductor">Conductor</ion-label> -->
+    <ion-label class="label-conductor" floating>Conductor</ion-label>
+    <ionic-selectable 
+      item-content       
+      formControlName="conductor_searcheable"
+      [searchFailText]="'NO SE ENCONTRARON CONDUCTORES'"
+      searchPlaceholder="Ingrese 3 o más caracteres"
+      [items]="conductores_searcheables"
+      itemValueField="Id" 
+      itemTextField="Description"     
+      [canSearch]="true"
+      (onSearch)="busquedaPorConductores($event)">
+      <ng-template ionicSelectableItemTemplate let-con="item">
+          {{con.Legajo}} <br> {{con.Description}} 
+    </ng-template>
+    </ionic-selectable>
+  </ion-item>
+</form>

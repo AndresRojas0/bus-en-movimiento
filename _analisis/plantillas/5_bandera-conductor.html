@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon> 
+      </button>
+    </ion-navbar>
+</ion-toolbar>
+<!-- Toggle -->
+<ion-item class="item-toggle-porCond" no-lines>
+    <ion-icon color="primary" class="icon-search" name="search" item-start></ion-icon>
+    <ion-label class="label-porCond">Busqueda por Conductor</ion-label>      
+    <ion-toggle [(ngModel)]="porConductor" color="primary" (ionChange)="changeSearch()" class="toggle-porconductor"></ion-toggle>
+</ion-item>
+</ion-header>
+ 
+<ion-content padding [ngStyle]="{'margin-top': marginTop}">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content     
+        pullingIcon="md-arrow-round-down"
+        pullingText="Desliza para refrescar"
+        refreshingSpinner="bubbles"
+        refreshingText="Limpiando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    <!-- Fecha -->
+    <ion-item>
+      <ion-label class="label-bandera-conductor">{{ 'DATE' | translate }}</ion-label>
+      <ion-input class="input-fecha" [disabled]="true" value="{{_date | date:'dd/MM/yyyy':'es-Ar'}}"></ion-input>
+      <button ion-button icon-only item-end clear="true" (click)="seleccionarFecha()">
+          <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+      </button>        
+    </ion-item>
+    <!-- Todos los Conductores -->
+    <form [formGroup]="form" novalidate>
+      <ion-item *ngIf="porConductor">
+        <ion-label class="label-bandera-conductor">Conductores</ion-label>
+        <ionic-selectable 
+          item-content       
+          formControlName="conductor_searcheable"
+          [searchFailText]="'NO SE ENCONTRARON CONDUCTORES'"
+          searchPlaceholder="Ingrese 3 o más caracteres"
+          [items]="conductores_searcheables"
+          itemValueField="Id" 
+          itemTextField="Description"     
+          [canSearch]="true"
+          (onSearch)="busquedaPorConductores($event)">
+          <ng-template ionicSelectableItemTemplate let-con="item">
+              {{con.Legajo}} <br> {{con.Description}} 
+        </ng-template>
+        </ionic-selectable>
+      </ion-item>
+    </form>
+    <!-- Lineas -->
+    <ion-item>
+        <ion-label class="label-bandera-conductor">{{'LINES' | translate }}</ion-label>
+        <ion-select [(ngModel)]="linea" interface="popover" [disabled]="porConductor && !_conductor_searcheable">
+          <ion-option value="{{item.Id}}" *ngFor="let item of lineas">{{item.Description}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <!-- Servicios -->
+    <ion-item>
+      <ion-label class="label-bandera-conductor">{{'SERVICE' | translate }}</ion-label>
+      <ion-select  [(ngModel)]="servicio" [disabled]= "deshabilitar_servicio || porConductor && !_conductor_searcheable || !_linea" interface="popover">
+        <ion-option value="{{item.Id}}" *ngFor="let item of servicios">{{item.Description}}</ion-option>
+      </ion-select>
+      <button class="button-trash" ion-button icon-only item-end clear="true" (click)="cleanServicio()" *ngIf= "_servicio && !porConductor "> 
+        <ion-icon class="icon-trash" name="ios-trash-outline" color="primary"></ion-icon>
+      </button>
+    </ion-item>
+    <!-- Conductores por Linea o servicio -->
+    <ion-item *ngIf="!porConductor">
+        <ion-label class="label-bandera-conductor">{{'DRIVER' | translate }}</ion-label>
+        <ion-select [(ngModel)]="conductor" interface="popover" [disabled]="!_linea">
+          <ion-option value="{{item.Id}}" *ngFor="let item of conductores">{{item.Description}}</ion-option>
+        </ion-select>
+        <button class="button-trash" ion-button icon-only item-end clear="true" (click)="cleanConductor()" [hidden]= "!_conductor">
+          <ion-icon class="icon-trash" name="ios-trash-outline" color="primary"></ion-icon>
+        </button>
+    </ion-item>
+
+    <button class="bandera-conductor-button" ion-button round outline block color="primary" (click)="Buscar()">{{'SEARCH' | translate}}</button>
+  </ion-list>
+</ion-content>

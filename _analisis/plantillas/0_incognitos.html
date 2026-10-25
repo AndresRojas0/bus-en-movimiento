@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Planilla Incognitos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form">
+      <ion-list>
+        <!-- Calendar -->
+        <ion-item class="item-form">
+          <ion-label class="label-incognitos requerido">*Fecha</ion-label>
+          <ion-input value="{{form.get('FechaString').value}}" formControlName="FechaString"
+             class="input-fecha" [disabled]="true"></ion-input>
+          <button ion-button icon-only item-end clear="true" (click)="seleccionarFecha()">
+            <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+          </button>
+        </ion-item>
+        <!-- horaAscenso -->
+        <ion-item class="item-form">
+            <ion-label class="label-incognitos requerido">*Hora Ascenso</ion-label>
+            <ion-datetime doneText="Aceptar" 
+                          displayFormat="HH:mm" 
+                          pickerFormat="HH mm" 
+                          formControlName="HoraAscenso"       
+                          ></ion-datetime>
+          </ion-item>
+
+        <!-- horaAscenso -->
+        <ion-item class="item-form">
+          <ion-label class="label-incognitos">Hora Descenso</ion-label>
+          <ion-datetime doneText="Aceptar"
+                        displayFormat="HH:mm" 
+                        pickerFormat="HH mm" 
+                        formControlName="HoraDescenso"     
+                       ></ion-datetime>
+        </ion-item>           
+
+      <!-- coches searcheables -->
+        <!-- Ficha -->
+          <coches-searcheables [currentItem]="currentCoche" (cocheSeleccionado)="completarCoche($event)">*</coches-searcheables> 
+
+        <!-- <ion-item *ngIf="form.get('CocheFicha').errors && form.get('CocheFicha').dirty">
+          <p color="danger" ion-text>Alguna advertencia</p>
+        </ion-item> -->
+
+        <!-- Interno -->
+        <ion-item class="item-form">
+          <ion-label class="label-incognitos requerido">*Interno </ion-label>        
+          <ion-input [disabled] = "true"  formControlName="CocheInterno" ></ion-input>
+        </ion-item>
+        
+        <!-- Tarifa -->
+        <ion-item class="item-form">
+          <ion-label class="label-incognitos requerido">*Tarifa</ion-label>
+          <ion-input formControlName="Tarifa" type="number"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="form.get('Tarifa').errors && form.get('Tarifa').dirty && form.get('Tarifa').hasError('pattern')">
+          <p color="danger" ion-text>Tarifa incorrecta</p>
+        </ion-item>
+      </ion-list>
+
+      <!-- Preguntas-Respuestas -->
+      <div *ngIf="entity" >
+        <ion-card *ngFor="let item of form.controls['InspPlanillaIncognitosDetalle'].controls; let i=index; " [ngStyle]="setMyStyles(item.controls.RespuestaRequerida.value)" formArrayName="InspPlanillaIncognitosDetalle" id="card_{{i}}">
+          <ion-card-header class="card-header">
+            <!-- <ion-item class="item-sector">                          -->
+              <span class="span-pregunta">{{item.controls.PreguntaIncognitoDescripcion.value}}</span>                                            
+            <!-- </ion-item> -->
+        </ion-card-header>     
+          <ion-card-content class="info-sector-seleccionado" [formGroupName]="i" >
+            <ion-list>
+                <!-- <ion-item class="item-sector">                         
+                    <span class="span-pregunta">{{item.controls.PreguntaIncognitoDescripcion.value}}</span>                                            
+                  </ion-item> -->
+
+              <ion-item class="item-datos-pregunta">
+                <ion-label class="label-respuesta" floating>Respuesta</ion-label>
+                <ion-select class="select-respuesta" formControlName="RespuestaIncognitoId"  interface="popover">
+                  <ion-option value="{{resp.RespuestaId}}" *ngFor="let resp of item.controls.PosiblesRespuestas.value">{{resp.RespuestaNombre}}</ion-option>
+                </ion-select>                  
+              </ion-item>  
+              <!-- Observaciones -->
+              <ion-item class="item-obs" *ngIf="item.controls.MostrarObservacion.value" >
+                <ion-label floating class="label-incognitos observacion">Observación</ion-label>
+                <ion-textarea class="text-observacion" formControlName="observacion" class="textarea-informe"></ion-textarea>
+              </ion-item>     
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    <!-- boton guardar -->
+    <button class="informe-button" ion-button round outline block color="primary" (click)="GuardarIncognitos()" [disabled]="!form.valid">Guardar</button>
+  </form>
+</ion-content>

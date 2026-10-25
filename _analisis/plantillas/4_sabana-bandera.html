@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar color="primary">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding [ngStyle]="{'margin-top': marginTop}">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content     
+            pullingIcon="md-arrow-round-down"
+            pullingText="Desliza para refrescar"
+            refreshingSpinner="bubbles"
+            refreshingText="Limpiando...">
+        </ion-refresher-content>
+    </ion-refresher>
+  <ion-list>
+    <!-- Fecha -->
+    <ion-item>
+        <ion-label class="label-sabana-bandera">{{ 'DATE' | translate }}</ion-label>
+        <ion-input class="input-fecha" [disabled]="true" value="{{ _date | date:'dd/MM/yyyy'}}"></ion-input>
+        <button ion-button icon-only item-end clear="true" (click)="seleccionarFecha()">          
+            <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+        </button>        
+    </ion-item>
+    <!-- Lineas -->
+    <ion-item>
+        <ion-label class="label-sabana-bandera">{{'LINES' | translate }}</ion-label>
+        <ion-select [(ngModel)]="linea" interface="popover">
+          <ion-option value="{{item.Id}}" *ngFor="let item of lineas">{{item.Description}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <!-- Sentidos -->
+    <ion-item>
+        <ion-label class="label-sabana-bandera">{{'WAY' | translate}}</ion-label>
+        <ion-select [(ngModel)]="sentido" [disabled]="!_linea" interface="popover">
+            <ion-option value="{{item.Id}}" *ngFor="let item of sentidos">{{item.Description}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <!-- Banderas -->
+    <ion-item>
+        <ion-label class="label-sabana-bandera">{{'FLAG' | translate}}</ion-label>
+        <ion-select [(ngModel)]="bandera" [disabled]="!_sentido" interface="popover">
+          <ion-option value="{{item.Id}}" *ngFor="let item of banderas">{{item.Description}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-card *ngIf="!ocultar_ban_rel && banderasRelacionadas.length != 0"> 
+        <ion-card-header class="card-header">
+             <ion-checkbox class="select-all" [(ngModel)]="selectAll" (click)="SelectAll()"></ion-checkbox>
+              {{'RELATED FLAGS' | translate}} 
+        </ion-card-header>
+        <ion-list>
+            <ion-item *ngFor="let item of banderasRelacionadas">
+                <ion-label>{{item.Description}}</ion-label>
+                <ion-checkbox [(ngModel)]="item.IsSelected" (click)="checkIfAnySelected()"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+    <button class="sabana-bandera-button" ion-button round outline block color="primary" (click)="Buscar()">{{'SEARCH' | translate}}</button>
+    <!--<button class="sabana-bandera-button" ion-button round outline block color="primary" (click)="track()">TRACK</button>-->
+  </ion-list>
+</ion-content>
+
+

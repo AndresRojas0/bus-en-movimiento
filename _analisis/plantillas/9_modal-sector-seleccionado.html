@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Sector seleccionado</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="content-sector">
+  <ion-card-content class="sector-seleccionado" *ngIf="data.Colulmnas[HederCol1]">
+      {{data.Colulmnas[HederCol1].Label}}
+  </ion-card-content> 
+
+  <div *ngIf="data && data.Colulmnas && data.Colulmnas.length > 0">
+    <ion-card id="card_{{i}}"  *ngFor="let item of data.Items; let i=index;">
+      <ion-card-content class="info-sector-seleccionado" *ngIf="item.ColumnasDinamicas[HederCol1].value != null">
+        <ion-row >
+          <ion-col col-9 class="col-servicio">
+              <ion-list>
+                <ion-item class="item-sector">
+                    <ion-icon color="primary" name="bus"></ion-icon>
+                    <span class="label-sector">{{item.Servicio}}</span>
+                </ion-item>
+                <ion-item class="item-sector">
+                    <ion-icon color="primary" name="flag"></ion-icon>
+                    <span class="label-sector" >{{item.Bandera}}</span>
+                </ion-item>
+                <ion-item class="item-sector">
+                  <ion-icon color="primary" name="pin"></ion-icon>
+                  <span class="label-sector" >{{item.ColumnasDinamicas[HederCol1].DescripcionSector}}</span>
+              </ion-item>
+              </ion-list>
+          </ion-col> 
+          <ion-col col-3 class="col-horario-sector">
+              <span class="horario-sector" *ngIf="item.ColumnasDinamicas[HederCol1]">{{item.ColumnasDinamicas[HederCol1].HoraFormated}}
+              </span>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+      </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar  color="primary">
+  <ion-buttons end>
+    <button ion-button (click)="cancel()">
+      {{'EXIT' | translate }}
+      <ion-icon style="padding-left: 30px;" name="close"></ion-icon> 
+    </button>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

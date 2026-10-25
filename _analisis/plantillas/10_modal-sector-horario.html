@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Busqueda por Sector</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="content-sector">
+  <ion-card-content class="sector-seleccionado">
+      {{parseSectorSelec.Abreviacion}}
+  </ion-card-content> 
+  <!-- <ion-card-content class="sector-seleccionado" *ngIf="sectorSelec">
+      {{sectorSelec}}
+  </ion-card-content>  -->
+
+  <div *ngIf="data">
+    <ion-card id="card_{{i}}"  *ngFor="let item of data; let i=index;">
+      <ion-card-content class="info-sector-seleccionado" >
+        <ion-row >
+          <ion-col col-12 class="col-card">
+            <ion-list>
+                <ion-item class="item-sector">
+                    <ion-icon color="primary" name="contact"></ion-icon>
+                    <span class="label-sector-empleado">{{item.DescripcionEmpleado}}</span>
+                  </ion-item>
+            </ion-list>  
+          </ion-col>
+          <ion-col col-9 class="col-card">
+              <ion-list>
+                <ion-item class="item-sector">
+                  <ion-icon color="primary" name="bus"></ion-icon>
+                  <span class="label-sector">{{item.DescripcionLinea}}</span>
+                </ion-item>
+                <ion-item class="item-sector">
+                  <ion-icon color="primary" name="flag"></ion-icon>
+                  <span class="label-sector" >{{item.AbreviacionBandera}}</span>
+                </ion-item>
+                <ion-item class="item-sector">
+                  <ion-icon color="primary"  name="swap"></ion-icon>
+                  <span class="label-sector" >{{item.NumeroServicio}}</span>
+                </ion-item>
+              </ion-list>
+          </ion-col> 
+          <ion-col col-3 class="col-horario-sector">
+              <span class="horario-sector">{{item.HoraFormated}}
+              </span>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+      </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+  <ion-buttons end>
+    <button ion-button (click)="cancel()">
+       SALIR
+      <ion-icon style="padding-left: 30px;" name="close"></ion-icon> 
+    </button>
+  </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

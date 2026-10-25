@@ -1,0 +1,21 @@
+
+
+<div>
+    <div class="without-truncating" *ngIf="text.length <= limit">
+      {{text}}
+    </div>
+  <div *ngIf="truncating && text.length > limit">
+    <span>
+        {{text | truncate : limit}}
+    </span>
+    <ion-icon class="icon-truncated" (click)="truncating = false" name="arrow-dropdown"></ion-icon>
+  </div>
+  <div *ngIf="!truncating && text.length > limit">
+    <span> 
+        {{text}}
+    </span>
+    <ion-icon class="icon-truncated" (click)="truncating = true" name="arrow-dropup"></ion-icon>
+  </div>
+
+</div>
+

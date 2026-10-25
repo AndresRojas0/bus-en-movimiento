@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Diagramación</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- Filtro Fecha -->
+  <ion-item class="fecha-diag">
+    <ion-label class="label-desvio">Fecha</ion-label>
+    <ion-input value="{{_date | date:'dd/MM/yyyy':'es-Ar'}}" class="input-fecha" [disabled]="true"></ion-input>
+    <button ion-button icon-only item-end clear="true" (click)="seleccionarFechaDiagramacion()">
+      <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+    </button>
+  </ion-item>
+
+  <div *ngIf="diaMes">
+      <ion-card *ngFor="let inspector of diaMes.Inspectores">
+              <ion-card-header class="card-header"  [ngStyle]="{'border-top':getColor()  }">
+                  <p><span class="p-conductor">{{inspector.DescripcionInspector}}</span> <span>{{inspector.Legajo}}</span></p>
+                  <p><span class="p-turno">{{inspector.InspTurno}}</span></p>
+              </ion-card-header>     
+                
+                <ion-card-content class="card-content-diagramacion"  [ngStyle]="setMyStyles(inspector)">
+                  <!-- EsJornada -->
+                  <div *ngIf="inspector.EsJornada || inspector.EsFrancoTrabajado">
+                    <ion-row class="row-esJornada">
+                      <ion-col col-4>
+                        {{inspector.HoraDesde | date:'HH:mm'}} hs
+                      </ion-col>
+                      <ion-col col-4>
+                        -
+                      </ion-col>
+                      <ion-col col-4>
+                        {{inspector.HoraHasta | date:'HH:mm'}} hs
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-esJornada-zona">
+                      <ion-item class="item-esJornada-zona" (click)="verDetalleZona(inspector.DetalleZona, inspector.NombreZona)">
+                        {{inspector.NombreZona | uppercase }}
+                      </ion-item>
+                    </ion-row>
+                  </div>
+                  <!-- EsFranco -->
+                  <div *ngIf="inspector.EsFranco && !inspector.EsFrancoTrabajado ">
+                    <ion-item class="row-esJornada" [ngStyle]="{'background': inspector.Color}">
+                      {{inspector.NombreRangoHorario | uppercase }}
+                    </ion-item>
+                  </div>
+                  <!-- EsNovedad -->
+                  <div *ngIf="inspector.EsNovedad">
+                    <ion-item class="row-esJornada" [ngStyle]="{'background': inspector.Color}">
+                      {{inspector.DetalleNovedad | uppercase }}
+                    </ion-item>
+                  </div>
+                </ion-card-content>
+        </ion-card>
+  </div>
+
+
+  <ion-list class="sin-consultas" *ngIf="!diaMes">
+      <ion-item class="item-icon-not-search" no-lines>
+          <ion-label class="label-info">{{msj}}</ion-label>  
+      </ion-item>
+      <ion-item class="item-icon-not-search" no-lines>      
+        <ion-icon class="icon-not-search" name="ios-paper-outline"></ion-icon>
+      </ion-item>
+    </ion-list>
+</ion-content>

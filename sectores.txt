@@ -1,0 +1,186 @@
+101 CEPO (Norte-Sur): 
+PUnidas y Rueda, PUnidas y Pellegrini, PUnidas y Córdoba, PUnidas y JJPaso, JJPaso y Formosa, Sabín y Avellaneda, Avellaneda y SLorenzo, Tucumán y Francia, SLorenzo y Oroño, Laprida y Rioja, Laprida y Montevideo, Pellegrini y Alem, Beruti y Riobamba.
+101 POCE (Sur-Norte): Beruti y Riobamba, Ayacucho y Pellegrini, Maipú y 9Julio, SantaFe y Corrientes, SantaFe y Oroño, SantaFe y VMujica, Avellaneda y SLorenzo, Avellaneda y Casilda, Formosa y JJPaso, JJPaso y PUnidas, PUnidas y Mendoza, PUnidas y Rueda.
+
+103 GBVG (Norte-Sur): 
+Brown y Liniers, Belgrano y Ruta11, Ruta11 y Ciudadela, Rondeau y Puccio, Rondeau y Sorrento, Salta y Cafferata, Salta y Oroño, Paraguay y SantaFe, Paraguay y Pellegrini, Paraguay y 27Febrero, SMartin y Segui, SMartin y Uriburu, SMartin y Arijón, Ayacucho y Circunvalación, Filippini y Aguirre, Cementerio VGG. 
+103 VGGB (Sur-Norte): 
+Cementerio VGG, Aguirre y Filippini, Ayacucho y Circunvalación, SMartín y Arijón, SMartín y Uriburu, SMartín y Segui, 27Febrero y Corrientes, Corrientes y Mendoza, Catamarca y Paraguay, Catamarca y Oroño, Catamarca y Cafferata, Rondeau y Sorrento, Ruta11 y Ciudadela, Brown y Liniers. 
+
+103 RUVG (Norte-Sur): 
+Rucci, Baigorria y CCasas, Sorrento y Rondeau, Salta y Cafferata, Salta y Oroño, Paraguay y SantaFe, Paraguay y Pellegrini, Paraguay y 27Febrero, SMartín y Segui, SMartín y Uriburu, SMartín y Arijón, SMartín y ArroyoSaladillo, Cementerio VGG. 
+103 VGRU (Sur-Norte): 
+Cementerio VGG, SMartín y ArroyoSaladillo, SMartín y Arijón, SMartín y Uriburu, SMartín y Segui, 27Febrero y Corrientes, Corrientes y Mendoza, Catamarca y Paraguay, Catamarca y Oroño, Catamarca y Cafferata, Rondeau y Sorrento, CCasas y Baigorria, Rucci. 
+
+107 LIFO (Norte-Sur): 
+Límite, VDParque y Levi, Grandoli y Gazcón, Peirano y Palliere, Baigorria y Ávalos, Superí y Rondeau, Alberdi y Génova, Alberdi y Avellaneda, Avellaneda y SLorenzo, SLorenzo y Oroño, SLorenzo y EntreRios, EntreRios y Pellegrini, EntreRios y Amenábar, EntreRios y Uriburu, Uriburu y Necochea, Santafesinos e Isola. 
+107 FOLI (Sur-Norte): Santafesinos e Isola, Pavón y Uriburu, Uriburu y Corrientes, Corrientes y Amenábar, Corrientes y Pellegrini, Corrientes y SantaFe, SantaFe y Oroño, SantaFe y Cafferata, SantaFe y Avellaneda, Alberdi y Casilda, Alberdi y Génova, Rondeau y Baigorria, Baigorria y Ávalos, Palliere y Peirano, Grandoli y Gazcón, Calderón y Levi, Límite. 
+
+107 LIFA (Norte-Sur): 
+Límite, VDParque y Levi, Grandoli y Gazcón, Peirano y Palliere, Baigorria y Ávalos, Superí y Rondeau, Alberdi y Génova, Alberdi y Avellaneda, Avellaneda y SLorenzo, SLorenzo y Oroño, SLorenzo y EntreRios, EntreRios y Pellegrini, EntreRios y Amenábar, Amenábar y Colón, Necochea y Uriburu, Santafesinos e Isola. 
+107 FALI (Sur-Norte): 
+Santafesinos e Isola, Pavón y Uriburu, Necochea y Gaboto, Corrientes y Amenábar, Corrientes y Pellegrini, Corrientes y SantaFe, SantaFe y Oroño, SantaFe y Cafferata, SantaFe y Avellaneda, Alberdi y Casilda, Alberdi y Génova, Rondeau y Baigorria, Baigorria y Ávalos, Palliere y Peirano, Grandoli y Gazcón, Calderón y Levi, Límite. 
+
+110 NS (Norte-Sur): 
+Ambato y LaRepública, JBJusto y Circunvalación, Génova y Olavarría, JIngenieros y Alberdi, JIngenieros y Avellaneda, Junín y Thedy, OLagos y Güemes, SLorenzo y Moreno, SLorenzo y Sarmiento, Laprida y Pellegrini, Sarmiento y 27Febrero, 27Febrero y Balcarce, JCura y OLagos, Segui y Lavalle, Segui y Rouillón, Aborígenes y Colectora. 
+110 NN (Sur-Norte): 
+Aborígenes y Colectora, Segui y Valparaíso, OLagos y Segui, Pueyrredón y Virasoro, Ocampo y Maipú, Maipú y 9Julio, SantaFe y SMartín, Urquiza y Oroño, Thedy y VSarsfield, Avellaneda y Génova, Génova y Antelo, Génova y Olavarría, JBJusto y Circunvalación, Ambato y LaRepública.
+
+122 RICE (Oeste-Sur): Riobamba y Brasil, PUnidas y 27Febrero, PUnidas y PPerón, PPerón y Matienzo, PPerón y Avellaneda, SNicolás y Pellegrini, Córdoba y Cafferata, Córdoba y Oroño, SLorenzo y EntreRíos, Laprida y Rioja, Colón y Pellegrini, Colón y 27Febrero, Necochea y Segui, Necochea y Uriburu, Ayacucho y MPolo.
+122 CERI (Sur-Oeste): Ayacucho y MPolo, Pavón y Uriburu, Necochea y Segui, Necochea y 27Febrero, Pellegrini y Colón, SantaFe y SMartín, SantaFe y Oroño, SantaFe y Cafferata, Cafferata y Montevideo, PPerón y Avellaneda, PPerón y Matienzo, PPerón y PUnidas, PUnidas y 27Febrero, Riobamba y Brasil.
+
+122 SECE (Oeste-Sur): Segui y Circunvalación, Rouillón y Segui, PPerón y Matienzo, PPerón y Avellaneda, SNicolás y Pellegrini, Córdoba y Cafferata, Córdoba y Oroño, SLorenzo y EntreRíos, Laprida y Rioja, Colón y Pellegrini, Colón y 27Febrero, Necochea y Segui, Necochea y Uriburu, Ayacucho y MPolo.
+122 CESE (Sur-Oeste): Ayacucho y MPolo, Pavón y Uriburu, Necochea y Segui, Necochea y 27Febrero, Pellegrini y Colón, SantaFe y SMartín, SantaFe y Oroño, SantaFe y Cafferata, Cafferata y Montevideo, PPerón y Avellaneda, Matienzo y Gálvez, Rouillón y Segui, Segui y Circunvalación.
+
+126 LACE (Norte-Sur): OLagos y Quintana, Avellaneda y Segui, Avellaneda y 27Febrero, Francia y Pellegrini, Mendoza y Oroño, SLorenzo e Italia, SLorenzo y Laprida.
+126 CELA (Sur-Norte): SLorenzo y Laprida, TFebrero y Mitre, TFebrero y Oroño, OLagos y Pellegrini, OLagos y 27Febrero, Cafferata y Rueda, Cafferata y Segui, OLagos y Quintana.
+Emparejados: Avellaneda y Segui, Cafferata y Segui. 
+Emparejados: Avellaneda y 27Febrero, Cafferata y Rueda.
+Emparejados: Francia y Pellegrini, OLagos y Pellegrini.
+Emparejados: Mendoza y Oroño, TFebrero y Oroño.
+
+126 OVCE (Norte-Sur): OLagos y Quintana, SNicolás y Riva, SNicolás y 27Febrero, Francia y Pellegrini, Mendoza y Oroño, SLorenzo e Italia, SLorenzo y Laprida.
+126 CEOV (Sur-Norte): SLorenzo y Laprida, TFebrero y Mitre, TFebrero y Oroño, OLagos y Pellegrini, OLagos y 27Febrero, 27Febrero y Avellaneda, Avellaneda y Segui, OLagos y Quintana.
+Emparejados: SNicolás y Riva, Avellaneda y Segui.
+Emparejados: SNicolás y 27Febrero, 27Febrero y Avellaneda.
+Emparejados: Francia y Pellegrini, OLagos y Pellegrini.
+Emparejados: Mendoza y Oroño, TFebrero y Oroño.
+
+128 NECE (Norte-Sur): Urquiza y Francia, SantaFe y Avellaneda, Avellaneda y Cerrito, Avellaneda y Uruguay, Biedma y OLagos, Segui y Oroño, Mitre y Ayolas, Mitre y Pellegrini, Mitre y SLuis, SLorenzo y Laprida. 
+128 NEAS (Sur-Norte): SLorenzo y Laprida, SJuan y EntreRios, EntreRios y Pellegrini, EntreRios y Ayolas, Segui y Oroño, Segui y OLagos, Avellaneda y DeanFunes, Avellaneda y Montevideo, Avellaneda y Córdoba, Urquiza y Francia. 
+
+128 ROCE (Norte-Sur): Urquiza y Francia, Cafferata y Córdoba, Cafferata y Montevideo, Cafferata y Saavedra, Biedma y OLagos, Segui y Oroño, Mitre y Ayolas, Mitre y Pellegrini, Mitre y SLuis, SLorenzo y Laprida. 
+128 ROFR (Sur-Norte): SLorenzo y Laprida, SJuan y EntreRios, EntreRios y Pellegrini, EntreRios y Ayolas, Segui y Oroño, Segui y OLagos, SNicolás y Garay, SNicolás y Zeballos, Urquiza y Francia.
+
+130 ACCE (Sur-Norte): Winter y Cipolletti, FragataSarmiento y OLagos, Oroño y Ameghino, Oroño y Segui, Italia y 27Febrero, Italia y Pellegrini, Italia y San Lorenzo.
+130 ROAC (Norte-Sur): Italia y San Lorenzo, Laprida y Rioja, SJuan y Dorrego, Dorrego y Pellegrini, Oroño y Segui, Oroño y Uriburu, Uriburu y Suipacha, Winter y Cipolletti.
+Emparejados: FragataSarmiento y OLagos, Uriburu y Suipacha.
+Emparejados: Oroño y Ameghino, Oroño y Uriburu.
+Emparejados: Oroño y Segui, Oroño y Segui.
+Emparejados: Italia y Pellegrini, Dorrego y Pellegrini.
+
+133/125 OCFU (Sur-Norte): Rueda y PUnidas, Segui y Barra, Segui y Aldao, PPerón y FMoré, PPerón y Cafferata, Francia y Cerrito, Montevideo y Oroño, Moreno y San Luis, Corrientes y SantaFe, SantaFe y Oroño, SantaFe y Francia, SantaFe y Avellaneda, SantaFe y Agneta, EvaPerón y PUnidas, EvaPerón y Donado, EvaPerón y Wilde, Ruta9 y JCelman, Ruta9 y ArroyoLudueña, Ruta9 y Perón, Ruta9 y Angelomé. 
+133/125 FUCO (Norte-Sur): Ruta9 y Angelomé, Perón y Ruta9, Ruta9 y ArroyoLudueña, Ruta9 y JCelman, EvaPerón y Wilde, EvaPerón y Donado, EvaPerón y PUnidas, Córdoba y Agneta, Córdoba y Avellaneda, Córdoba y Francia, SLorenzo y Oroño, SLorenzo y EntreRíos, SJuan y Balcarce, Balcarce y Pellegrini, Montevideo y OLagos, OLagos y Viamonte, SNicolás y PPerón, 27Febrero y Matienzo, Garzón y Segui, Rueda y PUnidas.
+
+133/125 OCWI (Sur-Norte): Rueda y PUnidas, Segui y Barra, Segui y Aldao, PPerón y FMoré, PPerón y Cafferata, Francia y Cerrito, Montevideo y Oroño, Moreno y San Luis, Corrientes y SantaFe, SantaFe y Oroño, SantaFe y Francia, SantaFe y Avellaneda, SantaFe y Agneta, EvaPerón y PUnidas, EvaPerón y Donado, Navarro y Wilde, Wilde y Mendoza.
+133/125 WICO (Norte-Sur): Wilde y Mendoza, Wilde y Benegas, EvaPerón y Donado, EvaPerón y PUnidas, Córdoba y Agneta, Córdoba y Avellaneda, Córdoba y Francia, SLorenzo y Oroño, SLorenzo y EntreRíos, SJuan y Balcarce, Balcarce y Pellegrini, Montevideo y OLagos, OLagos y Viamonte, SNicolás y PPerón, 27Febrero y Matienzo, Garzón y Segui, Rueda y PUnidas.
+
+138/139 TFCA (Norte-Sur): TFebrero y Paraná, SLuis y Avellaneda, SLuis y Francia, SLuis y Oroño, SLuis y EntreRíos, Laprida y Pellegrini, 27Febrero y Laprida, SMartín y Segui, SMartín y Uriburu, SMartín y Arijón, Balcarce y Arijón, BatlleOrdóñez y Oroño. 
+138/139 CATF (Sur-Norte): BatlleOrdóñez y Oroño, Oroño y Arijón, Arijón y SMartín, SMartín y Uriburu, SMartín y Segui, PJunta y 27Febrero, BsAires y Pellegrini, SJuan y EntreRíos, SJuan y Oroño, SantaFe y Cafferata, Rioja y Avellaneda, TFebrero y Paraná.
+
+140 TFFL (Norte-Sur): TFebrero y Paraná, Avellaneda y NJulio, NJulio y Francia, NJulio y Alvear, SLorenzo y Oroño, SLorenzo y Laprida, Laprida y Pellegrini, Sarmiento y 27Febrero, Sarmiento y Segui, SMartín y Uriburu, SMartín y Arijón, SMartín y Ceibo, Clavel y Hortensia. 
+140 FLTF (Sur-Norte): Clavel y Hortensia, Ceibo y SMartín, SMartín y Arijón, SMartín y Uriburu, SMartín y Segui, Mitre y 27Febrero, Maipú y Pellegrini, Maipú y SantaFe, SantaFe y Oroño, TFebrero y Francia, TFebrero y Avellaneda, TFebrero y Paraná.
+
+142 NNFU (Sur-Norte): SanDiego y JDPerón, JDPerón y SEstero, JDPerón y ArroyoSaladillo, Arijón y Andes, Bustamante y SanMartín, SanMartín y Uriburu, SMartín y Segui, PJunta y 27Febrero, Maipú y Pellegrini, Maipú y SanJuan, SantaFe y Corrientes, SantaFe y Oroño, SantaFe y Constitución, SanJuan y Avellaneda, SanJuan y Agneta, Mendoza y PUnidas, Mendoza y Donado, Mendoza y Wilde, Calasanz y Suinda, Berheim y Urquiza, Illia y AJPaz, Illia e Yrigoyen, Illia y JHernández, JHernández y SJosé, MdelPlata y Ruta9.
+142 NSFU (Norte-Sur): MdelPlata y Ruta9, JHernández y SJosé, JHernández e Illia, Illia e Yrigoyen, Illia y AJPaz, Urquiza y Berheim, Calasanz y Suinda, Mendoza y Wilde, Mendoza y Donado, Mendoza y PUnidas, Mendoza y Avellaneda, Córdoba y Cafferata, Córdoba y Oroño, SLuis y Laprida, Laprida y Pellegrini, Laprida y 27Febrero, SMartín y Segui, SMartín y Uriburu, SMartín y Arijón, Arijón y Lituania, JDPerón y ArroyoSaladillo, JDPerón y SEstero, SanDiego y JDPerón.
+Emparejados: Arijón y Andes, Arijón y Lituania. 
+Emparejados: Bustamante y SanMartín, SMartín y Arijón. 
+Emparejados: PJunta y 27Febrero, Laprida y 27Febrero. 
+Emparejados: Maipú y Pellegrini, Laprida y Pellegrini. 
+Emparejados: Maipú y SanJuan, SLuis y Laprida. 
+Sin emparejar (Sur-Norte): SantaFe y Corrientes. 
+Emparejados: SantaFe y Oroño, Córdoba y Oroño. 
+Emparejados: SantaFe y Constitución, Córdoba y Cafferata. 
+Emparejados: SanJuan y Avellaneda, Mendoza y Avellaneda. 
+Sin emparejar (Sur-Norte): SanJuan y Agneta. 
+Sin emparejar (Sur-Norte): Donado y EvaPerón. 
+Todos los demás que coinciden también son emparejados. 
+Existen servicios NS42 todos los días lunes a lunes que comienzan desde Calasanz y Suinda hacia el sur. 
+Existen servicios NN42 días mediofestivo y festivo (sábados, domingos, feriados) que yendo hacia el norte finalizan en Calasanz y Suinda. 
+Existen servicios RENF días hábiles lunes a viernes que refuerzan desde SantaFe y Constitución hacia MdelPlata y Ruta9. 
+
+142 RN (Sur-Norte): Cementerio VGG, Filippini y Mosconi, JDPerón y SMartín, SanDiego y 17OCtubre, SEstero y JDPerón, JDPerón y ArroyoSaladillo, Arijón y Andes, Bustamante y SanMartín, SanMartín y Uriburu, SMartín y Segui, PJunta y 27Febrero, Maipú y Pellegrini, Maipú y SanJuan, SantaFe y Corrientes, SantaFe y Oroño, SantaFe y Constitución, SanJuan y Avellaneda, SanJuan y Agneta, Mendoza y PUnidas, Mendoza y Donado, Donado y EvaPerón, Donado y JJPaso, SLoria y JNewbery, JNewbery y JPabloII, Baigorria y Circu, Rucci.
+142 RS (Norte-Sur): Rucci, Baigorria y Circu, Circu y Colectora, MEstrada y SLoria, JJPaso y Donado, Mendoza y Donado, Mendoza y PUnidas, Mendoza y Avellaneda, Córdoba y Cafferata, Córdoba y Oroño, SLuis y Laprida, Laprida y Pellegrini, Laprida y 27Febrero, SMartín y Seguí, SMartín y Uriburu, SMartín y Arijón, Arijón y Lituania, JDPerón y ArroyoSaladillo, JDPerón y SEstero, 17Octubre y SDiego, JDPerón y SMartín, Filippini y Mosconi, Cementerio VGG.
+Emparejados: Arijón y Andes, Arijón y Lituania. 
+Emparejados: Bustamante y SanMartín, SMartín y Arijón. 
+Emparejados: PJunta y 27Febrero, Laprida y 27Febrero. 
+Emparejados: Maipú y Pellegrini, Laprida y Pellegrini. 
+Emparejados: Maipú y SanJuan, SLuis y Laprida. 
+Sin emparejar (Sur-Norte): SantaFe y Corrientes. 
+Emparejados: SantaFe y Oroño, Córdoba y Oroño. 
+Emparejados: SantaFe y Constitución, Córdoba y Cafferata. 
+Emparejados: SanJuan y Avellaneda, Mendoza y Avellaneda. 
+Sin emparejar (Sur-Norte): SanJuan y Agneta. 
+Sin emparejar (Sur-Norte): Donado y EvaPerón. 
+Emparejados: SLoria y JNewbery, MEstrada y SLoria. 
+Emparejados: JNewbery y JPabloII, Circu y Colectora. 
+Todos los demás que coinciden también son emparejados. 
+
+143 CAGB (Sur-Norte): BatlleOrdóñez y Oroño, BatlleOrdóñez y SMartín, BatlleOrdóñez y Ayacucho, Ayacucho y Uriburu, BuenosAires y Segui, BuenosAires y Pellegrini, SJuan y Maipú, Corrientes y SantaFe, SantaFe y Oroño, SNicolás y Catamarca, Rondeau y Sorrento, Rondeau y Núñez, Ruta11 y Ciudadela, EvaPerón y Ruta11, TallerBaigorria. 
+143 GBCA (Norte-Sur): TallerBaigorria, Arenales y Ruta11, Ruta11 y Ciudadela, Rondeau y Sorrento, Alberdi y Salta, Tucumán y Oroño, España y SLuis, SLuis y Laprida, Laprida y Pellegrini, Laprida y Segui, Uriburu y Ayacucho, Ayacucho y Arijón, BatlleOrdóñez y SMartín, BatlleOrdóñez y Oroño. 
+Existen servicios días hábiles lunes a viernes que realizan (Sur-Norte) con bandera CALA hasta LomasAlicia, y regresan (Norte-Sur) con bandera LACA hacia el sur, reemplazando TallerBaigorria por LomasAlicia. LomasAlicia es una urbanización cercana al TallerBaigorria a 1 kilómetro. 
+Emparejados: BatlleOrdóñez y Ayacucho, Ayacucho y Arijón. 
+Emparejados: BuenosAires y Segui, Laprida y Segui. 
+Emparejados: BuenosAires y Pellegrini, Laprida y Pellegrini. 
+Emparejados: SJuan y Maipú, SLuis y Laprida. 
+Emparejados: Corrientes y SantaFe, España y SLuis. 
+Emparejados: SantaFe y Oroño, Tucumán y Oroño. 
+Emparejados: SNicolás y Catamarca, Alberdi y Salta. 
+Emparejados: EvaPerón y Ruta11, Arenales y Ruta11. 
+
+143 CARU (Sur-Norte): BatlleOrdóñez y Oroño, Oroño y Uriburu, Oroño y Segui, Segui y BuenosAires, BuenosAires y Pellegrini, SJuan y Maipú, Corrientes y SantaFe, SantaFe y Oroño, SNicolás y Catamarca, Rondeau y Sorrento, CCasas y Baigorria, Rucci. 
+143 RUCA (Norte-Sur): Rucci, Baigorria y CCasas, Rondeau y Sorrento, Alberdi y Salta, Tucumán y Oroño, España y SLuis, SLuis y Laprida, Laprida y Pellegrini, Laprida y Segui, Oroño y Segui, Oroño y Uriburu, BatlleOrdóñez y Oroño. 
+Emparejados: Segui y BuenosAires, Laprida y Segui. 
+Emparejados: BuenosAires y Pellegrini, Laprida y Pellegrini. 
+Emparejados: SJuan y Maipú, SLuis y Laprida. 
+Emparejados: Corrientes y SantaFe, España y SLuis. 
+Emparejados: SantaFe y Oroño, Tucumán y Oroño. 
+Emparejados: SNicolás y Catamarca, Alberdi y Salta. 
+
+102/144 NNBO (Sur-Norte): Grandoli y Gutiérrez, Beruti y Ayolas, Necochea y Pellegrini, Pellegrini y Corrientes, Alvear y Córdoba, Catamarca y Cafferata, Alberdi y Avellaneda, Rondeau y Sorrento, Rondeau y Puccio, Rondeau y Núñez, Palestina y Granaderos, Barrio Olímpico. 
+102/144 BONS (Norte-Sur): Barrio Olímpico, Palestina y Granaderos, Salvat y Rondeau, Rondeau y Puccio, Rondeau y Sorrento, Alberdi y Avellaneda, Salta y Francia, Balcarce y Córdoba, Pellegrini y Corrientes, Pellegrini y Colón, Ayolas y Beruti, Grandoli y Gutiérrez. 
+Emparejados: Necochea y Pellegrini, Pellegrini y Colón. 
+Emparejados: Alvear y Córdoba, Balcarce y Córdoba. 
+Emparejados: Catamarca y Cafferata, Salta y Francia. 
+Emparejados: Rondeau y Núñez, Salvat y Rondeau. 
+
+145/133 CACE (Oeste-Sur): Cabín, Jilguero y Algarrobo, Rivarola y PUnidas, PUnidas y Mendoza, Mendoza y Avellaneda, SLuis y Cafferata, SLuis y Moreno, SLuis y BuenosAires, Alem y Pellegrini, Alem y 27Febrero, JMRosas y Segui, JMRosas y Uriburu, Uriburu y España, Uriburu y OLagos, OLagos y Arijón, Cereseto y JPabloII.
+145/133 CECA (Sur-Oeste): Cereseto y JPabloII, Arijón y OLagos, OLagos y Uriburu, Uriburu y España, Uriburu y JMRosas, Segui y Alem, Ayacucho y 27Febrero, Ayacucho y Pellegrini, TFebrero y BuenosAires, SantaFe y Laprida, SantaFe y Oroño, Francia y Rioja, SJuan y Avellaneda, SJuan y Agneta, Mendoza y PUnidas, PUnidas y Rivarola, Jilguero y Algarrobo, Cabín. 
+Emparejados: SLuis y Cafferata, Francia y Rioja. 
+Emparejados: SLuis y Moreno, SantaFe y Oroño. 
+Emparejados: SLuis y BuenosAires, TFebrero y BuenosAires. 
+Emparejados: Alem y Pellegrini, Ayacucho y Pellegrini. 
+Emparejados: Alem y 27Febrero, Ayacucho y 27Febrero. 
+Emparejados: JMRosas y Segui, Segui y Alem. 
+
+145/133 SOCE (Oeste-Sur): Soldini, Ruta33 y Límite, Rivarola y PUnidas, PUnidas y Mendoza, Mendoza y Avellaneda, SLuis y Cafferata, SLuis y Moreno, SLuis y BuenosAires, Alem y Pellegrini, Alem y 27Febrero, JMRosas y Segui, JMRosas y Uriburu, Uriburu y España, Uriburu y OLagos, OLagos y Arijón, Cereseto y JPabloII. 
+145/133 CESO (Sur-Oeste):  Cereseto y JPabloII, Arijón y OLagos, OLagos y Uriburu, Uriburu y España, Uriburu y JMRosas, Segui y Alem, Ayacucho y 27Febrero, Ayacucho y Pellegrini, TFebrero y BuenosAires, SantaFe y Laprida, SantaFe y Oroño, Francia y Rioja, SJuan y Avellaneda, SJuan y Agneta, Mendoza y PUnidas, PUnidas y Rivarola, Límite y Ruta33, Soldini. 
+Emparejados: SLuis y Cafferata, Francia y Rioja. 
+Emparejados: SLuis y Moreno, SantaFe y Oroño. 
+Emparejados: SLuis y BuenosAires, TFebrero y BuenosAires. 
+Emparejados: Alem y Pellegrini, Ayacucho y Pellegrini. 
+Emparejados: Alem y 27Febrero, Ayacucho y 27Febrero. 
+Emparejados: JMRosas y Segui, Segui y Alem. 
+
+146 NS (Norte-Sur): Ambato y LaRepública, AGauna y Colombres, JJPaso y Circu, JJPaso y Solís, JJPaso y Alberdi, Salta y Cafferata, Cafferata y Córdoba, OLagos y SLuis, SLuis y Moreno, Mendoza y Alem, Colón y 27Febrero, Ayolas y Grandoli, SdelRosario y Lituania. 
+146 NN (Sur-Norte): SdelRosario y Lituania, Grandoli y Uriburu, Beruti y Gaboto, Necochea y Pellegrini, Maipú y SantaFe, SantaFe y Corrientes, SantaFe y Oroño, SantaFe y VMujica, SNicolás y Bordabehere, Alberdi y Reconquista, JJPaso y Olavarría, JJPaso y Circu, Tarragona y JJPaso, Ambato y LaRepública. 
+Emparejados: AGauna y Colombres, Tarragona y JJPaso. 
+Emparejados: JJPaso y Solís, JJPaso y Olavarría. 
+Emparejados: JJPaso y Alberdi, Alberdi y Reconquista. 
+Emparejados: Salta y Cafferata, SNicolás y Bordabehere. 
+Emparejados: Cafferata y Córdoba, SantaFe y VMujica. 
+Sin emparejar (Norte-Sur): OLagos y SLuis. 
+Emparejados: SLuis y Moreno, SantaFe y Oroño. 
+Sin emparejar (Sur-Norte): SantaFe y Corrientes. 
+Sin emparejar (Sur-Norte): Maipú y SantaFe. 
+Emparejados: Mendoza y Alem, Necochea y Pellegrini. 
+Sin emparejar (Norte-Sur): Colón y 27Febrero. 
+Emparejados: Ayolas y Grandoli, Beruti y Gaboto.
+Sin emparejar (Sur-Norte): Grandoli y Uriburu. 
+
+146 RS (Norte-Sur): Pujato y Lago Puelo, AGauna y Colombres, JJPaso y Circu, JJPaso y Solís, JJPaso y Alberdi, Salta y Cafferata, Cafferata y Córdoba, OLagos y SLuis, SLuis y Moreno, Mendoza y Alem, Colón y 27Febrero, Ayolas y Grandoli, Santafesinos e Isola. 
+146 RN (Sur-Norte): Santafesinos e Isola, Grandoli y Uriburu, Beruti y Gaboto, Necochea y Pellegrini, Maipú y SantaFe, SantaFe y Corrientes, SantaFe y Oroño, SantaFe y VMujica, SNicolás y Bordabehere, Alberdi y Reconquista, JJPaso y Olavarría, JJPaso y Circu, MEstrada y Tarragona, Pujato y Lago Puelo. 
+Emparejados: AGauna y Colombres, MEstrada y Tarragona. 
+Emparejados: JJPaso y Solís, JJPaso y Olavarría. 
+Emparejados: JJPaso y Alberdi, Alberdi y Reconquista. 
+Emparejados: Salta y Cafferata, SNicolás y Bordabehere. 
+Emparejados: Cafferata y Córdoba, SantaFe y VMujica. 
+Sin emparejar (Norte-Sur): OLagos y SLuis. 
+Emparejados: SLuis y Moreno, SantaFe y Oroño. 
+Sin emparejar (Sur-Norte): SantaFe y Corrientes. 
+Sin emparejar (Sur-Norte): Maipú y SantaFe. 
+Emparejados: Mendoza y Alem, Necochea y Pellegrini. 
+Sin emparejar (Norte-Sur): Colón y 27Febrero. 
+Emparejados: Ayolas y Grandoli, Beruti y Gaboto.
+Sin emparejar (Sur-Norte): Grandoli y Uriburu. 
+

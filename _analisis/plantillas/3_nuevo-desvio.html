@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button> -->
+    <ion-title>Nuevo Desvío</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="formDesvio">
+    <ion-list>
+      <ion-item>
+          <ion-label class="label-desvio">Fecha</ion-label>
+          <ion-input value="{{_date | date:'dd/MM/yyyy':'es-Ar'}}" formControlName="FechaString"
+            [(ngModel)]="desvioDto.FechaString" class="input-fecha" [disabled]="true"></ion-input>
+          <button ion-button icon-only item-end clear="true" (click)="seleccionarFechaDesvios()">
+            <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+          </button>
+        </ion-item>
+      <ion-item class="item-hora-desvio">
+        <ion-label class="label-desvio">Hora</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" displayFormat="HH:mm" pickerFormat="HH mm" formControlName="Hora" [(ngModel)]="desvioDto.Hora"></ion-datetime>
+      </ion-item>
+      <ion-item class="label-form-textarea" no-lines>
+        <ion-label class="label-desvio">Descripción</ion-label>       
+      </ion-item>
+      <ion-item class="item-form-textarea">
+        <ion-textarea placeholder="Ingrese los detalles del desvio..." formControlName="Descripcion" [(ngModel)]="desvioDto.Descripcion" type="text" maxLength="501" rows="10"></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="formDesvio.get('Descripcion').errors && formDesvio.get('Descripcion').dirty">
+        <p color="danger" ion-text *ngIf="formDesvio.get('Descripcion').hasError('required')">Descripción es requerida</p>
+        <p color="danger" ion-text *ngIf="formDesvio.get('Descripcion').hasError('maxlength')">Son demasiados caracteres</p>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary">    
+    <ion-buttons left>
+      <button ion-button icon-start (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+        Cancelar
+      </button>        
+    </ion-buttons>
+    <ion-title></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end (click)="createDesvio()" [disabled]="!isReadyToSave">
+        Guardar
+        <ion-icon ios="ios-checkmark" md="md-checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

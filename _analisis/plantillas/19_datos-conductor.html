@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="popover">
+    <ion-navbar class="cabecera-datos-conductor">
+      <ion-item class="item-condutor" no-lines>
+        <ion-label class="label-conductor">{{infoConductor.Description}}</ion-label>
+      </ion-item>
+    </ion-navbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-item class="item-datos-conductor dni">
+      <p class="label-datos-conductor">D.N.I.</p>
+      <span class="item-span">{{infoConductor.Dni}}</span>
+    </ion-item>
+  </ion-row>
+  <ion-row>
+    <ion-item class="item-datos-conductor">
+      <p class="label-datos-conductor">Fecha de Ingreso</p>
+      <span class="item-span">{{infoConductor.FechaIngresoFormated}}</span>
+    </ion-item>
+  </ion-row>
+  <ion-row>
+    <ion-item class="item-datos-conductor">
+      <p class="label-datos-conductor">Legajo</p>
+      <span class="item-span">{{infoConductor.Legajo}}</span>
+    </ion-item>
+  </ion-row>
+  <ion-row>
+    <ion-item class="item-datos-conductor">
+      <p class="label-datos-conductor">Fecha antiguedad</p>
+      <span class="item-span">{{infoConductor.FechaAntiguedadFormated}}</span>
+    </ion-item>
+  </ion-row>
+
+  <ion-row>
+    <ion-item class="item-datos-conductor">
+      <p class="label-datos-conductor">Empresa</p>
+      <span class="item-span">{{infoConductor.DesEmpresa}}</span>
+    </ion-item>
+  </ion-row>
+  <ion-row>
+    <ion-item class="item-datos-conductor">
+      <p class="label-datos-conductor">CUIL</p>
+      <span class="item-span">{{infoConductor.Cuil}}</span>
+    </ion-item>
+  </ion-row>
+</ion-content>

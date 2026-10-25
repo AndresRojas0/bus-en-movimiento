@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Detalle del Informe</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="list-avatar-page">
+  <ion-list>
+    <ion-list-header class="list-header-nro-info">
+        <h2 class="label-nro-info"><b>N° de informe</b></h2>
+      <p>{{infDetalle.numInforme}}</p>
+
+    </ion-list-header>
+    <ion-item >
+      <h2><b>Fecha</b></h2>
+      <p>{{infDetalle.fechaInfraccion}}</p>       
+    </ion-item>
+    <ion-item no-lines>
+      <h2><b>Ubicación</b></h2>
+      <p>{{infDetalle.descLugar}}</p>       
+    </ion-item>
+
+    <ion-list-header class="list-header">DATOS CONDUCTOR</ion-list-header>
+    <ion-item>
+      <h2><b>Conductor</b> <i>(Legajo)</i></h2>
+      <p>{{infDetalle.naConductor}} - {{infDetalle.legConductor}}</p>
+    </ion-item>
+
+    <ion-item>
+      <h2><b>Linea</b></h2>
+      <p>{{infDetalle.descLinea}}</p>
+    </ion-item>
+
+    <ion-item>
+      <h2><b>Coche</b> <i>(Ficha, Interno, Dominio)</i></h2>
+      <p>{{infDetalle.ficha}} - {{infDetalle.interno}} - {{infDetalle.dominio}}</p>
+    </ion-item>
+
+    <ion-item>
+      <h2><b>Servicio</b></h2>
+      <p>{{infDetalle.servicio}}</p>
+    </ion-item>
+  
+    <ion-list-header class="list-header">DATOS INFRACCIÓN</ion-list-header>
+    <ion-item>
+      <h2><b>Motivo</b></h2>
+      <p>{{infDetalle.descMotivo}}</p>
+    </ion-item>
+
+    <ion-item>
+      <h2><b>Notificado</b></h2>
+      <p>{{infDetalle.notificado}}</p>
+    </ion-item>
+
+    <ion-item *ngIf="infDetalle.fechaNotificado" >
+        <h2><b>Fecha Notificado</b></h2>
+        <p>{{infDetalle.fechaNotificado}}</p>
+      </ion-item>
+
+    <ion-item *ngIf="infDetalle.obsInforme">
+      <h2><b>Observación</b></h2>
+      <p>{{infDetalle.obsInforme}}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,170 @@
+<ion-header>
+  <ion-navbar color="primary">
+      <ion-buttons left>
+        <button navPop ion-button icon-only>
+          <ion-icon color="light" name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>Informe</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form">
+    <ion-list>
+      <ion-item class="item-form">
+        <ion-label class="label-informe">Fecha Infracción</ion-label>
+        <ion-input value="{{_date | date:'dd/MM/yyyy':'es-Ar'}}" formControlName="FecInfraccionString"
+          [(ngModel)]="informeForm.FecInfraccionString" class="input-fecha" [disabled]="true"></ion-input>
+        <button ion-button icon-only item-end clear="true" (click)="seleccionarFechaInfraccion()">
+          <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item class="item-form">
+        <ion-label class="label-informe">Hora</ion-label>
+        <ion-datetime doneText="Aceptar" displayFormat="HH:mm" pickerFormat="HH mm" formControlName="Hora" [(ngModel)]="informeForm.Hora"></ion-datetime>
+      </ion-item>
+      <ion-item class="item-form">
+        <ion-label class="label-informe">Ud. está en el lugar del hecho</ion-label>
+        <ion-toggle formControlName="LugarHecho" [(ngModel)]="informeForm.LugarHecho" (ionChange)="takeGeolocation()">
+        </ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="form.get('LugarHecho').errors && form.get('LugarHecho').dirty">
+        <p color="danger" ion-text *ngIf="form.get('LugarHecho').errors['required']">Requerido</p>
+      </ion-item>
+      <ion-item class="item-form">
+        <ion-label class="label-informe">Ubicación</ion-label>
+        <ion-textarea formControlName="DscLugar" [(ngModel)]="informeForm.DscLugar" type="text"></ion-textarea>
+      </ion-item>
+      <ion-item *ngIf="!form.get('LugarHecho').value && form.get('DscLugar').errors && form.get('DscLugar').dirty">
+        <p color="danger" ion-text *ngIf="form.get('DscLugar').errors['required']">La ubicación es requerida</p>
+      </ion-item>
+    </ion-list>
+    <accordion-list title="DATOS CONDUCTOR" textColor="#FFF" hasMargin="false" headerColor="#20B2AA" [expanded]="true">
+      <ion-list>
+        <!-- Conductor -->
+        <ion-item class="item-searcheable item-datos-conductor">
+          <conductores-searcheables [fechaInfraccion]="_date" (conductorSeleccionado)="completarLinea($event)">
+          </conductores-searcheables>
+          <button class="btn-add" ion-button icon-only item-end clear="true" (click)="verConductor()"
+            *ngIf="form.get('CodEmp').value">
+            <ion-icon name="ios-add" color="primary"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item *ngIf="form.get('CodEmp').errors && form.get('CodEmp').dirty">
+          <p color="danger" ion-text *ngIf="form.get('CodEmp').errors['required']">El conductor es requerido.</p>
+        </ion-item>
+        <!-- Lineas -->
+        <ion-item class="item-datos-conductor">
+          <ion-label class="label-informe" floating>Línea</ion-label>
+          <ion-select formControlName="CodLin" [(ngModel)]="informeForm.CodLin" interface="popover"
+            [disabled]="!form.get('CodEmp').value">
+            <ion-option value="{{item.Id}}" *ngFor="let item of lineas">{{item.Description}}</ion-option>
+          </ion-select>
+          <button class="btn-search" ion-button icon-only item-end clear="true" (click)="verOtrasLineas()"
+            *ngIf="lineas && form.get('CodEmp').value">
+            <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item *ngIf="form.get('CodLin').errors && form.get('CodLin').dirty">
+          <p color="danger" ion-text *ngIf="form.get('CodLin').errors['required']">La linea es requerida</p>
+        </ion-item>
+
+        <!-- Servicios -->
+        <ion-item class="item-datos-conductor">
+          <ion-label class="label-informe" floating>Servicio</ion-label>
+          <ion-select formControlName="NumSer" [(ngModel)]="informeForm.NumSer" interface="popover"
+            [disabled]="!form.get('CodLin').value">
+            <ion-option value="{{item.Id}}" *ngFor="let item of servicios">{{item.Description}}</ion-option>
+          </ion-select>
+          <button class="btn-search" ion-button icon-only item-end clear="true" (click)="verOtrosServicios()"
+            *ngIf="servicios && form.get('CodLin').value">
+            <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item *ngIf="form.get('NumSer').errors && form.get('NumSer').dirty">
+          <p color="danger" ion-text *ngIf="form.get('NumSer')['required']">El servicio es requerido</p>
+        </ion-item>
+        <!-- Coches -->
+        <div *ngIf="ccoche; else cocheSearcheable">
+          <ion-item class="item-datos-conductor">
+            <ion-label class="label-informe" floating>Coche</ion-label>
+            <ion-select formControlName="NroInterno" [(ngModel)]="informeForm.NroInterno" interface="popover"
+              [disabled]="!form.get('NumSer').value">
+              <ion-option value="{{item.Id}}" *ngFor="let item of coches">{{item.Ficha}}</ion-option>
+            </ion-select>
+            <button class="btn-search" ion-button icon-only item-end clear="true" (click)="verOtrosCoches()"
+              *ngIf="form.get('NumSer').value">
+              <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+            </button>
+          </ion-item>
+          <ion-item *ngIf="form.get('NroInterno').errors && form.get('NroInterno').dirty">
+            <p color="danger" ion-text *ngIf="form.get('NroInterno').errors['required']">El coche es requerido</p>
+          </ion-item>
+        </div>
+        <!-- Coches Searcheables -->
+        <ng-template #cocheSearcheable>
+          <ion-item class="item-searcheable item-datos-conductor">
+            <coches-searcheables [fecha]="_date" (cocheSeleccionado)="completarCoche($event)">
+            </coches-searcheables> 
+            <button class="btn-search" ion-button icon-only item-end clear="true" (click)="verOtrosCoches()"
+              *ngIf="form.get('NumSer').value">
+              <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+            </button>
+          </ion-item>
+        </ng-template>
+      </ion-list>
+    </accordion-list>
+
+    <accordion-list title="DATOS INFRACCIÓN" textColor="#FFF" hasMargin="false" headerColor="#20B2AA">
+      <!-- Contenido del form -->
+      <ion-list>
+        <!-- Motivo -->
+        <ion-item class="item-datos-conductor">
+          <ion-label class="label-informe" floating>Motivo</ion-label>
+          <ion-select formControlName="CodMotivo" [(ngModel)]="informeForm.CodMotivo" class="select-motivo"
+            okText="Aceptar" cancelText="Cancelar">
+            <ion-option value="{{item.Id}}" *ngFor="let item of motivos">{{item.Description}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="form.get('CodMotivo').errors && form.get('CodMotivo').dirty">
+          <p color="danger" ion-text *ngIf="form.get('CodMotivo').errors['required']">El motivo es requerido</p>
+        </ion-item>
+        <!-- Notificado -->
+        <ion-item class="item-notificado">
+          <ion-label class="label-informe">Notificado</ion-label>
+          <ion-checkbox formControlName="NotificadoBoolean" [(ngModel)]="informeForm.NotificadoBoolean" item-right
+            (ionChange)="isNotificado($event)"></ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="form.get('NotificadoBoolean').errors && form.get('NotificadoBoolean').dirty">
+          <p color="danger" ion-text *ngIf="form.get('NotificadoBoolean').errors['required']">Requerido</p>
+        </ion-item>
+        <ion-list>
+          <!-- Fecha Notificado-->
+          <ion-item class="item-notificado" *ngIf="form.get('NotificadoBoolean').value">
+            <ion-label class="label-informe">Fecha Notificación</ion-label>
+            <ion-input value="{{_dateNoti | date:'dd/MM/yyyy':'es-Ar'}}" formControlName="FechaNotificadoString"
+              [(ngModel)]="informeForm.FechaNotificadoString" class="input-fecha" [disabled]="true"></ion-input>
+            <button ion-button icon-only item-end clear="true" (click)="seleccionarFechaNotificacion()">
+              <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+            </button>
+          </ion-item>
+          <ion-item
+            *ngIf="form.get('NotificadoBoolean').errors && form.get('NotificadoBoolean').dirty  && !form.get('FechaNotificadoString').value">
+            <p color="danger" ion-text *ngIf="form.get('NotificadoBoolean').errors['required']">La fecha de notificación
+              es requerida</p>
+          </ion-item>
+          <!-- Observaciones -->
+          <ion-item class="item-obs">
+            <ion-label floating class="label-informe">Observaciones</ion-label>
+            <ion-textarea formControlName="ObsInforme" [(ngModel)]="informeForm.ObsInforme" class="textarea-informe">
+            </ion-textarea>
+          </ion-item>
+        </ion-list>
+      </ion-list>
+    </accordion-list>
+    <!-- boton guardar -->
+    <button class="informe-button" ion-button round outline block color="primary" (click)="GuardarInforme()"
+      [disabled]="!form.valid">Guardar Informe</button>
+  </form>
+</ion-content>

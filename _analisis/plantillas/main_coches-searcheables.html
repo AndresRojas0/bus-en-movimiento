@@ -1,0 +1,25 @@
+
+<!-- Todos los Coches -->
+<form [formGroup]="form" novalidate class="form-coches-searcheables">
+  <ion-item>
+    <ion-label class="label-coches" floating>* Coches</ion-label>
+    <ionic-selectable 
+      item-content
+      [(ngModel)]="currentItem"   
+      formControlName="coche_searcheable"
+      [searchFailText]="'NO SE ENCONTRARON COCHES'"
+      searchPlaceholder="Ingrese 4 o más caracteres"
+      [items]="coches_searcheables"
+      itemValueField="Id" 
+      itemTextField="Ficha"     
+      [canSearch]="true"
+      (onSearch)="busquedaPorCoches($event)">
+      <ng-template ionicSelectableItemTemplate let-con="item">
+        <span style="font-weight: bold">Interno: </span>{{con.Interno}}    <br>         
+        <span style="font-weight: bold">Ficha: </span>{{con.Ficha}}        <br>
+        <span style="font-weight: bold">Empresa: </span>{{con.DesEmpresa}} <br>
+        <span style="font-weight: bold">Dominio: </span>{{con.Dominio}}
+    </ng-template>
+    </ionic-selectable>
+  </ion-item>
+</form>

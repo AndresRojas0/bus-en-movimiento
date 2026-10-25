@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo — Corredores en movimiento (Inspectores RB)</title>
+<style>
+  @import url(https://db.onlinewebfonts.com/c/13f36ef31999f27c57a09d26bc9b6563?family=Helvetica+Neue+LT+Com+77+Bold+Condensed+V1);
+  :root { --ink:#2c2e3e; --paper:#f4f4f6; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Helvetica Neue LT Com 77 Bold Condensed V1', Helvetica, Arial, sans-serif; background:var(--paper); color:var(--ink); }
+  header { background:var(--ink); color:#fff; padding:10px 16px; }
+  header h1 { font-size:15px; margin:0 0 2px; }
+  header .sub { font-size:11px; opacity:.75; }
+  .legend { display:flex; gap:16px; font-size:11px; margin-top:6px; flex-wrap:wrap; }
+  .legend b { font-weight:700; }
+  .watermark { font-size:10px; color:#ffb84d; font-weight:700; }
+  #selector { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; align-items:center; }
+  #selector .chip { background:#3a3d52; color:#fff; border-radius:14px; padding:3px 10px; cursor:pointer; user-select:none; font-size:11px; }
+  #selector .chip.on { background:#fff; color:var(--ink); font-weight:700; }
+  #selector .chip.off { opacity:.6; }
+  #layout { display:flex; min-height:calc(100vh - 96px); }
+  #stage { flex:1; overflow:auto; }
+  #svg { display:block; margin:8px auto; background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+  #calSel { display:flex; flex-direction:column; gap:4px; align-items:center; margin-top:2px; }
+  #calSel .cal { width:72px; text-align:center; font-size:9.5px; padding:3px 2px; border-radius:8px; background:#ececec; color:#555; cursor:pointer; user-select:none; box-sizing:border-box; }
+  #calSel .cal.on { background:var(--ink); color:#fff; font-weight:700; }
+  #timebar { position:sticky; top:0; align-self:center; width:86px; max-width:86px; box-sizing:border-box; height:100vh; background:#fff; border-left:1px solid #ddd; display:flex; flex-direction:column; align-items:center; padding:12px 6px; gap:10px; z-index:8; }
+  #clock { font-size:18px; font-weight:700; letter-spacing:1px; }
+  #clockSmall { font-size:9px; color:#999; }
+  button { border:none; background:var(--ink); color:#fff; border-radius:8px; padding:8px 10px; font-weight:700; cursor:pointer; }
+  .vslider { position:relative; width:34px; height:min(100vh,460px); background:linear-gradient(#e8e8ec,#efeff2); border-radius:17px; flex-shrink:0; }
+  .vslider .track { position:absolute; left:15px; top:8px; bottom:8px; width:4px; background:var(--ink); border-radius:2px; }
+  .vslider .thumb { position:absolute; left:1px; width:34px; height:34px; border-radius:50%; background:var(--ink); box-shadow:0 2px 6px rgba(0,0,0,.35); text-align:center; line-height:34px; font-size:14px; color:#fff; user-select:none; touch-action:none; cursor:grab; }
+  .hint { font-size:9px; color:#888; text-align:center; line-height:1.45; }
+  #panel { position:fixed; right:96px; top:64px; max-width:280px; background:#fff; border:1px solid #ddd; border-radius:10px; padding:10px 12px; font-size:11px; display:none; box-shadow:0 4px 14px rgba(0,0,0,.18); z-index:9; max-height:60vh; overflow:auto; }
+  #panel h3 { position:sticky; top:0; margin:-10px -12px 6px; padding:7px 12px 5px; font-size:12px; background:#fff;
+              border-bottom:1px solid #eee; z-index:1; cursor:move; user-select:none; touch-action:none; }   /* header pegado al scroll: h3 + ✕ siempre visibles; manija de arrastre (touch-action:none: el toque sobre ella no scrollea la página) */
+  #panel.drag-grab { box-shadow:0 10px 28px rgba(0,0,0,.28); }   /* feedback: panel agarrado en pleno drag */
+  #panel table { border-collapse:collapse; width:100%; }
+  #panel td { padding:1px 6px 1px 0; }
+  #panel td:last-child { text-align:right; font-variant-numeric:tabular-nums; }
+  #panel tr.segh td { background:#f2f3f8; font-weight:700; color:#333; padding:3px 6px 3px 0; margin-top:2px; }
+  #panel tr.pas td { color:#b8b8b8; }
+  #panel tr.prox td { color:#b02a37; font-weight:700; }
+  #panel tr.fut td { color:#111; }
+  #panel .x { float:right; cursor:pointer; font-size:13px; color:#999; font-weight:700; }
+  #panel .x:hover { color:#333; }
+  circle.dot { cursor:pointer; }
+  @media (max-width:720px) { #panel { right:8px; top:8px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Eje por corredor físico (ida ⇄ vuelta, mismo eje)</h1>
+  <div class="sub"> </div>
+  <div class="legend">
+    <span><b>● izquierda:</b> ida, desciende </span>
+    <span><b>● derecha:</b> vuelta, asciende </span>
+    <span class="watermark">⚠ PROTOTIPO</span>
+  </div>
+  <div id="selector"></div>
+  <div style="margin-top:8px; display:flex; gap:10px; align-items:center">
+    <a id="lblReal" style="font-size:11px; color:#9ff; cursor:pointer; text-decoration:underline">⬆ cargar horarios-reales.json (opcional)</a>
+    <span id="msgReal" style="font-size:10px; color:#ffe08a"></span>
+    <input id="fileReal" type="file" accept=".json,application/json" style="display:none">
+  </div>
+</header>
+
+<div id="layout">
+  <div id="stage"><svg id="svg"></svg></div>
+  <div id="timebar">
+    <div id="clock">08:00</div>
+    <div id="clockSmall">hora del día (demo)</div>
+    <button id="play">▶ Reproducir</button>
+    <div id="slider" class="vslider"><div class="track"></div><div class="thumb" id="thumb">⏱</div></div>
+    <div id="calSel">
+      <div class="cal" data-cal="habiles">Hábil</div>
+      <div class="cal" data-cal="mediofestivo">Mediofestivo</div>
+      <div class="cal" data-cal="festivo">Festivo ⏳</div>
+    </div>
+    <div class="hint">arrastra la manija<br>abajo: más tarde</div>
+  </div>
+</div>
+<div id="panel"></div>
+
+<script>
+'use strict';
+/* ------------------------------------------------------------------ *
+ * Prototipo estático — visualización "corredor unificado" (Opción B).
+ * Datos: corredores-unificados.json (sectores ya validados por el usuario).
+ * Horarios: simulados de forma determinista, SOLO para validar el diseño.
+ * ------------------------------------------------------------------ */
+  const PAD_TOP = 112;        // espacio de título arriba del primer sector
+const PLOT_H  = 760;         // alto útil del eje
+const T_START = 4*60, T_END = 25*60;    // ventana 04:00 → 01:00 (módulo 24h en display)
+const DESDE   = 'corredores-unificados.json';
+const SERV_POR_LADO = 11;
+let SPACING = 210;
+
+let ejes = [], corridas = [];
+let simT = 8*60, playing = false, playTimer = null;
+let seleccion = null;   // srv del servicio seleccionado — persiste aunque cambie de banda durante el día
+let servicioSegs = {};  // srv -> [tramos (corridas) ordenados por hora de partida]
+let SVG_H = 0;
+let corredoresAll = [], seleccionados = new Set(), realByCorredor = {};
+
+// color POR CORREDOR (no por línea): cada ramal se distingue, incluso dentro de la misma línea
+const COLORS = {
+  '101-CEPO-POCE':     '#408040',   // verde salvia oscuro
+  '103-GBVG-VGGB':     '#000000',   // negro
+  '103-RUVG-VGRU':     '#808080',   // gris
+  '107-LIFO-FOLI':     '#800000',   // granate
+  '107-LIFA-FALI':     '#804040',   // castaño
+  '110-NS-NN'    :     '#008000',   // verde
+  // lote 2 (provisionales, ajustar a mano como en T8)
+  '122-RICE-CERI':     '#ef6c00',   // naranja
+  '122-SECE-CESE':     '#ffb300',   // ámbar
+  '126-LACE-CELA':     '#ba68c8',   // amatista claro
+  '126-OVCE-CEOV':     '#880e4f',   // burdeos/vino
+  '128-NECE-NEAS':     '#8e24aa',   // violeta
+  '128-ROCE-ROFR':     '#c2185b',   // magenta
+  '130-ACCE-ROAC':     '#ba68c8',   // amatista claro
+  '133/125-OCFU-FUCO': '#5d4037',   // marrón
+  '133/125-OCWI-WICO': '#8d6e63',   // marrón claro
+  '138/139-TFCA-CATF': '#64b5f6',   // azul claro
+  '140-TFFL-FLTF':     '#1565c0',   // azul
+  // lote 3 (borrador 2026-10-23; hexes provisionales, la paleta final la define el inspector).
+  // ids del parseo: primer ramal listado = ida (142 NNFU va primero; compuestas '102/144' y '145/133')
+  '142-NNFU-NSFU':     '#455a64',   // azul pizarra
+  '142-RN-RS':         '#00695c',   // teal
+  '143-CAGB-GBCA':     '#0277bd',   // azul (provisorio)
+  '143-CARU-RUCA':     '#00897b',   // teal claro (provisorio)
+  '102/144-NNBO-BONS': '#039be5',   // celeste (provisorio)
+  '145/133-CACE-CECA': '#ff7043',   // coral (provisorio)
+  '145/133-SOCE-CESO': '#607d8b',   // gris azulado (provisorio)
+  '146-NS-NN':         '#5c6bc0',   // índigo (provisorio)
+  '146-RS-RN':         '#afb42b',   // oliva (provisorio)
+};
+
+window.pick = idx => { const c = corridas[idx]; if (!c) return;
+  if (seleccion === c.srv){
+    seleccion = null;
+    document.getElementById('panel').style.display = 'none';   // deselección por re-touch del punto
+  } else {
+    seleccion = c.srv;
+    pintaInfo(c.srv);
+  }
+  render(simT); };
+
+/* ---------------- Selector de calendario (hábil / mediofestivo / festivo) ---------------- */
+const CALENDARIOS = {
+  habiles:      { archivo: 'horarios-habiles.json',      etiqueta: 'día hábil (mar 20/10)' },
+  mediofestivo: { archivo: 'horarios-mediofestivo.json', etiqueta: 'mediofestivo (sáb)' },
+  festivo:      { archivo: 'horarios-festivo.json',      etiqueta: 'festivo (fetch pendiente)' },
+};
+let calendarioSel = (() => { try { return localStorage.getItem('calendarioSel') || 'mediofestivo'; } catch(_) { return 'mediofestivo'; } })();
+let calendarioToken = 0;
+let archivoHorarios = 'horarios-reales.json';
+
+async function cargarCalendario(){
+  const modo = calendarioSel, info = CALENDARIOS[modo];
+  const tk = ++calendarioToken;
+  archivoHorarios = info.archivo;
+  document.querySelectorAll('#calSel .cal').forEach(ch => ch.classList.toggle('on', ch.dataset.cal === modo));
+  try {
+    const r = await fetch(info.archivo, { cache: 'no-store' });
+    if (tk !== calendarioToken) return;                    // el usuario ya cambió de calendario
+    const d = r.ok ? await r.json() : null;
+    if (!d){ document.getElementById('msgReal').textContent = `⚠ ${info.archivo} no está (${info.etiqueta})`; return; }
+    aplicarReal(d, `${info.archivo} — ${info.etiqueta}`);
+  } catch(e){
+    if (tk === calendarioToken) document.getElementById('msgReal').textContent = `⚠ ${info.archivo}: ${e.message}`;
+  }
+}
+
+async function main(){
+  const data = await (await fetch(DESDE, { cache: 'no-store' })).json();
+  corredoresAll = [];
+  for (const ln of data.lineas) for (const c of ln.corredores) corredoresAll.push({...c, linea: ln.linea});
+  seleccionados = new Set(corredoresAll.map(c=>c.id));
+  buildSelector();
+  rebuild();
+  bindTimebar();
+  engancharPanStage();
+  // reloj inicial = hora real del momento de acceso (recortada a la ventana del slider 04:00→01:00)
+  const d = new Date();
+  simT = Math.min(T_END - 1, Math.max(T_START, d.getHours()*60 + d.getMinutes()));
+  setearReloj(simT);
+  engancharDragPanel();
+  cargarCalendario();
+  engancharCargaReal();
+}
+
+/* ---------- Panel trasladable: arrastrar por el h3 (la ✕ no arrastra) ---------- */
+function engancharDragPanel(){
+  /* En táctil: hold and slide — se agarra recién tras mantener el dedo ~250 ms;
+     si el dedo se mueve antes del grab, se libera y no arrastra nada (evita que
+     un rozón sobre la manija mueva toda la app). Mouse/pen agarran al instante. */
+  const HOLD = 250, MUERTE = 10;   // ms de espera del hold; px de deriva que liberan el gesto antes del grab
+  const el = document.getElementById('panel');
+  let drag = null, arm = null, h0 = null;
+  el.addEventListener('pointerdown', ev=>{
+    if (!ev.target.closest('h3') || ev.target.closest('.x')) return;
+    if (ev.pointerType === 'touch'){
+      h0 = { x: ev.clientX, y: ev.clientY };
+      arm = setTimeout(()=>{ drag = { dx: h0.x - el.getBoundingClientRect().left,
+                                       dy: h0.y - el.getBoundingClientRect().top };
+                             el.style.right = 'auto';
+                             el.classList.add('drag-grab'); }, HOLD);
+      try { el.setPointerCapture(ev.pointerId); } catch(_){}
+      ev.preventDefault();
+    } else {
+      drag = { dx: ev.clientX - el.getBoundingClientRect().left,
+               dy: ev.clientY - el.getBoundingClientRect().top };
+      el.style.right = 'auto';
+      try { el.setPointerCapture(ev.pointerId); } catch(_){}
+      el.classList.add('drag-grab');
+      ev.preventDefault();
+    }
+  });
+  el.addEventListener('pointermove', ev=>{
+    if (h0 && !drag && Math.hypot(ev.clientX - h0.x, ev.clientY - h0.y) > MUERTE){ soltar(); return; }   // movió antes del hold: gesto libre (no arrastra)
+    if (!drag) return;
+    const r = el.getBoundingClientRect();
+    const left = Math.min(Math.max(0, ev.clientX - drag.dx), Math.max(0, window.innerWidth  - r.width));
+    const top  = Math.min(Math.max(0, ev.clientY - drag.dy), Math.max(0, window.innerHeight - r.height));
+    el.style.left = left + 'px';
+    el.style.top  = top + 'px';
+  });
+  const soltar = ()=>{ if (arm){ clearTimeout(arm); arm = null; } h0 = null;
+                       drag = null; el.classList.remove('drag-grab'); };
+  el.addEventListener('pointerup',     soltar);
+  el.addEventListener('pointercancel', soltar);
+}
+
+function rebuild(){
+  const sel = corredoresAll.filter(c=> seleccionados.has(c.id));
+  const svg = document.getElementById('svg');
+  svg.innerHTML = '';
+  ejes = []; corridas = []; seleccion = null; servicioSegs = {};
+  document.getElementById('panel').style.display='none';
+  if (!sel.length){
+    SVG_H = 300;
+    svg.setAttribute('width', 800); svg.setAttribute('height', SVG_H);
+    svg.setAttribute('viewBox', `0 0 800 ${SVG_H}`);
+    txt(svg, 400, 150, 'No hay líneas/ramales seleccionados', {size:14, fill:'#888', anchor:'middle'});
+    return;
+  }
+  SPACING = Math.max(220, Math.min(300, Math.floor(1500 / sel.length)));
+  const width = 60 + SPACING*sel.length;
+  SVG_H = PAD_TOP + PLOT_H + 60;
+  svg.setAttribute('width', width); svg.setAttribute('height', SVG_H);
+  svg.setAttribute('viewBox', `0 0 ${width} ${SVG_H}`);
+  sel.forEach((cor, ci)=>{
+    const x = 60 + SPACING*ci + SPACING/2;
+    const marks = cor.eje.slice().sort((a,b)=>a.orden-b.orden)
+        .map((m,i)=> ({...m, y: PAD_TOP + i * PLOT_H/(cor.eje.length-1)}));
+    const eje = { id: cor.id, cor, x, marks, color: COLORS[cor.id] || '#667788' };
+    ejes.push(eje);
+    dibujarEje(svg, eje, ci);
+    armarCorridas(eje);
+  });
+
+  // encadena los tramos de cada servicio: un mismo Servicio recorre distintas banderas
+  // en el día (p.ej. 103-0057: GBVG → VGGB → GBVG → VGRU → RUVG → VGRU ...)
+  servicioSegs = {};
+  corridas.forEach(c=>{ (servicioSegs[c.srv] ||= []).push(c); });
+  for (const list of Object.values(servicioSegs)){
+    list.sort((a,b)=> a.times[0] - b.times[0]);
+    list.forEach((s,i)=>{ s.segPos = i; s.segs = list; });
+  }
+  render(simT);
+}
+
+/* ------------------------------------------------------------------ */
+function dibujarEje(svg, eje, ci){
+  const {x, marks, color, cor} = eje;
+  const g = mk(svg,'g',{ transform:`translate(${x},0)` });
+  const yFin = PAD_TOP + PLOT_H;
+  txt(g, 0, PAD_TOP-64, `${cor.linea}`, {size:42, weight:700, fill:color, anchor:'middle'});
+  txt(g, 0, PAD_TOP-44, `${cor.banderas.ida}⇄${cor.banderas.vuelta}`, {size:14, weight:700, fill:color, anchor:'middle'});
+
+  txt(g, 0, PAD_TOP-26, `▲ ${cor.puntaArriba}`, {size:11, fill:'#555', anchor:'middle'});
+  txt(g, 0, yFin+16, `▼ ${cor.puntaAbajo}`, {size:11, fill:'#555', anchor:'middle'});
+  if (ci === 0) txt(g, -52, (PAD_TOP+yFin)/2, '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀▼ IDA⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀|⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀VUELTA ▲', {size:9.5, fill:'#999', anchor:'middle'});
+
+  mk(g,'line',{ x1:0, y1:PAD_TOP, x2:0, y2:yFin, stroke:color, 'stroke-width':2.2 });
+
+  marks.forEach((m,i)=>{
+    mk(g,'line',{ x1:-6, y1:m.y, x2:6, y2:m.y, stroke:color, 'stroke-width':1.6 });
+    if (!m.ida || !m.vuelta) mk(g,'circle',{ cx:-10, cy:m.y, r:2.4, fill:'#0002' });
+
+    // nombres inclinados a ambos lados formando una V respecto al eje vertical:
+    //   ida    = trazo "\" que desciende HACIA el eje (anclaje 'end' en el eje, rotación +35°)
+    //   vuelta = trazo "/" que asciende DESDE el eje (anclaje 'start' en el eje, rotación -35°)
+    // así cada esquina vive en su propia diagonal, sin superponerse con los horarios del punto.
+    if (m.tipo === 'oculto') {
+      // fila fantasma de alineación entre ejes de la misma línea: tick discontinuo, sin rótulos
+      mk(g,'line',{ x1:-14, y1:m.y, x2:14, y2:m.y, stroke:'#b9bdc9', 'stroke-width':1.2, 'stroke-dasharray':'2 3' });
+      const tg = mk(g,'title',{});
+      tg.textContent = 'fila fantasma (alineación de ejes de la línea)';
+      return;
+    }
+    if (m.ida)    rot(g, -20, m.y+3.5, m.ida,    +35, {size:11, weight:500, fill:'#444', anchor:'end'});
+    if (m.vuelta) rot(g, +20, m.y+3.5, m.vuelta, -35, {size:11, weight:500, fill:'#777', anchor:'start'});
+    const ti = mk(g,'title',{});
+    ti.textContent = `orden ${m.orden} · ida: ${m.ida||'—'} · vuelta: ${m.vuelta||'—'} · ${m.confianza}${m.validadaUsuario?' · validada':''}`;
+  });
+}
+
+/* ---------- Horarios simulados: deterministas ---------- */
+function hashStr(s){ let h=7; for (let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))&0x7fffffff; return h; }
+function prng(seed){ let s=(seed%2147483647)||1; return ()=>{ s=(s*16807+11)%2147483647; return (s%100000)/100000; }; }
+
+/* ---------------- Horarios reales: armo corridas si hay datos, si no simulo ---------------- */
+function armarCorridas(eje){
+  const real = realByCorredor[eje.cor.id] || {};
+  if (real.ida)    corridaDesdeReal(eje, 'ida',    real.ida);    else simularHorariosLado(eje, 'ida');
+  if (real.vuelta) corridaDesdeReal(eje, 'vuelta', real.vuelta);  else simularHorariosLado(eje, 'vuelta');
+}
+
+function simularHorariosLado(eje, lado){
+  const {cor, color} = eje;
+  const route = lado==='ida' ? eje.marks.filter(m=>m.ida && m.tipo!=='oculto')
+                             : eje.marks.filter(m=>m.vuelta && m.tipo!=='oculto').slice().reverse();
+  const n = route.length;
+  const seed = hashStr(cor.id) + (lado==='vuelta' ? 57 : 0);
+  for (let k=0; k<SERV_POR_LADO; k++){
+    const r = prng((seed + k*101) | 0);
+    const salida   = 5*60 + 30 + k*(960/SERV_POR_LADO)*(0.85 + 0.3*r());
+    const totalMin = 10 + (n-1)*(1.2 + 1.0*r()) + 25*r();
+    corridas.push({ ejeId:eje.id, cor, lado, color,
+                    srv:`${cor.linea}-s${k+1}`, marks:route,
+                    times: route.map((_,i)=> salida + i*(totalMin/(n-1))) });
+  }
+}
+
+/* ---------------- Mapeo HorariosPorSectorDto (app ROSBUS) → corridas del eje ----------------
+   Cada Item del dto es UN servicio: { Servicio, Sale, Llega, ColumnasDinamicas:[{Orden, Hora|HoraFormated}] }.
+   Sale = punta de origen, Llega = punta de destino, dinámicas = sectores intermedios.
+   La ruta del lado se recorre en orden de viaje: ida N→S (orden asc), vuelta S→N (orden desc). */
+function parseHora(s){
+  const m = /^\s*(\d{1,2}):(\d{2})(?::\d{2})?\s*$/.exec(String(s||''));
+  return m ? (+m[1])*60 + (+m[2]) : null;
+}
+function asegurarCreciente(arr){
+  let prev = -Infinity;
+  return arr.map(t=>{ if (t==null) return null; let v=t; while (v<=prev) v+=1440; prev=v; return v; });
+}
+function corridaDesdeReal(eje, lado, dto){
+  const base = eje.marks.slice().sort((a,b)=>a.orden-b.orden);
+  const side = lado==='ida' ? base.filter(m=>m.ida && m.tipo!=='oculto')
+                            : base.filter(m=>m.vuelta && m.tipo!=='oculto').slice().reverse();
+  const items = (dto && dto.Items) || [];
+  items.forEach((row,k)=>{
+    if (!row) return;
+    const dins = (row.ColumnasDinamicas||[]).slice().sort((a,b)=>((a.Orden??0)-(b.Orden??0)));
+    let horas = null;
+    if (dins.length === side.length){
+      horas = asegurarCreciente(dins.map(d=>parseHora(d.HoraFormated||d.Hora)));
+    } else if (dins.length === side.length - 2){
+      horas = asegurarCreciente([parseHora(row.Sale), ...dins.map(d=>parseHora(d.HoraFormated||d.Hora)), parseHora(row.Llega)]);
+    }
+    if (!horas || horas.some(t=>t==null)){
+      // conteo imprevisto u hora ilegible: distribuye toda hora disponible (Sale/dinámicas/Llega)
+      const comb = [parseHora(row.Sale), ...dins.map(d=>parseHora(d.HoraFormated||d.Hora)), parseHora(row.Llega)].filter(t=>t!=null);
+      if (comb.length < 2) return;
+      horas = asegurarCreciente(side.map((_,i)=> comb[Math.min(comb.length-1, Math.round(i*(comb.length-1)/(side.length-1)))]));
+    }
+    const srv = String(row.Servicio ?? ('s'+(k+1))).replace(/\s+/g,'');
+    corridas.push({ ejeId:eje.id, cor:eje.cor, lado, color:eje.color,
+                    srv:`${eje.cor.linea}-${srv}`, marks:side, times:horas });
+  });
+}
+
+/* ---------------- Buscador de líneas + selector de ramales ---------------- */
+let lineasSel = [];    // líneas elegidas en el buscador (multi por coma); vacío = mostrar todas
+
+function elegirLineas(arr){
+  lineasSel = [...arr];
+  seleccionados = new Set(corredoresAll.filter(c=> lineasSel.includes(c.linea)).map(c=>c.id));
+  buildSelector();
+  rebuild();
+  window.scrollTo(0,0);
+}
+function elegirLinea(n){ elegirLineas([n]); }
+
+function buildSelector(){
+  const el = document.getElementById('selector');
+  el.innerHTML = '';
+  const lineas = [...new Set(corredoresAll.map(c=>c.linea))];
+
+  // --- buscador de líneas (input + dropdown de sugerencias) ---
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;';
+  const inp = document.createElement('input');
+  inp.type = 'search';
+  inp.placeholder = 'Buscar línea… (multi: 101, 133/125)';
+  inp.autocomplete = 'off';
+  inp.style.cssText = 'padding:5px 10px;border-radius:14px;border:1px solid #999;background:#fff;font-size:12px;width:230px;';
+  const drop = document.createElement('div');
+  drop.style.cssText = 'position:absolute;top:calc(100% + 4px);left:0;z-index:30;background:#fff;border:1px solid #ccc;'
+    + 'border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,.25);display:none;min-width:240px;max-height:200px;overflow:auto;';
+  wrap.appendChild(inp); wrap.appendChild(drop);
+  el.appendChild(wrap);
+
+  // match por prefijo con fallback a contains y a dígitos solos (soporta líneas compuestas '133/125'): '1' → 101/110 (no 103/107), '3' → 103, '133125'/'133/125' → 133/125
+  const hits = q => {
+    if (!q) return lineas;
+    const pre = lineas.filter(l=> String(l).startsWith(q));
+    if (pre.length) return pre;
+    const cont = lineas.filter(l=> String(l).includes(q));
+    if (cont.length) return cont;
+    return lineas.filter(l=> String(l).replace(/\D+/g,'').includes(q));
+  };
+  // multi: tokens separados por coma; cada token resuelve con el mismo encadenado (prefijo → contains → dígitos)
+  const resolveMulti = q => {
+    const toks = q.split(',').map(t=>t.trim()).filter(Boolean);
+    const found = new Set(), failed = [];
+    for (const tk of toks){
+      const d = (tk.match(/\d+/g) || []).join('');
+      const m = d ? hits(d) : [];
+      if (m.length) m.forEach(l=>found.add(l)); else failed.push(tk);
+    }
+    return { lineas: [...found], failed };
+  };
+  const renderDrop = ()=>{
+    const q = (inp.value.match(/\d+/g) || []).join('');
+    drop.innerHTML = '';
+    if (inp.value.includes(',')){
+      const { lineas: ml, failed } = resolveMulti(inp.value);
+      ml.forEach(l=>{
+        const it = document.createElement('div');
+        it.style.cssText = 'padding:6px 10px;cursor:pointer;font-size:12px;';
+        it.innerHTML = `<b>${l}</b> — ${corredoresAll.filter(c=>c.linea===l)
+          .map(c=> c.banderas.ida+'⇄'+c.banderas.vuelta).join(' · ')}`;
+        it.onclick = ()=>{ drop.style.display = 'none'; elegirLinea(l); };
+        drop.appendChild(it);
+      });
+      if (ml.length){
+        const it = document.createElement('div');
+        it.style.cssText = 'padding:6px 10px;cursor:pointer;font-size:12px;background:#f7f8ff;font-weight:700;';
+        it.innerHTML = `→ seleccionar ${ml.length} líneas: ${ml.join(', ')}`
+          + (failed.length ? ` · sin match: ${failed.join(', ')}` : '');
+        it.onclick = ()=>{ drop.style.display = 'none'; elegirLineas(ml); };
+        drop.appendChild(it);
+      }
+    }
+    hits(q).forEach(l=>{
+      const it = document.createElement('div');
+      it.style.cssText = 'padding:6px 10px;cursor:pointer;font-size:12px;';
+      it.innerHTML = `<b>${l}</b> — ${corredoresAll.filter(c=>c.linea===l)
+        .map(c=> c.banderas.ida+'⇄'+c.banderas.vuelta).join(' · ')}`;
+      it.onmouseenter = ()=> it.style.background = '#f2f3f8';
+      it.onmouseleave = ()=> it.style.background = '#fff';
+      it.onclick = ()=>{ drop.style.display = 'none'; elegirLinea(l); };
+      drop.appendChild(it);
+    });
+    drop.style.display = hits(q).length ? 'block' : 'none';
+  };
+  if (lineasSel.length === 1) inp.value = `Línea ${lineasSel[0]}`;
+  else if (lineasSel.length > 1) inp.value = `Líneas ${lineasSel.join(', ')}`;
+  inp.onfocus = ()=>{ if (lineasSel.length) inp.value = ''; renderDrop(); };
+  inp.oninput = renderDrop;
+  inp.onkeydown = e=>{ if (e.key === 'Enter'){
+    if (inp.value.includes(',')){
+      const { lineas: ml } = resolveMulti(inp.value);
+      if (ml.length){ drop.style.display = 'none'; elegirLineas(ml); }
+      return;
+    }
+    const m = hits((inp.value.match(/\d+/g) || []).join(''));
+    if (m.length === 1){ drop.style.display = 'none'; elegirLinea(m[0]); }
+  }};
+  inp.onblur = ()=> setTimeout(()=>{ inp.value = lineasSel.length === 1 ? `Línea ${lineasSel[0]}`
+    : (lineasSel.length ? `Líneas ${lineasSel.join(', ')}` : ''); }, 150);
+  if (!window.__dropLineasHook){
+    window.__dropLineasHook = true;
+    document.addEventListener('click', e=>{
+      const d = document.getElementById('dropLineas');
+      // el drop ya no existe si el selector fue reconstruido; el actual queda en el DOM
+      const vivo = document.querySelector('#selector input');
+      if (d && e.target !== vivo && !e.target.closest('#selector')) d.style.display = 'none';
+    });
+  }
+
+  // --- selector de ramales-banderas de la línea elegida ---
+  const chip = (txt, on, fn, extra='') => {
+    const d = document.createElement('div');
+    d.className = `chip${on?' on':' off'}`;
+    d.textContent = txt + extra;
+    d.onclick = fn;
+    el.appendChild(d);
+  };
+  if (lineasSel.length === 0){
+    chip('todas las líneas — busque una (multi: 101, 133/125)', true, ()=>{});
+  } else {
+    corredoresAll.filter(c=> lineasSel.includes(c.linea)).forEach(c=>{
+      const real = realByCorredor[c.id] || {};
+      const extra = (real.ida && real.vuelta) ? ' ⚡'
+                  : (real.ida ? ' ⚡ida' : (real.vuelta ? ' ⚡vuelta' : ''));
+      chip(`${c.banderas.ida}⇄${c.banderas.vuelta}`, seleccionados.has(c.id),
+        ()=>{ seleccionados.has(c.id) ? seleccionados.delete(c.id) : seleccionados.add(c.id);
+              buildSelector(); rebuild(); }, extra);
+    });
+    chip('↩ todas las líneas', false, ()=>{
+      lineasSel = [];
+      seleccionados = new Set(corredoresAll.map(c=>c.id));
+      buildSelector(); rebuild();
+    });
+  }
+}
+
+/* ---------------- Carga de archivo horarios-reales.json ---------------- */
+function aplicarReal(data, fuente){
+  realByCorredor = {};                     // cada calendario reemplaza al anterior; sin residuos
+  let n = 0;
+  for (const [id, dto] of Object.entries(data || {})){
+    if (!corredoresAll.some(c=>c.id === id)) continue;
+    realByCorredor[id] = { ida: (dto && dto.ida) || null, vuelta: (dto && dto.vuelta) || null };
+    if (dto && (dto.ida || dto.vuelta)) n++;
+  }
+  buildSelector(); rebuild();
+  document.getElementById('msgReal').textContent =
+    n ? `✔ ${n} corredor(es) con horarios reales (${fuente})`
+      : `sin coincidencias para horarios reales (${fuente})`;
+}
+function engancharCargaReal(){
+  document.querySelectorAll('#calSel .cal').forEach(ch => {
+    ch.onclick = ()=>{
+      if (calendarioSel === ch.dataset.cal) return;
+      calendarioSel = ch.dataset.cal;
+      try { localStorage.setItem('calendarioSel', calendarioSel); } catch(_){}
+      cargarCalendario();
+    };
+  });
+  document.getElementById('lblReal').onclick = ()=> document.getElementById('fileReal').click();
+  document.getElementById('fileReal').addEventListener('change', ev=>{
+    const f = ev.target.files[0]; if (!f) return;
+    const fr = new FileReader();
+    fr.onload = ()=>{ try { aplicarReal(JSON.parse(fr.result), f.name); }
+                      catch(e){ document.getElementById('msgReal').textContent = '⚠ JSON inválido: ' + e.message; } };
+    fr.readAsText(f);
+  });
+}
+
+/* ---------- Render por minuto simulado ---------- */
+function render(min){
+  tossOld('dotsLayer');
+  const svg = document.getElementById('svg');
+  const g = mk(svg,'g',{ id:'dotsLayer' });
+  corridas.forEach((c,i)=> dibujarCorrida(g, c, i, min));
+  if (seleccion !== null) dibujarServicio(g, servicioSegs[seleccion]);
+  // estados dinámicos del cuadro del servicio seleccionado (pasado gris / próximo rojo / futuro negro)
+  panelDinamica();
+}
+
+function dibujarCorrida(g, c, idx, min){
+  const Ts = c.times, Ms = c.marks;
+  if (min < Ts[0]-3) return;
+  let y, parked = false;
+  let j = 0; while (j < Ts.length-1 && Ts[j+1] <= min) j++;
+  if (j >= Ts.length-1 && min > Ts[Ts.length-1]){
+    // fin del tramo: estaciona en la punta de llegada hasta que arranca el próximo tramo
+    const nxt = c.segs && c.segs[c.segPos+1];
+    if (!nxt || min >= nxt.times[0]) return;   // terminó el día / ya arrancó el próximo tramo
+    y = Ms[Ms.length-1].y; parked = true;
+  } else {
+    const i = Math.min(j, Ts.length-2);
+    const f = Math.min(1, Math.max(0, (min - Ts[i]) / ((Ts[i+1]-Ts[i]) || 1)));
+    y = Ms[i].y + (Ms[i+1].y - Ms[i].y)*f;
+  }
+  const ej = ejes.find(e=>e.id===c.ejeId);
+  const cx = ej.x + (c.lado==='ida' ? -14 : 14);
+  const sel = c.srv === seleccion;
+
+  mk(g,'circle',{ class:'dot', cx, cy:y, r: parked? 4 : 5,
+                  fill:c.color, opacity: parked? (sel? .85 : .45) : .92, style:'cursor:pointer',
+                  onclick:`window.pick(${idx})` });
+
+  if (!parked || sel){
+    // badge = número línea-servicio + TRIÁNGULO SVG (el carácter Unicode ↓/↑ no se renderiza
+    // en la fuente del badge; un polígono es determinista en cualquier font)
+    const badge = c.srv;
+    const tx = cx + (c.lado==='ida'? -9 : 9);
+    const W = badge.length*7.6;                   // ancho estimado del texto (calibrado a font-size 12)
+    if (sel) mk(g,'rect',{ x: c.lado==='ida'? tx-W-14 : tx-4, y: y-11.5, width:W+18, height:19, rx:8,
+                           fill:c.color, opacity:.22 });
+    const lbl = mk(g,'text',{ x: tx, y: y+4.3, 'font-size':12, fill: sel?'#111':'#222', opacity: parked? .6 : 1,
+                              'font-weight':700, 'text-anchor': c.lado==='ida'?'end':'start' });
+    lbl.style.cursor = 'pointer';
+    lbl.textContent = badge;
+    lbl.setAttribute('onclick',`window.pick(${idx})`);
+    // triángulo dirección, espejado respecto al eje: ida ↓ (a la izquierda) / vuelta ↑ (a la derecha)
+    const triX = c.lado==='ida' ? tx-W-8 : tx+W+8;
+    const tri = c.lado==='ida'
+      ? `${triX-3.5},${y-2.4} ${triX+3.5},${y-2.4} ${triX},${y+3}`     // apunta abajo
+      : `${triX-3.5},${y+2.4} ${triX+3.5},${y+2.4} ${triX},${y-3}`;   // apunta arriba
+    const pg = mk(g,'polygon',{ points:tri, fill: sel?'#111':'#222', opacity: parked? .6 : 1 });
+    pg.style.cursor = 'pointer';
+    pg.setAttribute('onclick',`window.pick(${idx})`);
+  }
+}
+
+function dibujarServicio(g, segs){
+  if (!segs || !segs.length) return;
+  // tramo activo: el último que ya partió; el servicio recorre banderas distintas en el día
+  let act = segs[0];
+  for (const s of segs) if (simT >= s.times[0]) act = s;
+  const ej = ejes.find(e=>e.id===act.ejeId);
+  if (!ej) return;
+  const x  = ej.x + (act.lado==='ida'? -14 : 14);
+  const Ts = act.times, Ms = act.marks;
+
+  // línea punteada del tramo activo con la hora de paso de cada sector (centrada bajo el punto)
+  mk(g,'polyline',{ points: Ms.map(m=>`${x},${m.y}`).join(' '),
+                    fill:'none', stroke:'#222', 'stroke-width':1, 'stroke-dasharray':'2 3', opacity:.5 });
+  Ms.forEach((m,i)=>{
+    mk(g,'circle',{ cx:x, cy:m.y, r:2.6, fill:'#222', opacity:.8 });
+    const lb = mk(g,'text',{ x, y:m.y+14.5, 'font-size':8.5, fill:'#333', 'font-weight':700, 'text-anchor':'middle' });
+    lb.textContent = fmt(Ts[i]);
+  });
+
+  // aro fino del servicio seleccionado: interpolado dentro del tramo activo;
+  // estaciona en la punta de origen antes de partir, en la de llegada entre tramos
+  // y en la última punta al terminar el día — persiste hacia atrás y hacia adelante en el tiempo
+  let y;
+  if (simT < Ts[0])                y = Ms[0].y;
+  else if (simT <= Ts[Ts.length-1]){
+    let i = 0; while (i < Ts.length-1 && Ts[i+1] <= simT) i++;
+    if (i > Ts.length-2) i = Ts.length-2;
+    const f = Math.min(1, Math.max(0, (simT - Ts[i]) / ((Ts[i+1]-Ts[i]) || 1)));
+    y = Ms[i].y + (Ms[i+1].y - Ms[i].y)*f;
+  } else                           y = Ms[Ms.length-1].y;
+  mk(g,'circle',{ cx:x, cy:y, r:9, fill:'none', stroke:'#111', 'stroke-width':1.4, opacity:.95 });
+}
+
+/* ---------- Panel de info ---------- */
+window.cerrarPanel = () => {
+  // la X sólo cierra el cuadro: la selección del servicio permanece en la gráfica
+  // (aro fino) hasta volver a tocar el punto/badge para deseleccionar
+  document.getElementById('panel').style.display = 'none';
+};
+
+function pintaInfo(srv){
+  // (el hover se eliminó: el cuadro del servicio es una función de la selección, punto único de apertura)
+  const segs = servicioSegs[srv];
+  if (!segs) return;
+  const e = document.getElementById('panel');
+  e.style.display = 'block';
+
+  // próximo sector con partida futura (el primero en orden global del itinerario)
+  let prox = null; // [iTramo, jSector]
+  outer: for (let i=0; i<segs.length; i++)
+    for (let j=0; j<segs[i].times.length; j++)
+      if (segs[i].times[j] > simT){ prox = [i,j]; break outer; }
+
+  // itinerario completo: un bloque por tramo (la banda puede cambiar durante el servicio)
+  const bloques = segs.map((c,i)=>{
+    const filas = c.marks.map((m,j)=>{
+      const nombre = (m.ida && m.vuelta && m.ida!==m.vuelta) ? `${m.ida} ⇄ ${m.vuelta}` : (m.ida||m.vuelta);
+      const proxEste = prox && prox[0]===i && prox[1]===j;
+      const estado = proxEste ? 'prox' : (c.times[j] <= simT ? 'pas' : 'fut');
+      return `<tr class="${estado}" data-t="${c.times[j]}"><td>${nombre}</td><td>${fmt(c.times[j])}</td></tr>`;
+    }).join('');
+    const flecha = c.lado==='ida' ? 'ida ↓' : 'vuelta ↑';
+    const head = `<tr class="segh"><td colspan="2">${segs.length>1 ? (i+1)+'. ' : ''}${flecha} · ${c.marks[0][c.lado]} → ${c.marks[c.marks.length-1][c.lado]} · ${fmt(c.times[0])}</td></tr>`;
+    return head + filas;
+  }).join('');
+  const x = `<span class="x" title="Cerrar cuadro (la selección permanece)" onclick="window.cerrarPanel()">✕</span>`;
+  e.innerHTML = `<h3>${srv} · línea ${segs[0].cor.linea} · ${segs.length} tramo(s)${x}</h3>
+    <table>${bloques}</table>
+    <div style="margin-top:6px;color:#999">X cierra este cuadro · tocá el punto otra vez para deseleccionar</div>`;
+}
+
+// refresco SOLO de estados del cuadro abierto (sin reconstruir el DOM, conserva el scroll del panel)
+function panelDinamica(){
+  const e = document.getElementById('panel');
+  if (!seleccion || e.style.display === 'none') return;
+  const filas = e.querySelectorAll('tr[data-t]');
+  let proxIdx = filas.length;
+  for (let k=0; k<filas.length; k++)
+    if (+filas[k].dataset.t > simT){ proxIdx = k; break; }
+  filas.forEach((tr,k)=> tr.setAttribute('class',
+    k===proxIdx ? 'prox' : (k < proxIdx ? 'pas' : 'fut')));
+}
+
+/* ---------- Barra de tiempo ---------- */
+/* ---------------- Pan lateral con mouse en #stage (desktop) ----------------
+   En táctil el desplazamiento es nativo (overflow:auto). En desktop se agrega
+   drag-to-scroll: arrastrar con el botón izquierdo mueve el contenido lateral
+   (scrollLeft -= dx, el contenido sigue al cursor). Umbral de 4px para no
+   romper el click de selección en los puntos. */
+function engancharPanStage(){
+  const stageEl = document.getElementById('stage');
+  let down=false, x0=0, y0=0, moved=false;
+  stageEl.addEventListener('mousedown', e=>{
+    if (e.button !== 0) return;               // solo botón izquierdo
+    down=true; x0=e.clientX; y0=e.clientY; moved=false;
+    stageEl.style.cursor='grabbing';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', e=>{
+    if (!down) return;
+    const dx=e.clientX-x0, dy=e.clientY-y0;
+    if (Math.abs(dx)>4 || Math.abs(dy)>4) moved=true;
+    stageEl.scrollLeft -= dx;
+    stageEl.scrollTop  -= dy;
+    x0=e.clientX; y0=e.clientY;
+  });
+  window.addEventListener('mouseup', ()=>{
+    if (down) stageEl.style.cursor='';
+    down=false;
+  });
+  // un drag real cancela el click subyacente (selección de punto)
+  stageEl.addEventListener('click', e=>{
+    if (moved){ e.stopPropagation(); e.preventDefault(); moved=false; }
+  }, true);
+}
+
+function bindTimebar(){
+  const slider = document.getElementById('slider'), thumb = document.getElementById('thumb');
+  const setThumb = ()=>{ const f=(simT-T_START)/(T_END-T_START);
+      thumb.style.top = `calc(10px + ${f} * (100% - 44px))`; };
+  const fFromEvent = ev => { const r = slider.getBoundingClientRect();
+      return Math.min(1, Math.max(0, (ev.clientY - r.top - 22) / (r.height - 44))); };
+  const drag = ev => { const f = fFromEvent(ev);
+      playing=false; stopPlay();
+      simT = Math.round(T_START + f*(T_END-T_START));
+      document.getElementById('play').textContent='▶ Reproducir';
+      setearReloj(simT); setThumb(); render(simT); };
+  let down=false;
+  slider.addEventListener('pointerdown', ev=>{ down=true; drag(ev); });
+  window.addEventListener('pointermove', ev=>{ if(down) drag(ev); });
+  window.addEventListener('pointerup', ()=> down=false);
+
+  
+
+  // etiquetas horarias hh:mm a lo largo de la guía (cada 2 h; 24:00 = medianoche)
+  for (let h=4; h<=24; h+=2){
+    const f=(h*60 - T_START)/(T_END-T_START);
+    const t=document.createElement('div');
+    t.textContent = `${String(h).padStart(2,'0')}:00`;
+    t.style.cssText = `position:absolute; top:calc(13px + ${f} * (100% - 44px)); right:22px; font-size:8px; color:#888;`;
+    slider.appendChild(t);
+  }
+
+  document.getElementById('play').onclick = ()=>{
+    playing=!playing;
+    document.getElementById('play').textContent = playing? '⏸ Pausa':'▶ Reproducir';
+    if (playing) playTimer = setInterval(()=>{
+        simT = T_START + ((simT-T_START+1) % (T_END-T_START));
+        setearReloj(simT); setThumb(); render(simT);
+      }, 60);
+    else stopPlay();
+  };
+  setThumb();
+}
+function stopPlay(){ if (playTimer) clearInterval(playTimer); playTimer=null; }
+function setearReloj(){ document.getElementById('clock').textContent = fmt(simT); }
+
+/* ---------- Utilidades ---------- */
+function fmt(min){ const m=((min%1440)+1440)%1440;
+  return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'); }
+function mk(parent, tag, attrs){ const el=document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]); parent.appendChild(el); return el; }
+function txt(parent,x,y,s,o){ const t=mk(parent,'text',{x, y, 'text-anchor':o.anchor||'start',
+  'font-size':o.size||10, 'font-weight':o.weight||400, fill:o.fill||'#000'}); t.textContent=s; return t; }
+function rot(parent,x,y,s,deg,o){ const t = txt(parent,x,y,s,o);
+  t.setAttribute('transform',`rotate(${deg} ${x} ${y})`); return t; }
+function tossOld(id){ const o=document.getElementById(id); if (o) o.remove(); }
+
+main().catch(err=>{
+  document.body.insertAdjacentHTML('afterbegin',
+    `<div style="background:#ffe9e9;color:#900;padding:12px;font-size:12px">
+     Error: ${err.message} — serví la carpeta con <code>python3 -m http.server</code> y abrí <code>http://localhost:8080/index.html</code></div>`);
+});
+</script>
+</body>
+</html>

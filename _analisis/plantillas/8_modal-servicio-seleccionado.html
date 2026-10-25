@@ -1,0 +1,81 @@
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Servicio seleccionado <ion-note class="nro-servicio">{{itemRow.Servicio}}</ion-note> </ion-title>  
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="content-servicio">  
+    <ion-list>
+        <ion-item>
+            <div class="item-servicio">
+                <ion-item no-lines>
+                    <ion-chip>
+                        <ion-icon name="arrow-round-up"></ion-icon>
+                    </ion-chip>
+                    <span class="label-servicio">{{'DEPARTURE' | translate }}</span>
+                    <ion-note item-end class="horario-servicio">{{itemRow.Sale}}</ion-note>
+                </ion-item>
+            </div>
+        </ion-item>
+        <div *ngFor="let col of servicioColumns.Colulmnas; let i = index">
+            <ion-item *ngIf="itemRow.ColumnasDinamicas[i].value != null">
+                <div class="item-servicio-sector">
+                    <ion-item no-lines>
+                        <ion-chip>
+                            <ion-icon name="pin"></ion-icon>
+                        </ion-chip>
+                        <span class="label-servicio">{{itemRow.ColumnasDinamicas[i].DescripcionSector != null ? itemRow.ColumnasDinamicas[i].DescripcionSector :  col.Label}} </span>
+                        <ion-note item-end class="horario-servicio">
+                            {{itemRow.ColumnasDinamicas[i].HoraFormated}}                               
+                        </ion-note>
+                    </ion-item>
+                </div> 
+            </ion-item>
+        </div> 
+        <ion-item>
+            <div class="item-servicio-llega">
+                <ion-item no-lines>
+                    <ion-chip>
+                        <ion-icon name="md-arrow-down"></ion-icon>
+                    </ion-chip>
+                    <span class="label-servicio">{{'ARRIVES' | translate }}</span>
+                    <ion-note item-end class="horario-servicio">{{itemRow.Llega}}</ion-note>
+                </ion-item>
+            </div>
+        </ion-item>
+        <ion-item>
+                <div class="item-servicio-bandera">
+                    <ion-item no-lines>
+                        <ion-chip>
+                            <ion-icon name="flag"></ion-icon>
+                        </ion-chip>
+                        <span class="label-servicio">{{'FLAG' | translate }}</span>
+                        <ion-note item-end class="horario-servicio">{{itemRow.Bandera}}</ion-note>
+                    </ion-item>
+                </div>
+            </ion-item>
+        <ion-item>
+            <div class="item-servicio-frec">
+                <ion-item>
+                    <ion-chip no-lines>
+                        <ion-icon name="md-timer"></ion-icon>
+                    </ion-chip>
+                    <span class="label-servicio">{{'FREQUENCY' | translate }}</span>
+                    <ion-note item-end class="horario-servicio">{{itemRow.Diferencia}}</ion-note>
+                </ion-item>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar  color="primary">
+        <ion-buttons end>
+            <button ion-button (click)="cancel()">
+                {{'EXIT' | translate }}
+            <ion-icon class="icon-close-servicio" name="close"></ion-icon> 
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer> 
