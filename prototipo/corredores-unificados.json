@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "7-prototipo-2026-10-26-t30-inversion-12-ejes",
+    "version": "8-prototipo-2026-10-26-t31-regla-128-ocultos-143",
     "correccionesUsuario": "2026-10-21: ajustes de emparejamiento en 101, 107 y 110 (ver DISENO-CORREDORES-UNIFICADOS.md 4); 2026-10-22: lote 2 agregado (122, 126, 128, 130, 133/125, 138/139, 140) desde sectores.txt; pares explícitos del usuario honrados verbatim (126 x8, 130 x4); ronda de validación 2026-10-22 COMPLETA: 17/17 corredores, 0 marcas sin validar (reglas en VALIDACIONES_INSPECTOR con helpers EXPLICITA/SOLO/OKP/OKPC); invariante dinámicas = marcas−2 verificado contra horarios reales, 2.375/2.375 filas exacto (0 descalces). 2026-10-23: lote 3 agregado (142, 143, 102/144, 145/133, 146 — 9 corredores) desde sectores.txt: draft heurístico honesto PENDIENTE de validación del inspector (criterios \"(heurística, validar inspector)\"); pares explícitos \"Emparejados\" y solos \"Sin emparejar (dir)\" del txt honrados desde la primera derivación.",
-    "orientacionEje": "2026-10-25/26 (T30 + T30b): 12 corredores con lectura invertida por decisión del inspector (ronda 1: 126 x2, 130, 133/125 x2, 142 x2, 102/144; ronda 2: 128 x2, 143 x2 — puntas invertidas, orden de sectores invertido y cambio de lateral respetando el movimiento ida↓/vuelta↑); ejes verificados golden contra el eje previo invertido (reversed+swap idéntico, 12/12); horarios habiles/mediofestivo/festivo re-clavados con el mismo mapa (id nuevo + swap ida↔vuelta); fetch-horarios.js NO necesita cambios (lee ids/banderas del JSON en runtime). INDEX/diseño: §14. eje = orden de viaje del ida (descendiendo a la izquierda); vuelta sube a la derecha; puntaArriba = sector origen del ida; los rótulos direccionales del txt de lote 2/3 no son confiables (ver notasRamales por corredor); norte-arriba solo correres N-S del lote 1; 145/133 usa ejes diagonales (Oeste-Sur / Sur-Oeste) según el txt.",
+    "orientacionEje": "2026-10-26 (T31): regla explícita del inspector para 128 (emparejar SJuan y EntreRios con Mitre y SLuis — reemplaza 2 solos; el par queda alineado por canal) y plan de lectura de 143 (3 filas sector-oculto: post filas 3-4 y 12; RUCA 12 a 15 filas, iguala a GBCA). 2026-10-25/26 (T30 + T30b): 12 corredores con lectura invertida por decisión del inspector (ronda 1: 126 x2, 130, 133/125 x2, 142 x2, 102/144; ronda 2: 128 x2, 143 x2 — puntas invertidas, orden de sectores invertido y cambio de lateral respetando el movimiento ida↓/vuelta↑); ejes verificados golden contra el eje previo invertido (reversed+swap idéntico, 12/12); horarios habiles/mediofestivo/festivo re-clavados con el mismo mapa (id nuevo + swap ida↔vuelta); fetch-horarios.js NO necesita cambios (lee ids/banderas del JSON en runtime). INDEX/diseño: §14. eje = orden de viaje del ida (descendiendo a la izquierda); vuelta sube a la derecha; puntaArriba = sector origen del ida; los rótulos direccionales del txt de lote 2/3 no son confiables (ver notasRamales por corredor); norte-arriba solo correres N-S del lote 1; 145/133 usa ejes diagonales (Oeste-Sur / Sur-Oeste) según el txt.",
     "ladoAnimacion": "ida = lado izquierdo del eje (descendente) / vuelta = lado derecho (ascendente)",
     "fuenteSectores": "listas manuales provistas por el usuario (2026-10-19)",
     "nomenclatura": "sector 'A y B' = intersección de calles A y B, texto verbatim del usuario",
@@ -1514,24 +1514,15 @@
             },
             {
               "orden": 2,
-              "tipo": "solo-ida",
-              "confianza": "-",
+              "tipo": "emparejado",
+              "confianza": "exacta",
               "ida": "SJuan y EntreRios",
-              "vuelta": null,
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "vuelta": "Mitre y SLuis",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "Mitre y SLuis",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 4,
               "tipo": "emparejado",
               "confianza": "inferida-alta",
               "ida": "EntreRios y Pellegrini",
@@ -1540,7 +1531,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 5,
+              "orden": 4,
               "tipo": "emparejado",
               "confianza": "inferida-alta",
               "ida": "EntreRios y Ayolas",
@@ -1549,14 +1540,14 @@
               "validadaUsuario": true
             },
             {
-              "orden": 6,
+              "orden": 5,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Segui y Oroño",
               "vuelta": "Segui y Oroño"
             },
             {
-              "orden": 7,
+              "orden": 6,
               "tipo": "emparejado",
               "confianza": "inferida-alta",
               "ida": "Segui y OLagos",
@@ -1565,7 +1556,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 8,
+              "orden": 7,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "SNicolás y Garay",
@@ -1574,7 +1565,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 9,
+              "orden": 8,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "SNicolás y Zeballos",
@@ -1583,7 +1574,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 10,
+              "orden": 9,
               "tipo": "solo-vuelta",
               "confianza": "-",
               "ida": null,
@@ -1592,7 +1583,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 11,
+              "orden": 10,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Urquiza y Francia",
@@ -3049,13 +3040,31 @@
             },
             {
               "orden": 3,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 4,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 5,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Rondeau y Sorrento",
               "vuelta": "Rondeau y Sorrento"
             },
             {
-              "orden": 4,
+              "orden": 6,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "Alberdi y Salta",
@@ -3064,7 +3073,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 5,
+              "orden": 7,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "Tucumán y Oroño",
@@ -3073,7 +3082,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 6,
+              "orden": 8,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "España y SLuis",
@@ -3082,7 +3091,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 7,
+              "orden": 9,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "SLuis y Laprida",
@@ -3091,7 +3100,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 8,
+              "orden": 10,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "Laprida y Pellegrini",
@@ -3100,7 +3109,7 @@
               "validadaUsuario": true
             },
             {
-              "orden": 9,
+              "orden": 11,
               "tipo": "emparejado",
               "confianza": "exacta",
               "ida": "Laprida y Segui",
@@ -3109,21 +3118,30 @@
               "validadaUsuario": true
             },
             {
-              "orden": 10,
+              "orden": 12,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 13,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Oroño y Segui",
               "vuelta": "Oroño y Segui"
             },
             {
-              "orden": 11,
+              "orden": 14,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Oroño y Uriburu",
               "vuelta": "Oroño y Uriburu"
             },
             {
-              "orden": 12,
+              "orden": 15,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "BatlleOrdóñez y Oroño",

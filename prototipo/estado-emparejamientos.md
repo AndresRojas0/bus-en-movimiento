@@ -236,16 +236,15 @@ Tipos: compartido (misma esquina), emparejado (par por calle/clave), solo-ida / 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
 | 1 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
-| 2 | solo-ida | - | SJuan y EntreRios | — | ✓
-| 3 | solo-vuelta | - | — | Mitre y SLuis | ✓
-| 4 | emparejado | inferida-alta | EntreRios y Pellegrini | Mitre y Pellegrini | ✓
-| 5 | emparejado | inferida-alta | EntreRios y Ayolas | Mitre y Ayolas | ✓
-| 6 | compartido | exacta | Segui y Oroño | Segui y Oroño | 
-| 7 | emparejado | inferida-alta | Segui y OLagos | Biedma y OLagos | ✓
-| 8 | emparejado | exacta | SNicolás y Garay | Cafferata y Saavedra | ✓
-| 9 | emparejado | exacta | SNicolás y Zeballos | Cafferata y Montevideo | ✓
-| 10 | solo-vuelta | - | — | Cafferata y Córdoba | ✓
-| 11 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
+| 2 | emparejado | exacta | SJuan y EntreRios | Mitre y SLuis | ✓
+| 3 | emparejado | inferida-alta | EntreRios y Pellegrini | Mitre y Pellegrini | ✓
+| 4 | emparejado | inferida-alta | EntreRios y Ayolas | Mitre y Ayolas | ✓
+| 5 | compartido | exacta | Segui y Oroño | Segui y Oroño | 
+| 6 | emparejado | inferida-alta | Segui y OLagos | Biedma y OLagos | ✓
+| 7 | emparejado | exacta | SNicolás y Garay | Cafferata y Saavedra | ✓
+| 8 | emparejado | exacta | SNicolás y Zeballos | Cafferata y Montevideo | ✓
+| 9 | solo-vuelta | - | — | Cafferata y Córdoba | ✓
+| 10 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
 
 ## Línea 130 — 130-ROAC-ACCE
 
@@ -452,16 +451,19 @@ Tipos: compartido (misma esquina), emparejado (par por calle/clave), solo-ida / 
 |---|------|-----------|------------|---------------|----------|
 | 1 | compartido | exacta | Rucci | Rucci | 
 | 2 | compartido | exacta | Baigorria y CCasas | CCasas y Baigorria | 
-| 3 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
-| 4 | emparejado | exacta | Alberdi y Salta | SNicolás y Catamarca | ✓
-| 5 | emparejado | exacta | Tucumán y Oroño | SantaFe y Oroño | ✓
-| 6 | emparejado | exacta | España y SLuis | Corrientes y SantaFe | ✓
-| 7 | emparejado | exacta | SLuis y Laprida | SJuan y Maipú | ✓
-| 8 | emparejado | exacta | Laprida y Pellegrini | BuenosAires y Pellegrini | ✓
-| 9 | emparejado | exacta | Laprida y Segui | Segui y BuenosAires | ✓
-| 10 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
-| 11 | compartido | exacta | Oroño y Uriburu | Oroño y Uriburu | 
-| 12 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
+| 3 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 4 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 5 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
+| 6 | emparejado | exacta | Alberdi y Salta | SNicolás y Catamarca | ✓
+| 7 | emparejado | exacta | Tucumán y Oroño | SantaFe y Oroño | ✓
+| 8 | emparejado | exacta | España y SLuis | Corrientes y SantaFe | ✓
+| 9 | emparejado | exacta | SLuis y Laprida | SJuan y Maipú | ✓
+| 10 | emparejado | exacta | Laprida y Pellegrini | BuenosAires y Pellegrini | ✓
+| 11 | emparejado | exacta | Laprida y Segui | Segui y BuenosAires | ✓
+| 12 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 13 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
+| 14 | compartido | exacta | Oroño y Uriburu | Oroño y Uriburu | 
+| 15 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
 
 ## Línea 102/144 — 102/144-BONS-NNBO
 

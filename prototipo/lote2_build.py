@@ -107,6 +107,16 @@ OCULTOS_ALINEACION = {
         'ida':    [('JNewbery y JPabloII', 2)],
         'vuelta': [('Rucci', 2)],
     },
+    # T31 (inspector 2026-10-26): plan de lectura de 143 dictado en orientación
+    # post-inversión; anclas traducidas a la orientación pre-transform (la que usa
+    # OCULTOS): los ocultos post van en las filas 3-4 y 12 → pre, insertar 2 tras
+    # NOTA T31 verificación: el ancla pre es la fila POSTERIOR al hueco en lectura
+    # post (por el reversal); anclas = filas compartidas 'Rondeau y Sorrento' (×2)
+    # y 'Oroño y Segui' (×1), simétricas para ida y vu. RUCA: 12→15 filas (GBCA-15).
+    '143-CARU-RUCA': {
+        'ida':    [('Rondeau y Sorrento', 2), ('Oroño y Segui', 1)],
+        'vuelta': [('Rondeau y Sorrento', 2), ('Oroño y Segui', 1)],
+    },
 }
 
 def _aplicarOcultos(lista, specs, cid, lado):
@@ -303,8 +313,7 @@ VALIDACIONES_INSPECTOR = {
         ('Biedma y OLagos', 'Segui y OLagos', OKP('inferida-alta')),
         ('Mitre y Ayolas', 'EntreRios y Ayolas', OKP('inferida-alta')),
         ('Mitre y Pellegrini', 'EntreRios y Pellegrini', OKP('inferida-alta')),
-        ('Mitre y SLuis', None, SOLO),
-        (None, 'SJuan y EntreRios', SOLO),
+        ('Mitre y SLuis', 'SJuan y EntreRios', EXPLICITA),   # T31 (inspector 2026-10-26): emparejar; reemplaza los 2 SOLO que quedaban
     ],
     '138/139-TFCA-CATF': [
         ('SLuis y Avellaneda', 'Rioja y Avellaneda', OKP('inferida-alta')),
@@ -654,7 +663,7 @@ for k in order[4:]:
     corlist = sorted(newbyline[k], key=lambda c: 0)  # keep parse order
     merged_lines.append((k, {'linea': k if '/' in k or not k.isdigit() else int(k), 'corredores': corlist}))
 data['lineas'] = [obj for (k, obj) in merged_lines]
-data['meta']['version'] = '7-prototipo-2026-10-26-t30-inversion-12-ejes'
+data['meta']['version'] = '8-prototipo-2026-10-26-t31-regla-128-ocultos-143'
 data['meta']['correccionesUsuario'] = (
     '2026-10-21: ajustes de emparejamiento en 101, 107 y 110 (ver DISENO-CORREDORES-UNIFICADOS.md 4); '
     '2026-10-22: lote 2 agregado (122, 126, 128, 130, 133/125, 138/139, 140) desde sectores.txt; '
@@ -667,6 +676,9 @@ data['meta']['correccionesUsuario'] = (
     'pares explícitos "Emparejados" y solos "Sin emparejar (dir)" del txt honrados desde la primera derivación.'
 )
 data['meta']['orientacionEje'] = (
+    '2026-10-26 (T31): regla explícita del inspector para 128 (emparejar SJuan y EntreRios con '
+    'Mitre y SLuis — reemplaza 2 solos; el par queda alineado por canal) y plan de lectura de 143 '
+    '(3 filas sector-oculto: post filas 3-4 y 12; RUCA 12 a 15 filas, iguala a GBCA). '
     '2026-10-25/26 (T30 + T30b): 12 corredores con lectura invertida por decisión del inspector '
     '(ronda 1: 126 x2, 130, 133/125 x2, 142 x2, 102/144; ronda 2: 128 x2, 143 x2 — puntas invertidas, '
     'orden de sectores invertido y cambio de lateral respetando el movimiento ida↓/vuelta↑); '
