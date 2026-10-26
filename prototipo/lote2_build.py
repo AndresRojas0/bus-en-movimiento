@@ -35,6 +35,33 @@ def toks(t):
 # ocultos en las posiciones espejo: la fila fantasma empareja ida↔vuelta al mismo y.
 # Los ocultos no son sectores reales: sin nombre, sin badge, excluidos de las corridas
 # (la invariante ColumnasDinamicas = marcas(lado)-2 queda intacta quien filtramos los ocultos).
+# T30 (inspector, 2026-10-25): inversión de lectura para 8 corredores — puntas
+# invertidas, orden de sectores invertido y cambio de lateral (la regla del lienzo
+# no cambia: ida siempre baja arriba-a-abajo en el lateral izquierdo, vuelta sube
+# abajo-a-arriba en el derecho). La transformación se aplica SOBRE el eje ya
+# armado (trailing transform): las tablas PATRON_*/VALIDACIONES/OCULTOS y los
+# anclajes siguen expresados en la orientación vieja y no requieren retoques.
+# El color no se re-deriva tras el renombre: hereda el del id viejo (identidad
+# visual estable durante el cambio de nombre).
+# T30b (inspector, 2.ª ronda 2026-10-25): mismas reglas para 128 y 143 — puntas,
+# orden de sectores y lateral invertidos + renombre. La transformación sigue al
+# final de derive() y las tablas siguen en la orientación vieja.
+INVERTIR_LECTURA = {
+    '126-LACE-CELA': '126-CELA-LACE',
+    '126-OVCE-CEOV': '126-CEOV-OVCE',
+    '130-ACCE-ROAC': '130-ROAC-ACCE',
+    '133/125-OCFU-FUCO': '133/125-FUCO-OCFU',
+    '133/125-OCWI-WICO': '133/125-WICO-OCWI',
+    '142-NNFU-NSFU': '142-NSFU-NNFU',
+    '142-RN-RS': '142-RS-RN',
+    '102/144-NNBO-BONS': '102/144-BONS-NNBO',
+    # 2.ª ronda (T30b)
+    '128-NECE-NEAS': '128-NEAS-NECE',
+    '128-ROCE-ROFR': '128-ROFR-ROCE',
+    '143-CAGB-GBCA': '143-GBCA-CAGB',
+    '143-CARU-RUCA': '143-RUCA-CARU',
+}
+
 OCULTOS_ALINEACION = {
     '103-RUVG-VGRU': {
         # GBVG-VGGB tiene 4 filas previas al tronco (Brown, Belgrano y Ruta11,
@@ -553,6 +580,24 @@ def derive(c, cid=None, lote=2):
             {'bandera': c['vuelta']['code'], 'rotuloUsuario': c['vuelta']['dir'], 'paisaje': 'segunda bandera listada = vuelta'},
         ],
     }
+    # T30: inversión de lectura (ver mapa INVERTIR_LECTURA) aplicada al final de derive()
+    nuevo = INVERTIR_LECTURA.get(cid)
+    if nuevo:
+        eje = []
+        for m in reversed(cor['eje']):
+            m2 = dict(m)
+            m2['ida'], m2['vuelta'] = m['vuelta'], m['ida']
+            if m2['tipo'] == 'solo-ida':    m2['tipo'] = 'solo-vuelta'
+            elif m2['tipo'] == 'solo-vuelta': m2['tipo'] = 'solo-ida'
+            eje.append(m2)
+        for k, m in enumerate(eje, 1):
+            m['orden'] = k
+        cor = dict(cor)
+        cor['eje'] = eje
+        cor['puntaArriba'], cor['puntaAbajo'] = cor['puntaAbajo'], cor['puntaArriba']
+        cor['banderas'] = {'ida': cor['banderas']['vuelta'], 'vuelta': cor['banderas']['ida']}
+        cor['notasRamales'] = list(reversed(cor['notasRamales']))
+        cor['id'] = nuevo   # el color NO se re-deriva: hereda el del id viejo (determinismo + identidad visual)
     return {'linea': c['linea'], 'corredores': [cor], '_c': c}
 
 def compact(c):
@@ -609,7 +654,7 @@ for k in order[4:]:
     corlist = sorted(newbyline[k], key=lambda c: 0)  # keep parse order
     merged_lines.append((k, {'linea': k if '/' in k or not k.isdigit() else int(k), 'corredores': corlist}))
 data['lineas'] = [obj for (k, obj) in merged_lines]
-data['meta']['version'] = '3-prototipo-2026-10-23-lote3-borrador'
+data['meta']['version'] = '7-prototipo-2026-10-26-t30-inversion-12-ejes'
 data['meta']['correccionesUsuario'] = (
     '2026-10-21: ajustes de emparejamiento en 101, 107 y 110 (ver DISENO-CORREDORES-UNIFICADOS.md 4); '
     '2026-10-22: lote 2 agregado (122, 126, 128, 130, 133/125, 138/139, 140) desde sectores.txt; '
@@ -622,6 +667,13 @@ data['meta']['correccionesUsuario'] = (
     'pares explícitos "Emparejados" y solos "Sin emparejar (dir)" del txt honrados desde la primera derivación.'
 )
 data['meta']['orientacionEje'] = (
+    '2026-10-25/26 (T30 + T30b): 12 corredores con lectura invertida por decisión del inspector '
+    '(ronda 1: 126 x2, 130, 133/125 x2, 142 x2, 102/144; ronda 2: 128 x2, 143 x2 — puntas invertidas, '
+    'orden de sectores invertido y cambio de lateral respetando el movimiento ida↓/vuelta↑); '
+    'ejes verificados golden contra el eje previo invertido (reversed+swap idéntico, 12/12); '
+    'horarios habiles/mediofestivo/festivo re-clavados con el mismo mapa (id nuevo + swap '
+    'ida↔vuelta); fetch-horarios.js NO necesita cambios (lee ids/banderas del JSON en runtime). '
+    'INDEX/diseño: §14. '
     'eje = orden de viaje del ida (descendiendo a la izquierda); vuelta sube a la derecha; '
     'puntaArriba = sector origen del ida; los rótulos direccionales del txt de lote 2/3 no son confiables '
     '(ver notasRamales por corredor); norte-arriba solo correres N-S del lote 1; '

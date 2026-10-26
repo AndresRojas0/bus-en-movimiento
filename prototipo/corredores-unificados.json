@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3-prototipo-2026-10-23-lote3-borrador",
+    "version": "7-prototipo-2026-10-26-t30-inversion-12-ejes",
     "correccionesUsuario": "2026-10-21: ajustes de emparejamiento en 101, 107 y 110 (ver DISENO-CORREDORES-UNIFICADOS.md 4); 2026-10-22: lote 2 agregado (122, 126, 128, 130, 133/125, 138/139, 140) desde sectores.txt; pares explícitos del usuario honrados verbatim (126 x8, 130 x4); ronda de validación 2026-10-22 COMPLETA: 17/17 corredores, 0 marcas sin validar (reglas en VALIDACIONES_INSPECTOR con helpers EXPLICITA/SOLO/OKP/OKPC); invariante dinámicas = marcas−2 verificado contra horarios reales, 2.375/2.375 filas exacto (0 descalces). 2026-10-23: lote 3 agregado (142, 143, 102/144, 145/133, 146 — 9 corredores) desde sectores.txt: draft heurístico honesto PENDIENTE de validación del inspector (criterios \"(heurística, validar inspector)\"); pares explícitos \"Emparejados\" y solos \"Sin emparejar (dir)\" del txt honrados desde la primera derivación.",
-    "orientacionEje": "eje = orden de viaje del ida (descendiendo a la izquierda); vuelta sube a la derecha; puntaArriba = sector origen del ida; los rótulos direccionales del txt de lote 2/3 no son confiables (ver notasRamales por corredor); norte-arriba solo correres N-S del lote 1; 145/133 usa ejes diagonales (Oeste-Sur / Sur-Oeste) según el txt.",
+    "orientacionEje": "2026-10-25/26 (T30 + T30b): 12 corredores con lectura invertida por decisión del inspector (ronda 1: 126 x2, 130, 133/125 x2, 142 x2, 102/144; ronda 2: 128 x2, 143 x2 — puntas invertidas, orden de sectores invertido y cambio de lateral respetando el movimiento ida↓/vuelta↑); ejes verificados golden contra el eje previo invertido (reversed+swap idéntico, 12/12); horarios habiles/mediofestivo/festivo re-clavados con el mismo mapa (id nuevo + swap ida↔vuelta); fetch-horarios.js NO necesita cambios (lee ids/banderas del JSON en runtime). INDEX/diseño: §14. eje = orden de viaje del ida (descendiendo a la izquierda); vuelta sube a la derecha; puntaArriba = sector origen del ida; los rótulos direccionales del txt de lote 2/3 no son confiables (ver notasRamales por corredor); norte-arriba solo correres N-S del lote 1; 145/133 usa ejes diagonales (Oeste-Sur / Sur-Oeste) según el txt.",
     "ladoAnimacion": "ida = lado izquierdo del eje (descendente) / vuelta = lado derecho (ascendente)",
     "fuenteSectores": "listas manuales provistas por el usuario (2026-10-19)",
     "nomenclatura": "sector 'A y B' = intersección de calles A y B, texto verbatim del usuario",
@@ -1179,45 +1179,36 @@
       "linea": 126,
       "corredores": [
         {
-          "id": "126-LACE-CELA",
+          "id": "126-CELA-LACE",
           "banderas": {
-            "ida": "LACE",
-            "vuelta": "CELA"
+            "ida": "CELA",
+            "vuelta": "LACE"
           },
-          "puntaArriba": "OLagos y Quintana",
-          "puntaAbajo": "SLorenzo y Laprida",
+          "puntaArriba": "SLorenzo y Laprida",
+          "puntaAbajo": "OLagos y Quintana",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "OLagos y Quintana",
-              "vuelta": "OLagos y Quintana"
+              "ida": "SLorenzo y Laprida",
+              "vuelta": "SLorenzo y Laprida"
             },
             {
               "orden": 2,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Avellaneda y Segui",
-              "vuelta": "Cafferata y Segui",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "TFebrero y Mitre",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Avellaneda y 27Febrero",
-              "vuelta": "Cafferata y Rueda",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 3.55,
               "tipo": "solo-vuelta",
               "confianza": "-",
               "ida": null,
-              "vuelta": "OLagos y 27Febrero",
+              "vuelta": "SLorenzo e Italia",
               "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1225,8 +1216,8 @@
               "orden": 4,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Francia y Pellegrini",
-              "vuelta": "OLagos y Pellegrini",
+              "ida": "TFebrero y Oroño",
+              "vuelta": "Mendoza y Oroño",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -1234,8 +1225,8 @@
               "orden": 5,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Mendoza y Oroño",
-              "vuelta": "TFebrero y Oroño",
+              "ida": "OLagos y Pellegrini",
+              "vuelta": "Francia y Pellegrini",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -1243,83 +1234,83 @@
               "orden": 6,
               "tipo": "solo-ida",
               "confianza": "-",
-              "ida": "SLorenzo e Italia",
+              "ida": "OLagos y 27Febrero",
               "vuelta": null,
               "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
-              "orden": 6.1,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "TFebrero y Mitre",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "orden": 7,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Cafferata y Rueda",
+              "vuelta": "Avellaneda y 27Febrero",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
-              "orden": 7,
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Cafferata y Segui",
+              "vuelta": "Avellaneda y Segui",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SLorenzo y Laprida",
-              "vuelta": "SLorenzo y Laprida"
+              "ida": "OLagos y Quintana",
+              "vuelta": "OLagos y Quintana"
             }
           ],
           "color": "#ba68c8",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "LACE",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "CELA",
               "rotuloUsuario": "Sur-Norte",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "LACE",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         },
         {
-          "id": "126-OVCE-CEOV",
+          "id": "126-CEOV-OVCE",
           "banderas": {
-            "ida": "OVCE",
-            "vuelta": "CEOV"
+            "ida": "CEOV",
+            "vuelta": "OVCE"
           },
-          "puntaArriba": "OLagos y Quintana",
-          "puntaAbajo": "SLorenzo y Laprida",
+          "puntaArriba": "SLorenzo y Laprida",
+          "puntaAbajo": "OLagos y Quintana",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "OLagos y Quintana",
-              "vuelta": "OLagos y Quintana"
+              "ida": "SLorenzo y Laprida",
+              "vuelta": "SLorenzo y Laprida"
             },
             {
               "orden": 2,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SNicolás y Riva",
-              "vuelta": "Avellaneda y Segui",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "TFebrero y Mitre",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SNicolás y 27Febrero",
-              "vuelta": "27Febrero y Avellaneda",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 3.55,
               "tipo": "solo-vuelta",
               "confianza": "-",
               "ida": null,
-              "vuelta": "OLagos y 27Febrero",
+              "vuelta": "SLorenzo e Italia",
               "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1327,8 +1318,8 @@
               "orden": 4,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Francia y Pellegrini",
-              "vuelta": "OLagos y Pellegrini",
+              "ida": "TFebrero y Oroño",
+              "vuelta": "Mendoza y Oroño",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -1336,8 +1327,8 @@
               "orden": 5,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Mendoza y Oroño",
-              "vuelta": "TFebrero y Oroño",
+              "ida": "OLagos y Pellegrini",
+              "vuelta": "Francia y Pellegrini",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -1345,40 +1336,49 @@
               "orden": 6,
               "tipo": "solo-ida",
               "confianza": "-",
-              "ida": "SLorenzo e Italia",
+              "ida": "OLagos y 27Febrero",
               "vuelta": null,
               "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
-              "orden": 6.1,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "TFebrero y Mitre",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "orden": 7,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "27Febrero y Avellaneda",
+              "vuelta": "SNicolás y 27Febrero",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
-              "orden": 7,
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Avellaneda y Segui",
+              "vuelta": "SNicolás y Riva",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SLorenzo y Laprida",
-              "vuelta": "SLorenzo y Laprida"
+              "ida": "OLagos y Quintana",
+              "vuelta": "OLagos y Quintana"
             }
           ],
           "color": "#880e4f",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "OVCE",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "CEOV",
               "rotuloUsuario": "Sur-Norte",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "OVCE",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -1388,27 +1388,27 @@
       "linea": 128,
       "corredores": [
         {
-          "id": "128-NECE-NEAS",
+          "id": "128-NEAS-NECE",
           "banderas": {
-            "ida": "NECE",
-            "vuelta": "NEAS"
+            "ida": "NEAS",
+            "vuelta": "NECE"
           },
-          "puntaArriba": "Urquiza y Francia",
-          "puntaAbajo": "SLorenzo y Laprida",
+          "puntaArriba": "SLorenzo y Laprida",
+          "puntaAbajo": "Urquiza y Francia",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Urquiza y Francia",
-              "vuelta": "Urquiza y Francia"
+              "ida": "SLorenzo y Laprida",
+              "vuelta": "SLorenzo y Laprida"
             },
             {
               "orden": 2,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SantaFe y Avellaneda",
-              "vuelta": "Avellaneda y Córdoba",
+              "ida": "SJuan y EntreRios",
+              "vuelta": "Mitre y SLuis",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1416,8 +1416,8 @@
               "orden": 3,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Avellaneda y Cerrito",
-              "vuelta": "Avellaneda y Montevideo",
+              "ida": "EntreRios y Pellegrini",
+              "vuelta": "Mitre y Pellegrini",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1425,33 +1425,33 @@
               "orden": 4,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Avellaneda y Uruguay",
-              "vuelta": "Avellaneda y DeanFunes",
+              "ida": "EntreRios y Ayolas",
+              "vuelta": "Mitre y Ayolas",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 5,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Biedma y OLagos",
-              "vuelta": "Segui y OLagos",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Segui y Oroño",
               "vuelta": "Segui y Oroño"
             },
             {
+              "orden": 6,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Segui y OLagos",
+              "vuelta": "Biedma y OLagos",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
               "orden": 7,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Mitre y Ayolas",
-              "vuelta": "EntreRios y Ayolas",
+              "ida": "Avellaneda y DeanFunes",
+              "vuelta": "Avellaneda y Uruguay",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1459,8 +1459,8 @@
               "orden": 8,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Mitre y Pellegrini",
-              "vuelta": "EntreRios y Pellegrini",
+              "ida": "Avellaneda y Montevideo",
+              "vuelta": "Avellaneda y Cerrito",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1468,8 +1468,8 @@
               "orden": 9,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Mitre y SLuis",
-              "vuelta": "SJuan y EntreRios",
+              "ida": "Avellaneda y Córdoba",
+              "vuelta": "SantaFe y Avellaneda",
               "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
@@ -1477,75 +1477,75 @@
               "orden": 10,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SLorenzo y Laprida",
-              "vuelta": "SLorenzo y Laprida"
+              "ida": "Urquiza y Francia",
+              "vuelta": "Urquiza y Francia"
             }
           ],
           "color": "#8e24aa",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "NECE",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "NEAS",
               "rotuloUsuario": "Sur-Norte",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "NECE",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         },
         {
-          "id": "128-ROCE-ROFR",
+          "id": "128-ROFR-ROCE",
           "banderas": {
-            "ida": "ROCE",
-            "vuelta": "ROFR"
+            "ida": "ROFR",
+            "vuelta": "ROCE"
           },
-          "puntaArriba": "Urquiza y Francia",
-          "puntaAbajo": "SLorenzo y Laprida",
+          "puntaArriba": "SLorenzo y Laprida",
+          "puntaAbajo": "Urquiza y Francia",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Urquiza y Francia",
-              "vuelta": "Urquiza y Francia"
+              "ida": "SLorenzo y Laprida",
+              "vuelta": "SLorenzo y Laprida"
             },
             {
               "orden": 2,
               "tipo": "solo-ida",
               "confianza": "-",
-              "ida": "Cafferata y Córdoba",
+              "ida": "SJuan y EntreRios",
               "vuelta": null,
               "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Cafferata y Montevideo",
-              "vuelta": "SNicolás y Zeballos",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Mitre y SLuis",
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 4,
               "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Cafferata y Saavedra",
-              "vuelta": "SNicolás y Garay",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "confianza": "inferida-alta",
+              "ida": "EntreRios y Pellegrini",
+              "vuelta": "Mitre y Pellegrini",
+              "criterio": "misma calle PELLEGRINI (heurística, validar inspector)",
               "validadaUsuario": true
             },
             {
               "orden": 5,
               "tipo": "emparejado",
               "confianza": "inferida-alta",
-              "ida": "Biedma y OLagos",
-              "vuelta": "Segui y OLagos",
-              "criterio": "misma calle OLAGOS (heurística, validar inspector)",
+              "ida": "EntreRios y Ayolas",
+              "vuelta": "Mitre y Ayolas",
+              "criterio": "misma calle AYOLAS (heurística, validar inspector)",
               "validadaUsuario": true
             },
             {
@@ -1559,58 +1559,58 @@
               "orden": 7,
               "tipo": "emparejado",
               "confianza": "inferida-alta",
-              "ida": "Mitre y Ayolas",
-              "vuelta": "EntreRios y Ayolas",
-              "criterio": "misma calle AYOLAS (heurística, validar inspector)",
+              "ida": "Segui y OLagos",
+              "vuelta": "Biedma y OLagos",
+              "criterio": "misma calle OLAGOS (heurística, validar inspector)",
               "validadaUsuario": true
             },
             {
               "orden": 8,
               "tipo": "emparejado",
-              "confianza": "inferida-alta",
-              "ida": "Mitre y Pellegrini",
-              "vuelta": "EntreRios y Pellegrini",
-              "criterio": "misma calle PELLEGRINI (heurística, validar inspector)",
+              "confianza": "exacta",
+              "ida": "SNicolás y Garay",
+              "vuelta": "Cafferata y Saavedra",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 9,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Mitre y SLuis",
-              "vuelta": null,
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 9.1,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "SJuan y EntreRios",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SNicolás y Zeballos",
+              "vuelta": "Cafferata y Montevideo",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 10,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Cafferata y Córdoba",
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 11,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SLorenzo y Laprida",
-              "vuelta": "SLorenzo y Laprida"
+              "ida": "Urquiza y Francia",
+              "vuelta": "Urquiza y Francia"
             }
           ],
           "color": "#c2185b",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "ROCE",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "ROFR",
               "rotuloUsuario": "Sur-Norte",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "ROCE",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -1620,102 +1620,102 @@
       "linea": 130,
       "corredores": [
         {
-          "id": "130-ACCE-ROAC",
+          "id": "130-ROAC-ACCE",
           "banderas": {
-            "ida": "ACCE",
-            "vuelta": "ROAC"
+            "ida": "ROAC",
+            "vuelta": "ACCE"
           },
-          "puntaArriba": "Winter y Cipolletti",
-          "puntaAbajo": "Italia y San Lorenzo",
+          "puntaArriba": "Italia y San Lorenzo",
+          "puntaAbajo": "Winter y Cipolletti",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Winter y Cipolletti",
-              "vuelta": "Winter y Cipolletti"
+              "ida": "Italia y San Lorenzo",
+              "vuelta": "Italia y San Lorenzo"
             },
             {
               "orden": 2,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "FragataSarmiento y OLagos",
-              "vuelta": "Uriburu y Suipacha",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "Laprida y Rioja",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Oroño y Ameghino",
-              "vuelta": "Oroño y Uriburu",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "SJuan y Dorrego",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 4,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Dorrego y Pellegrini",
+              "vuelta": "Italia y Pellegrini",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 5,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Italia y 27Febrero",
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 6,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Oroño y Segui",
               "vuelta": "Oroño y Segui"
             },
             {
-              "orden": 5,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Italia y 27Febrero",
-              "vuelta": null,
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6,
+              "orden": 7,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Italia y Pellegrini",
-              "vuelta": "Dorrego y Pellegrini",
+              "ida": "Oroño y Uriburu",
+              "vuelta": "Oroño y Ameghino",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
-              "orden": 6.383,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "SJuan y Dorrego",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Uriburu y Suipacha",
+              "vuelta": "FragataSarmiento y OLagos",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
-              "orden": 6.767,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "Laprida y Rioja",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 7,
+              "orden": 9,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Italia y San Lorenzo",
-              "vuelta": "Italia y San Lorenzo"
+              "ida": "Winter y Cipolletti",
+              "vuelta": "Winter y Cipolletti"
             }
           ],
           "color": "#ba68c8",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "ACCE",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "ROAC",
               "rotuloUsuario": "Norte-Sur",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "ACCE",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -1725,379 +1725,379 @@
       "linea": "133/125",
       "corredores": [
         {
-          "id": "133/125-OCFU-FUCO",
+          "id": "133/125-FUCO-OCFU",
           "banderas": {
-            "ida": "OCFU",
-            "vuelta": "FUCO"
+            "ida": "FUCO",
+            "vuelta": "OCFU"
           },
-          "puntaArriba": "Rueda y PUnidas",
-          "puntaAbajo": "Ruta9 y Angelomé",
+          "puntaArriba": "Ruta9 y Angelomé",
+          "puntaAbajo": "Rueda y PUnidas",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Rueda y PUnidas",
-              "vuelta": "Rueda y PUnidas"
+              "ida": "Ruta9 y Angelomé",
+              "vuelta": "Ruta9 y Angelomé"
             },
             {
               "orden": 2,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "Segui y Barra",
-              "vuelta": "Garzón y Segui",
-              "criterio": "misma calle SEGUI (heurística, validar inspector)",
-              "validadaUsuario": true
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Perón y Ruta9",
+              "vuelta": "Ruta9 y Perón"
             },
             {
               "orden": 3,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Segui y Aldao",
-              "vuelta": null,
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 4,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "PPerón y FMoré",
-              "vuelta": "27Febrero y Matienzo",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 5,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "PPerón y Cafferata",
-              "vuelta": "SNicolás y PPerón",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Francia y Cerrito",
-              "vuelta": "OLagos y Viamonte",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6.55,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "Montevideo y OLagos",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 7,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Montevideo y Oroño",
-              "vuelta": "Balcarce y Pellegrini",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 8,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Moreno y San Luis",
-              "vuelta": "SJuan y Balcarce",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 9,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Corrientes y SantaFe",
-              "vuelta": "SLorenzo y EntreRíos",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 10,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "SLorenzo y Oroño",
-              "criterio": "misma calle ORONO (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 11,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Francia",
-              "vuelta": "Córdoba y Francia",
-              "criterio": "misma calle FRANCIA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 12,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Avellaneda",
-              "vuelta": "Córdoba y Avellaneda",
-              "criterio": "misma calle AVELLANEDA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 13,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Agneta",
-              "vuelta": "Córdoba y Agneta",
-              "criterio": "misma calle AGNETA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 14,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "EvaPerón y PUnidas",
-              "vuelta": "EvaPerón y PUnidas"
-            },
-            {
-              "orden": 15,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "EvaPerón y Donado",
-              "vuelta": "EvaPerón y Donado"
-            },
-            {
-              "orden": 16,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "EvaPerón y Wilde",
-              "vuelta": "EvaPerón y Wilde"
-            },
-            {
-              "orden": 17,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Ruta9 y JCelman",
-              "vuelta": "Ruta9 y JCelman"
-            },
-            {
-              "orden": 18,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Ruta9 y ArroyoLudueña",
               "vuelta": "Ruta9 y ArroyoLudueña"
             },
             {
-              "orden": 19,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Ruta9 y Perón",
-              "vuelta": "Perón y Ruta9"
-            },
-            {
-              "orden": 20,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Ruta9 y Angelomé",
-              "vuelta": "Ruta9 y Angelomé"
-            }
-          ],
-          "color": "#5d4037",
-          "lote": 2,
-          "notasRamales": [
-            {
-              "bandera": "OCFU",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
-              "bandera": "FUCO",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "segunda bandera listada = vuelta"
-            }
-          ]
-        },
-        {
-          "id": "133/125-OCWI-WICO",
-          "banderas": {
-            "ida": "OCWI",
-            "vuelta": "WICO"
-          },
-          "puntaArriba": "Rueda y PUnidas",
-          "puntaAbajo": "Wilde y Mendoza",
-          "eje": [
-            {
-              "orden": 1,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Rueda y PUnidas",
-              "vuelta": "Rueda y PUnidas"
-            },
-            {
-              "orden": 2,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "Segui y Barra",
-              "vuelta": "Garzón y Segui",
-              "criterio": "misma calle SEGUI (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 3,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Segui y Aldao",
-              "vuelta": null,
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
               "orden": 4,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "PPerón y FMoré",
-              "vuelta": "27Febrero y Matienzo",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
+              "ida": "Ruta9 y JCelman",
+              "vuelta": "Ruta9 y JCelman"
             },
             {
               "orden": 5,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "PPerón y Cafferata",
-              "vuelta": "SNicolás y PPerón",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
+              "ida": "EvaPerón y Wilde",
+              "vuelta": "EvaPerón y Wilde"
             },
             {
               "orden": 6,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Francia y Cerrito",
-              "vuelta": "OLagos y Viamonte",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6.55,
-              "tipo": "solo-vuelta",
-              "confianza": "-",
-              "ida": null,
-              "vuelta": "Montevideo y OLagos",
-              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 7,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Montevideo y Oroño",
-              "vuelta": "Balcarce y Pellegrini",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 8,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Moreno y San Luis",
-              "vuelta": "SJuan y Balcarce",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 9,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Corrientes y SantaFe",
-              "vuelta": "SLorenzo y EntreRíos",
-              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 10,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "SLorenzo y Oroño",
-              "criterio": "misma calle ORONO (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 11,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Francia",
-              "vuelta": "Córdoba y Francia",
-              "criterio": "misma calle FRANCIA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 12,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Avellaneda",
-              "vuelta": "Córdoba y Avellaneda",
-              "criterio": "misma calle AVELLANEDA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 13,
-              "tipo": "emparejado",
-              "confianza": "inferida-media",
-              "ida": "SantaFe y Agneta",
-              "vuelta": "Córdoba y Agneta",
-              "criterio": "misma calle AGNETA (heurística, validar inspector)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 14,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "EvaPerón y PUnidas",
-              "vuelta": "EvaPerón y PUnidas"
-            },
-            {
-              "orden": 15,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "EvaPerón y Donado",
               "vuelta": "EvaPerón y Donado"
             },
             {
+              "orden": 7,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "EvaPerón y PUnidas",
+              "vuelta": "EvaPerón y PUnidas"
+            },
+            {
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Agneta",
+              "vuelta": "SantaFe y Agneta",
+              "criterio": "misma calle AGNETA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Avellaneda",
+              "vuelta": "SantaFe y Avellaneda",
+              "criterio": "misma calle AVELLANEDA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 10,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Francia",
+              "vuelta": "SantaFe y Francia",
+              "criterio": "misma calle FRANCIA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 11,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "SLorenzo y Oroño",
+              "vuelta": "SantaFe y Oroño",
+              "criterio": "misma calle ORONO (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 12,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SLorenzo y EntreRíos",
+              "vuelta": "Corrientes y SantaFe",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 13,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SJuan y Balcarce",
+              "vuelta": "Moreno y San Luis",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 14,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Balcarce y Pellegrini",
+              "vuelta": "Montevideo y Oroño",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 15,
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "Montevideo y OLagos",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
               "orden": 16,
               "tipo": "emparejado",
-              "confianza": "inferida-alta",
-              "ida": "Navarro y Wilde",
-              "vuelta": "Wilde y Benegas",
-              "criterio": "misma calle WILDE (heurística, validar inspector)",
+              "confianza": "exacta",
+              "ida": "OLagos y Viamonte",
+              "vuelta": "Francia y Cerrito",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
               "validadaUsuario": true
             },
             {
               "orden": 17,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SNicolás y PPerón",
+              "vuelta": "PPerón y Cafferata",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 18,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "27Febrero y Matienzo",
+              "vuelta": "PPerón y FMoré",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 19,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Segui y Aldao",
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 20,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Garzón y Segui",
+              "vuelta": "Segui y Barra",
+              "criterio": "misma calle SEGUI (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 21,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Rueda y PUnidas",
+              "vuelta": "Rueda y PUnidas"
+            }
+          ],
+          "color": "#5d4037",
+          "lote": 2,
+          "notasRamales": [
+            {
+              "bandera": "FUCO",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "OCFU",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
+            }
+          ]
+        },
+        {
+          "id": "133/125-WICO-OCWI",
+          "banderas": {
+            "ida": "WICO",
+            "vuelta": "OCWI"
+          },
+          "puntaArriba": "Wilde y Mendoza",
+          "puntaAbajo": "Rueda y PUnidas",
+          "eje": [
+            {
+              "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Wilde y Mendoza",
               "vuelta": "Wilde y Mendoza"
+            },
+            {
+              "orden": 2,
+              "tipo": "emparejado",
+              "confianza": "inferida-alta",
+              "ida": "Wilde y Benegas",
+              "vuelta": "Navarro y Wilde",
+              "criterio": "misma calle WILDE (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 3,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "EvaPerón y Donado",
+              "vuelta": "EvaPerón y Donado"
+            },
+            {
+              "orden": 4,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "EvaPerón y PUnidas",
+              "vuelta": "EvaPerón y PUnidas"
+            },
+            {
+              "orden": 5,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Agneta",
+              "vuelta": "SantaFe y Agneta",
+              "criterio": "misma calle AGNETA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 6,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Avellaneda",
+              "vuelta": "SantaFe y Avellaneda",
+              "criterio": "misma calle AVELLANEDA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 7,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Córdoba y Francia",
+              "vuelta": "SantaFe y Francia",
+              "criterio": "misma calle FRANCIA (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "SLorenzo y Oroño",
+              "vuelta": "SantaFe y Oroño",
+              "criterio": "misma calle ORONO (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SLorenzo y EntreRíos",
+              "vuelta": "Corrientes y SantaFe",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 10,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SJuan y Balcarce",
+              "vuelta": "Moreno y San Luis",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 11,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Balcarce y Pellegrini",
+              "vuelta": "Montevideo y Oroño",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 12,
+              "tipo": "solo-ida",
+              "confianza": "-",
+              "ida": "Montevideo y OLagos",
+              "vuelta": null,
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 13,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "OLagos y Viamonte",
+              "vuelta": "Francia y Cerrito",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 14,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SNicolás y PPerón",
+              "vuelta": "PPerón y Cafferata",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 15,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "27Febrero y Matienzo",
+              "vuelta": "PPerón y FMoré",
+              "criterio": "par explícito dado por el inspector (ronda 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 16,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Segui y Aldao",
+              "criterio": "queda solo (confirmado por el inspector 2026-10-22)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 17,
+              "tipo": "emparejado",
+              "confianza": "inferida-media",
+              "ida": "Garzón y Segui",
+              "vuelta": "Segui y Barra",
+              "criterio": "misma calle SEGUI (heurística, validar inspector)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 18,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Rueda y PUnidas",
+              "vuelta": "Rueda y PUnidas"
             }
           ],
           "color": "#8d6e63",
           "lote": 2,
           "notasRamales": [
             {
-              "bandera": "OCWI",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "WICO",
               "rotuloUsuario": "Norte-Sur",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "OCWI",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -2372,353 +2372,99 @@
       "linea": 142,
       "corredores": [
         {
-          "id": "142-NNFU-NSFU",
+          "id": "142-NSFU-NNFU",
           "banderas": {
-            "ida": "NNFU",
-            "vuelta": "NSFU"
+            "ida": "NSFU",
+            "vuelta": "NNFU"
           },
-          "puntaArriba": "SanDiego y JDPerón",
-          "puntaAbajo": "MdelPlata y Ruta9",
+          "puntaArriba": "MdelPlata y Ruta9",
+          "puntaAbajo": "SanDiego y JDPerón",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SanDiego y JDPerón",
-              "vuelta": "SanDiego y JDPerón"
+              "ida": "MdelPlata y Ruta9",
+              "vuelta": "MdelPlata y Ruta9"
             },
             {
               "orden": 2,
-              "tipo": "oculto",
-              "confianza": "exacta",
-              "ida": "sector-oculto",
-              "vuelta": "sector-oculto",
-              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 3,
-              "tipo": "oculto",
-              "confianza": "exacta",
-              "ida": "sector-oculto",
-              "vuelta": "sector-oculto",
-              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 4,
-              "tipo": "oculto",
-              "confianza": "exacta",
-              "ida": "sector-oculto",
-              "vuelta": "sector-oculto",
-              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 5,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "JDPerón y SEstero",
-              "vuelta": "JDPerón y SEstero"
-            },
-            {
-              "orden": 6,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "JDPerón y ArroyoSaladillo",
-              "vuelta": "JDPerón y ArroyoSaladillo"
-            },
-            {
-              "orden": 7,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Arijón y Andes",
-              "vuelta": "Arijón y Lituania",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 8,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Bustamante y SanMartín",
-              "vuelta": "SMartín y Arijón",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 9,
-              "tipo": "emparejado",
-              "confianza": "inferida-alta",
-              "ida": "SanMartín y Uriburu",
-              "vuelta": "SMartín y Uriburu",
-              "criterio": "misma calle URIBURU (heurística, validar inspector)"
-            },
-            {
-              "orden": 10,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "SMartín y Segui",
-              "vuelta": "SMartín y Segui"
-            },
-            {
-              "orden": 11,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "PJunta y 27Febrero",
-              "vuelta": "Laprida y 27Febrero",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 12,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Maipú y Pellegrini",
-              "vuelta": "Laprida y Pellegrini",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 13,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Maipú y SanJuan",
-              "vuelta": "SLuis y Laprida",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 14,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "SantaFe y Corrientes",
-              "vuelta": null,
-              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 15,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "Córdoba y Oroño",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 16,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SantaFe y Constitución",
-              "vuelta": "Córdoba y Cafferata",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 17,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SanJuan y Avellaneda",
-              "vuelta": "Mendoza y Avellaneda",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 18,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "SanJuan y Agneta",
-              "vuelta": null,
-              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 19,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Mendoza y PUnidas",
-              "vuelta": "Mendoza y PUnidas"
-            },
-            {
-              "orden": 20,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Mendoza y Donado",
-              "vuelta": "Mendoza y Donado"
-            },
-            {
-              "orden": 21,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Mendoza y Wilde",
-              "vuelta": "Mendoza y Wilde"
-            },
-            {
-              "orden": 22,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Calasanz y Suinda",
-              "vuelta": "Calasanz y Suinda"
-            },
-            {
-              "orden": 23,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Berheim y Urquiza",
-              "vuelta": "Urquiza y Berheim"
-            },
-            {
-              "orden": 24,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Illia y AJPaz",
-              "vuelta": "Illia y AJPaz"
-            },
-            {
-              "orden": 25,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Illia e Yrigoyen",
-              "vuelta": "Illia e Yrigoyen"
-            },
-            {
-              "orden": 26,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Illia y JHernández",
-              "vuelta": "JHernández e Illia"
-            },
-            {
-              "orden": 27,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "JHernández y SJosé",
               "vuelta": "JHernández y SJosé"
             },
             {
-              "orden": 28,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "MdelPlata y Ruta9",
-              "vuelta": "MdelPlata y Ruta9"
-            }
-          ],
-          "color": "#455a64",
-          "lote": 3,
-          "notasRamales": [
-            {
-              "bandera": "NNFU",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
-              "bandera": "NSFU",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "segunda bandera listada = vuelta"
-            }
-          ]
-        },
-        {
-          "id": "142-RN-RS",
-          "banderas": {
-            "ida": "RN",
-            "vuelta": "RS"
-          },
-          "puntaArriba": "Cementerio VGG",
-          "puntaAbajo": "Rucci",
-          "eje": [
-            {
-              "orden": 1,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Cementerio VGG",
-              "vuelta": "Cementerio VGG"
-            },
-            {
-              "orden": 2,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Filippini y Mosconi",
-              "vuelta": "Filippini y Mosconi"
-            },
-            {
               "orden": 3,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "JDPerón y SMartín",
-              "vuelta": "JDPerón y SMartín"
+              "ida": "JHernández e Illia",
+              "vuelta": "Illia y JHernández"
             },
             {
               "orden": 4,
-              "tipo": "emparejado",
-              "confianza": "inferida-alta",
-              "ida": "SanDiego y 17OCtubre",
-              "vuelta": "17Octubre y SDiego",
-              "criterio": "misma calle 17OCTUBRE (heurística, validar inspector)"
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Illia e Yrigoyen",
+              "vuelta": "Illia e Yrigoyen"
             },
             {
               "orden": 5,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SEstero y JDPerón",
-              "vuelta": "JDPerón y SEstero"
+              "ida": "Illia y AJPaz",
+              "vuelta": "Illia y AJPaz"
             },
             {
               "orden": 6,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "JDPerón y ArroyoSaladillo",
-              "vuelta": "JDPerón y ArroyoSaladillo"
+              "ida": "Urquiza y Berheim",
+              "vuelta": "Berheim y Urquiza"
             },
             {
               "orden": 7,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Arijón y Andes",
-              "vuelta": "Arijón y Lituania",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "ida": "Calasanz y Suinda",
+              "vuelta": "Calasanz y Suinda"
             },
             {
               "orden": 8,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Bustamante y SanMartín",
-              "vuelta": "SMartín y Arijón",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "ida": "Mendoza y Wilde",
+              "vuelta": "Mendoza y Wilde"
             },
             {
               "orden": 9,
-              "tipo": "emparejado",
-              "confianza": "inferida-alta",
-              "ida": "SanMartín y Uriburu",
-              "vuelta": "SMartín y Uriburu",
-              "criterio": "misma calle URIBURU (heurística, validar inspector)"
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Mendoza y Donado",
+              "vuelta": "Mendoza y Donado"
             },
             {
               "orden": 10,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SMartín y Segui",
-              "vuelta": "SMartín y Seguí"
+              "ida": "Mendoza y PUnidas",
+              "vuelta": "Mendoza y PUnidas"
             },
             {
               "orden": 11,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "PJunta y 27Febrero",
-              "vuelta": "Laprida y 27Febrero",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "SanJuan y Agneta",
+              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
               "validadaUsuario": true
             },
             {
               "orden": 12,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Maipú y Pellegrini",
-              "vuelta": "Laprida y Pellegrini",
+              "ida": "Mendoza y Avellaneda",
+              "vuelta": "SanJuan y Avellaneda",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -2726,35 +2472,35 @@
               "orden": 13,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Maipú y SanJuan",
-              "vuelta": "SLuis y Laprida",
+              "ida": "Córdoba y Cafferata",
+              "vuelta": "SantaFe y Constitución",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
               "orden": 14,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "SantaFe y Corrientes",
-              "vuelta": null,
-              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Córdoba y Oroño",
+              "vuelta": "SantaFe y Oroño",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
               "orden": 15,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "Córdoba y Oroño",
-              "criterio": "par explícito dado por el usuario",
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "SantaFe y Corrientes",
+              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
               "validadaUsuario": true
             },
             {
               "orden": 16,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SantaFe y Constitución",
-              "vuelta": "Córdoba y Cafferata",
+              "ida": "SLuis y Laprida",
+              "vuelta": "Maipú y SanJuan",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -2762,67 +2508,66 @@
               "orden": 17,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SanJuan y Avellaneda",
-              "vuelta": "Mendoza y Avellaneda",
+              "ida": "Laprida y Pellegrini",
+              "vuelta": "Maipú y Pellegrini",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
               "orden": 18,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "SanJuan y Agneta",
-              "vuelta": null,
-              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y 27Febrero",
+              "vuelta": "PJunta y 27Febrero",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
               "orden": 19,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Mendoza y PUnidas",
-              "vuelta": "Mendoza y PUnidas"
+              "ida": "SMartín y Segui",
+              "vuelta": "SMartín y Segui"
             },
             {
               "orden": 20,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Mendoza y Donado",
-              "vuelta": "Mendoza y Donado"
+              "tipo": "emparejado",
+              "confianza": "inferida-alta",
+              "ida": "SMartín y Uriburu",
+              "vuelta": "SanMartín y Uriburu",
+              "criterio": "misma calle URIBURU (heurística, validar inspector)"
             },
             {
               "orden": 21,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Donado y EvaPerón",
-              "vuelta": null,
-              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SMartín y Arijón",
+              "vuelta": "Bustamante y SanMartín",
+              "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
             {
               "orden": 22,
-              "tipo": "compartido",
+              "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Donado y JJPaso",
-              "vuelta": "JJPaso y Donado"
+              "ida": "Arijón y Lituania",
+              "vuelta": "Arijón y Andes",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
             },
             {
               "orden": 23,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "SLoria y JNewbery",
-              "vuelta": "MEstrada y SLoria",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "ida": "JDPerón y ArroyoSaladillo",
+              "vuelta": "JDPerón y ArroyoSaladillo"
             },
             {
               "orden": 24,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "JNewbery y JPabloII",
-              "vuelta": "Circu y Colectora",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "ida": "JDPerón y SEstero",
+              "vuelta": "JDPerón y SEstero"
             },
             {
               "orden": 25,
@@ -2844,31 +2589,286 @@
             },
             {
               "orden": 27,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 28,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "SanDiego y JDPerón",
+              "vuelta": "SanDiego y JDPerón"
+            }
+          ],
+          "color": "#455a64",
+          "lote": 3,
+          "notasRamales": [
+            {
+              "bandera": "NSFU",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "NNFU",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
+            }
+          ]
+        },
+        {
+          "id": "142-RS-RN",
+          "banderas": {
+            "ida": "RS",
+            "vuelta": "RN"
+          },
+          "puntaArriba": "Rucci",
+          "puntaAbajo": "Cementerio VGG",
+          "eje": [
+            {
+              "orden": 1,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Rucci",
+              "vuelta": "Rucci"
+            },
+            {
+              "orden": 2,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Baigorria y Circu",
               "vuelta": "Baigorria y Circu"
             },
             {
+              "orden": 3,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 4,
+              "tipo": "oculto",
+              "confianza": "exacta",
+              "ida": "sector-oculto",
+              "vuelta": "sector-oculto",
+              "criterio": "fila fantasma para alinear los ejes de una misma línea (comisión del inspector 2026-10-25, T27)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 5,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Circu y Colectora",
+              "vuelta": "JNewbery y JPabloII",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 6,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "MEstrada y SLoria",
+              "vuelta": "SLoria y JNewbery",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 7,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "JJPaso y Donado",
+              "vuelta": "Donado y JJPaso"
+            },
+            {
+              "orden": 8,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Donado y EvaPerón",
+              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Mendoza y Donado",
+              "vuelta": "Mendoza y Donado"
+            },
+            {
+              "orden": 10,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Mendoza y PUnidas",
+              "vuelta": "Mendoza y PUnidas"
+            },
+            {
+              "orden": 11,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "SanJuan y Agneta",
+              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 12,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Mendoza y Avellaneda",
+              "vuelta": "SanJuan y Avellaneda",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 13,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Córdoba y Cafferata",
+              "vuelta": "SantaFe y Constitución",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 14,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Córdoba y Oroño",
+              "vuelta": "SantaFe y Oroño",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 15,
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "SantaFe y Corrientes",
+              "criterio": "queda solo (declarado por el inspector en sectores.txt)",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 16,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SLuis y Laprida",
+              "vuelta": "Maipú y SanJuan",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 17,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y Pellegrini",
+              "vuelta": "Maipú y Pellegrini",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 18,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y 27Febrero",
+              "vuelta": "PJunta y 27Febrero",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 19,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "SMartín y Seguí",
+              "vuelta": "SMartín y Segui"
+            },
+            {
+              "orden": 20,
+              "tipo": "emparejado",
+              "confianza": "inferida-alta",
+              "ida": "SMartín y Uriburu",
+              "vuelta": "SanMartín y Uriburu",
+              "criterio": "misma calle URIBURU (heurística, validar inspector)"
+            },
+            {
+              "orden": 21,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SMartín y Arijón",
+              "vuelta": "Bustamante y SanMartín",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 22,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Arijón y Lituania",
+              "vuelta": "Arijón y Andes",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 23,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "JDPerón y ArroyoSaladillo",
+              "vuelta": "JDPerón y ArroyoSaladillo"
+            },
+            {
+              "orden": 24,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "JDPerón y SEstero",
+              "vuelta": "SEstero y JDPerón"
+            },
+            {
+              "orden": 25,
+              "tipo": "emparejado",
+              "confianza": "inferida-alta",
+              "ida": "17Octubre y SDiego",
+              "vuelta": "SanDiego y 17OCtubre",
+              "criterio": "misma calle 17OCTUBRE (heurística, validar inspector)"
+            },
+            {
+              "orden": 26,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "JDPerón y SMartín",
+              "vuelta": "JDPerón y SMartín"
+            },
+            {
+              "orden": 27,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Filippini y Mosconi",
+              "vuelta": "Filippini y Mosconi"
+            },
+            {
               "orden": 28,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Rucci",
-              "vuelta": "Rucci"
+              "ida": "Cementerio VGG",
+              "vuelta": "Cementerio VGG"
             }
           ],
           "color": "#00695c",
           "lote": 3,
           "notasRamales": [
             {
-              "bandera": "RN",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "RS",
               "rotuloUsuario": "Norte-Sur",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "RN",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -2878,206 +2878,58 @@
       "linea": 143,
       "corredores": [
         {
-          "id": "143-CAGB-GBCA",
+          "id": "143-GBCA-CAGB",
           "banderas": {
-            "ida": "CAGB",
-            "vuelta": "GBCA"
+            "ida": "GBCA",
+            "vuelta": "CAGB"
           },
-          "puntaArriba": "BatlleOrdóñez y Oroño",
-          "puntaAbajo": "TallerBaigorria",
+          "puntaArriba": "TallerBaigorria",
+          "puntaAbajo": "BatlleOrdóñez y Oroño",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "BatlleOrdóñez y Oroño",
-              "vuelta": "BatlleOrdóñez y Oroño"
+              "ida": "TallerBaigorria",
+              "vuelta": "TallerBaigorria"
             },
             {
               "orden": 2,
-              "tipo": "compartido",
+              "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "BatlleOrdóñez y SMartín",
-              "vuelta": "BatlleOrdóñez y SMartín"
+              "ida": "Arenales y Ruta11",
+              "vuelta": "EvaPerón y Ruta11",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
             },
             {
               "orden": 3,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "BatlleOrdóñez y Ayacucho",
-              "vuelta": "Ayacucho y Arijón",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 4,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Ayacucho y Uriburu",
-              "vuelta": "Uriburu y Ayacucho"
-            },
-            {
-              "orden": 5,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "BuenosAires y Segui",
-              "vuelta": "Laprida y Segui",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "BuenosAires y Pellegrini",
-              "vuelta": "Laprida y Pellegrini",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 7,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SJuan y Maipú",
-              "vuelta": "SLuis y Laprida",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 8,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Corrientes y SantaFe",
-              "vuelta": "España y SLuis",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 9,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "Tucumán y Oroño",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 10,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "SNicolás y Catamarca",
-              "vuelta": "Alberdi y Salta",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 11,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Rondeau y Sorrento",
-              "vuelta": "Rondeau y Sorrento"
-            },
-            {
-              "orden": 12,
-              "tipo": "solo-ida",
-              "confianza": "-",
-              "ida": "Rondeau y Núñez",
-              "vuelta": null,
-              "criterio": "sin sector correspondiente en la lista vuelta"
-            },
-            {
-              "orden": 13,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Ruta11 y Ciudadela",
               "vuelta": "Ruta11 y Ciudadela"
             },
             {
-              "orden": 14,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "EvaPerón y Ruta11",
-              "vuelta": "Arenales y Ruta11",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 15,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "TallerBaigorria",
-              "vuelta": "TallerBaigorria"
-            }
-          ],
-          "color": "#0277bd",
-          "lote": 3,
-          "notasRamales": [
-            {
-              "bandera": "CAGB",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
-              "bandera": "GBCA",
-              "rotuloUsuario": "Norte-Sur",
-              "paisaje": "segunda bandera listada = vuelta"
-            }
-          ]
-        },
-        {
-          "id": "143-CARU-RUCA",
-          "banderas": {
-            "ida": "CARU",
-            "vuelta": "RUCA"
-          },
-          "puntaArriba": "BatlleOrdóñez y Oroño",
-          "puntaAbajo": "Rucci",
-          "eje": [
-            {
-              "orden": 1,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "BatlleOrdóñez y Oroño",
-              "vuelta": "BatlleOrdóñez y Oroño"
-            },
-            {
-              "orden": 2,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Oroño y Uriburu",
-              "vuelta": "Oroño y Uriburu"
-            },
-            {
-              "orden": 3,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Oroño y Segui",
-              "vuelta": "Oroño y Segui"
-            },
-            {
               "orden": 4,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Segui y BuenosAires",
-              "vuelta": "Laprida y Segui",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "tipo": "solo-vuelta",
+              "confianza": "-",
+              "ida": null,
+              "vuelta": "Rondeau y Núñez",
+              "criterio": "sin sector correspondiente en la lista vuelta"
             },
             {
               "orden": 5,
-              "tipo": "emparejado",
+              "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "BuenosAires y Pellegrini",
-              "vuelta": "Laprida y Pellegrini",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
+              "ida": "Rondeau y Sorrento",
+              "vuelta": "Rondeau y Sorrento"
             },
             {
               "orden": 6,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SJuan y Maipú",
-              "vuelta": "SLuis y Laprida",
+              "ida": "Alberdi y Salta",
+              "vuelta": "SNicolás y Catamarca",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3085,8 +2937,8 @@
               "orden": 7,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Corrientes y SantaFe",
-              "vuelta": "España y SLuis",
+              "ida": "Tucumán y Oroño",
+              "vuelta": "SantaFe y Oroño",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3094,8 +2946,8 @@
               "orden": 8,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SantaFe y Oroño",
-              "vuelta": "Tucumán y Oroño",
+              "ida": "España y SLuis",
+              "vuelta": "Corrientes y SantaFe",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3103,8 +2955,156 @@
               "orden": 9,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "SNicolás y Catamarca",
-              "vuelta": "Alberdi y Salta",
+              "ida": "SLuis y Laprida",
+              "vuelta": "SJuan y Maipú",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 10,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y Pellegrini",
+              "vuelta": "BuenosAires y Pellegrini",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 11,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y Segui",
+              "vuelta": "BuenosAires y Segui",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 12,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Uriburu y Ayacucho",
+              "vuelta": "Ayacucho y Uriburu"
+            },
+            {
+              "orden": 13,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Ayacucho y Arijón",
+              "vuelta": "BatlleOrdóñez y Ayacucho",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 14,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "BatlleOrdóñez y SMartín",
+              "vuelta": "BatlleOrdóñez y SMartín"
+            },
+            {
+              "orden": 15,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "BatlleOrdóñez y Oroño",
+              "vuelta": "BatlleOrdóñez y Oroño"
+            }
+          ],
+          "color": "#0277bd",
+          "lote": 3,
+          "notasRamales": [
+            {
+              "bandera": "GBCA",
+              "rotuloUsuario": "Norte-Sur",
+              "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "CAGB",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
+            }
+          ]
+        },
+        {
+          "id": "143-RUCA-CARU",
+          "banderas": {
+            "ida": "RUCA",
+            "vuelta": "CARU"
+          },
+          "puntaArriba": "Rucci",
+          "puntaAbajo": "BatlleOrdóñez y Oroño",
+          "eje": [
+            {
+              "orden": 1,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Rucci",
+              "vuelta": "Rucci"
+            },
+            {
+              "orden": 2,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Baigorria y CCasas",
+              "vuelta": "CCasas y Baigorria"
+            },
+            {
+              "orden": 3,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Rondeau y Sorrento",
+              "vuelta": "Rondeau y Sorrento"
+            },
+            {
+              "orden": 4,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Alberdi y Salta",
+              "vuelta": "SNicolás y Catamarca",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 5,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Tucumán y Oroño",
+              "vuelta": "SantaFe y Oroño",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 6,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "España y SLuis",
+              "vuelta": "Corrientes y SantaFe",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 7,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "SLuis y Laprida",
+              "vuelta": "SJuan y Maipú",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y Pellegrini",
+              "vuelta": "BuenosAires y Pellegrini",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 9,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Laprida y Segui",
+              "vuelta": "Segui y BuenosAires",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3112,36 +3112,36 @@
               "orden": 10,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Rondeau y Sorrento",
-              "vuelta": "Rondeau y Sorrento"
+              "ida": "Oroño y Segui",
+              "vuelta": "Oroño y Segui"
             },
             {
               "orden": 11,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "CCasas y Baigorria",
-              "vuelta": "Baigorria y CCasas"
+              "ida": "Oroño y Uriburu",
+              "vuelta": "Oroño y Uriburu"
             },
             {
               "orden": 12,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Rucci",
-              "vuelta": "Rucci"
+              "ida": "BatlleOrdóñez y Oroño",
+              "vuelta": "BatlleOrdóñez y Oroño"
             }
           ],
           "color": "#00897b",
           "lote": 3,
           "notasRamales": [
             {
-              "bandera": "CARU",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "RUCA",
               "rotuloUsuario": "Norte-Sur",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "CARU",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }
@@ -3151,34 +3151,34 @@
       "linea": "102/144",
       "corredores": [
         {
-          "id": "102/144-NNBO-BONS",
+          "id": "102/144-BONS-NNBO",
           "banderas": {
-            "ida": "NNBO",
-            "vuelta": "BONS"
+            "ida": "BONS",
+            "vuelta": "NNBO"
           },
-          "puntaArriba": "Grandoli y Gutiérrez",
-          "puntaAbajo": "Barrio Olímpico",
+          "puntaArriba": "Barrio Olímpico",
+          "puntaAbajo": "Grandoli y Gutiérrez",
           "eje": [
             {
               "orden": 1,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Grandoli y Gutiérrez",
-              "vuelta": "Grandoli y Gutiérrez"
+              "ida": "Barrio Olímpico",
+              "vuelta": "Barrio Olímpico"
             },
             {
               "orden": 2,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Beruti y Ayolas",
-              "vuelta": "Ayolas y Beruti"
+              "ida": "Palestina y Granaderos",
+              "vuelta": "Palestina y Granaderos"
             },
             {
               "orden": 3,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Necochea y Pellegrini",
-              "vuelta": "Pellegrini y Colón",
+              "ida": "Salvat y Rondeau",
+              "vuelta": "Rondeau y Núñez",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3186,54 +3186,54 @@
               "orden": 4,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Pellegrini y Corrientes",
-              "vuelta": "Pellegrini y Corrientes"
+              "ida": "Rondeau y Puccio",
+              "vuelta": "Rondeau y Puccio"
             },
             {
               "orden": 5,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Alvear y Córdoba",
-              "vuelta": "Balcarce y Córdoba",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 6,
-              "tipo": "emparejado",
-              "confianza": "exacta",
-              "ida": "Catamarca y Cafferata",
-              "vuelta": "Salta y Francia",
-              "criterio": "par explícito dado por el usuario",
-              "validadaUsuario": true
-            },
-            {
-              "orden": 7,
-              "tipo": "compartido",
-              "confianza": "exacta",
-              "ida": "Alberdi y Avellaneda",
-              "vuelta": "Alberdi y Avellaneda"
-            },
-            {
-              "orden": 8,
               "tipo": "compartido",
               "confianza": "exacta",
               "ida": "Rondeau y Sorrento",
               "vuelta": "Rondeau y Sorrento"
             },
             {
+              "orden": 6,
+              "tipo": "compartido",
+              "confianza": "exacta",
+              "ida": "Alberdi y Avellaneda",
+              "vuelta": "Alberdi y Avellaneda"
+            },
+            {
+              "orden": 7,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Salta y Francia",
+              "vuelta": "Catamarca y Cafferata",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
+              "orden": 8,
+              "tipo": "emparejado",
+              "confianza": "exacta",
+              "ida": "Balcarce y Córdoba",
+              "vuelta": "Alvear y Córdoba",
+              "criterio": "par explícito dado por el usuario",
+              "validadaUsuario": true
+            },
+            {
               "orden": 9,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Rondeau y Puccio",
-              "vuelta": "Rondeau y Puccio"
+              "ida": "Pellegrini y Corrientes",
+              "vuelta": "Pellegrini y Corrientes"
             },
             {
               "orden": 10,
               "tipo": "emparejado",
               "confianza": "exacta",
-              "ida": "Rondeau y Núñez",
-              "vuelta": "Salvat y Rondeau",
+              "ida": "Pellegrini y Colón",
+              "vuelta": "Necochea y Pellegrini",
               "criterio": "par explícito dado por el usuario",
               "validadaUsuario": true
             },
@@ -3241,29 +3241,29 @@
               "orden": 11,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Palestina y Granaderos",
-              "vuelta": "Palestina y Granaderos"
+              "ida": "Ayolas y Beruti",
+              "vuelta": "Beruti y Ayolas"
             },
             {
               "orden": 12,
               "tipo": "compartido",
               "confianza": "exacta",
-              "ida": "Barrio Olímpico",
-              "vuelta": "Barrio Olímpico"
+              "ida": "Grandoli y Gutiérrez",
+              "vuelta": "Grandoli y Gutiérrez"
             }
           ],
           "color": "#039be5",
           "lote": 3,
           "notasRamales": [
             {
-              "bandera": "NNBO",
-              "rotuloUsuario": "Sur-Norte",
-              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
-            },
-            {
               "bandera": "BONS",
               "rotuloUsuario": "Norte-Sur",
               "paisaje": "segunda bandera listada = vuelta"
+            },
+            {
+              "bandera": "NNBO",
+              "rotuloUsuario": "Sur-Norte",
+              "paisaje": "primer bandera listada = ida (origen = puntaArriba)"
             }
           ]
         }

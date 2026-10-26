@@ -199,7 +199,7 @@ El reloj + botón de reproducción + slider temporal fluyen en una columna **sti
 
 **Cambios 2026-10-23/24**: `align-self:center` — la barra queda **centrada verticalmente** respecto del layout flex (antes `flex-start`); el **pan lateral con mouse en `#stage`** (desktop): en táctil el arrastre es nativo por `overflow:auto`; en desktop `engancharPanStage()` agrega drag-to-scroll — arrastrar con el botón izquierdo mueve el contenido lateralmente (`scrollLeft -= dx` con el contenido siguiente al cursor; también vertical con `dy`), cursor `grabbing` durante el arrastre y **umbral de 4px** con captura en fase de bubble-down para que un drag real cancele el click de selección en los puntos (click sin arrastre sigue seleccionando).
 
-**Mini-selector de calendario (2026-10-24)**: columna de 3 chips bajo el slider (`#calSel`) — `Hábil` / `Mediofestivo` / `Festivo ⏳`. Cada chip carga inmediatamente su archivo por fetch (`{cache:'no-store'}`): `horarios-habiles.json`, `horarios-mediofestivo.json`, `horarios-festivo.json` (pendiente de fetch; si falta, `#msgReal` lo indica y los ⚡ del calendario previo se limpian — `aplicarReal()` resetea `realByCorredor`, sin residuos entre calendarios). Selección persistida en `localStorage` (clave `calendarioSel`); default `mediofestivo` (equivalente al contenido previo de `horarios-reales.json`). La carga manual por `⬆` sigue funcionando como carga ad-hoc de un JSON cualquiera.
+**Mini-selector de calendario (2026-10-24)**: columna de 3 chips bajo el slider (`#calSel`) — `Hábil` / `Mediofestivo` / `Festivo ⏳`. Cada chip carga inmediatamente su archivo por fetch (`{cache:'no-store'}`): `horarios-habiles.json`, `horarios-mediofestivo.json`, `horarios-festivo.json` (los tres ya cargados al 2026-10-25 — el festivo es del domingo 25/10, 26 ids con datos; si falta, `#msgReal` lo indica y los ⚡ del calendario previo se limpian — `aplicarReal()` resetea `realByCorredor`, sin residuos entre calendarios). Selección persistida en `localStorage` (clave `calendarioSel`); default `mediofestivo` (equivalente al contenido previo de `horarios-reales.json`). La carga manual por `⬆` sigue funcionando como carga ad-hoc de un JSON cualquiera.
 
 ## 9. Lote 2: líneas 122, 126, 128, 130, 133/125, 138/139, 140 (T15, 2026-10-22)
 
@@ -339,6 +339,7 @@ Otros estilos en pie: cabezal jerárquico centrado T14 (§8.7), espaciado `PAD_T
 12. **Tamaños de tipografía del lienzo** (T26 + edit del inspector): nombres de sectores del eje **9.2 → 11px** (líneas 251–252), **badges de servicio 9 → 12px** (línea 535) con acoples re-calibrados (ancho ×5.7→×7.6, píldora de selección, triángulo), y **puntas ▲/▼ 9.5 → 11px** editadas por el inspector en `PAD_TOP-26` y `yFin+16`. Sin cambios a propósito: horas del tramo activo (8.5px) y banda lateral IDA/VUELTA (9.5px). §10.2.
 13. **Alineación de ejes de una misma línea (T27, 2026-10-25)**: descubierto por el inspector — los dos ejes de un par (`103-GBVG-VGGB` vs `103-RUVG-VGRU`) no alinean tronco ni altura cuando un ramal tiene más filas: GBVG 16 filas vs RUVG 13. Solución: **filas fantasma `sector-oculto`** declaradas por ancla en el builder (`OCULTOS_ALINEACION`), se insertan simétricas en ida y vuelta, emparejan ida↔vuelta a la misma fila, renderizan como tick discontinuo gris y quedan **excluidas de las corridas** (la invariante `ColumnasDinámicas = marcas(lado)−2` queda intacta). Casos 103, 122 y 142 confirmados por el inspector e implantados; verificación canónica 0 descalces (ver §13 para el detalle completo, incluido el ajuste manual del inspector sobre la cola de RN-RS adoptado como regla del builder).
 15. **Ajuste directo del inspector (T29, 2026-10-25) — slider temporal**: en `prototipo/index.html`, el único cambio fue **`.vslider { … height:min(100vh,460px) }`** (antes `min(50vh,460px)`, documentado en §8.5) — confirmado por el inspector (la referencia a 'button.vslider' era solo el nombre del bloque zona `#timebar`; `#play` y `.thumb` quedaron intactos). Sin JS modificado (parse OK, comportamiento sin cambios: funciones leen la altura en px del rect en runtime).
+16. **Inversión de lectura de 12 ejes (T30/T30b, 2026-10-25/26)**: pedido del inspector en 2 rondas — invertir puntas, orden de sectores y cambio de lateral respetando la regla del lienzo, renombrando 126 x2, 130, 133/125 x2, 142 x2, 102/144 (ronda 1) y 128 x2, 143 x2 (ronda 2). Implantado como `INVERTIR_LECTURA` (transformación al final de `derive()` en el builder) + horarios ajustados (id nuevo + swap ida↔vuelta en ambas rondas) + chip festivo activado (dom 25/10); golden 12/12; §14. Nota: el par 133/125 quedó canónicamente alineado de paso (antes 0/15, ahora 15/15); 128 espeja su descalce preexistente de canal (ida 6/7, vu 7/7); 143 sigue desalineado 1/8 (pendiente ronda del inspector).
 14. **Panel trasladable + reloj real (T28, 2026-10-25)**: el panel de itinerario se arrastra con el mouse **por su h3** (la ✕ no arrastra): delegación de `pointerdown` en `#panel` con `setPointerCapture` para arrastrar aunque el cursor salga del panel, re-posición con clamps al viewport (`right→auto` y `left/top` en px). Además el **reloj inicial = hora real del acceso** (recortada a 04:00→01:00). §8.5. **Táctil (hold and slide, pedido del inspector):** el navegador mobile interpretaba el toque sobre la manija como scroll de página y movía toda la app. Ahora el h3 lleva `touch-action:none` (el toque sobre la manija no scrollea nunca) y el pais táctil usa **hold and slide**: el panel se agarra recién tras mantener el dedo ~250 ms; si el dedo se mueve más de ~10 px antes del grab, el gesto se libera y no arrastra nada. Mouse/pen agarran al instante. Feedback visual con sombra (`#panel.drag-grab`) mientras está agarrado.
 
 ## 12. Lote 3: líneas 142, 143, 102/144, 145/133, 146 (borrador, 2026-10-23)
@@ -405,3 +406,44 @@ Datos: `sectores.txt` líneas 73–186 (listas completas de sectores + pares del
 
 **Estado final T27:** verificación canónica de las 3 líneas (misma esquina aunque cambie el orden de calles, p.ej. `JDPerón y SEstero` ≙ `SEstero y JDPerón`): L103 ida 7/7 y vuelta 10/10; L122 ida 12/12 y vuelta 10/10; L142 ida 16/16 y vuelta 13/13 — **0 descalces**. Alerta de método: la comparación por texto crudo se le salta los pares con orden de calles invertido; verificar SIEMPRE con canon. (Nota menor: `meta.version` aún dice `...2026-10-23-lote3-borrador`; conviene refrescar fecha en la próxima regeneración que toque meta.)
 
+## 14. Inversión de lectura de ejes (T30/T30b, 2026-10-25/26 — pedido del inspector)
+
+**Qué pidió el inspector:** para 12 corredores (en 2 rondas), invertir los extremos (puntas), invertir el orden de los sectores y cambiarlos de lateral, **respetando la regla de movimiento del lienzo** (ida siempre arriba-a-abajo en el lateral izquierdo, vuelta abajo-a-arriba en el derecho), y renombrar el corredor con la orientación nueva:
+
+| id viejo (pre-T30) | id nuevo |
+|---|---|
+| 126-LACE-CELA | 126-CELA-LACE |
+| 126-OVCE-CEOV | 126-CEOV-OVCE |
+| 130-ACCE-ROAC | 130-ROAC-ACCE |
+| 133/125-OCFU-FUCO | 133/125-FUCO-OCFU |
+| 133/125-OCWI-WICO | 133/125-WICO-OCWI |
+| 142-NNFU-NSFU | 142-NSFU-NNFU |
+| 142-RN-RS | 142-RS-RN |
+| 102/144-NNBO-BONS | 102/144-BONS-NNBO |
+
+2.ª ronda (T30b, 2026-10-26 — mismo tratamiento para 128 y 143):
+
+| id viejo (pre-T30b) | id nuevo |
+|---|---|
+| 128-NECE-NEAS | 128-NEAS-NECE |
+| 128-ROCE-ROFR | 128-ROFR-ROCE |
+| 143-CAGB-GBCA | 143-GBCA-CAGB |
+| 143-CARU-RUCA | 143-RUCA-CARU |
+
+**Semántica:** el eje se lee invertido respecto de la versión anterior — la nueva ida es la vieja vuelta (con sus sectores en orden inverso) y la nueva vuelta es la vieja ida. Es decir: todas las filas del viejo eje reaparecen **reversadas en orden y con ida↔vuelta intercambiadas** (verificado con golden, más abajo). Así se respeta la convención del lienzo: ida siempre baja en el lateral izquierdo y vuelta sube en el derecho; invertir los extremos cambia cuál rama del par se lee como ida en pantalla.
+
+**Implantación en `lote2_build.py`:**
+- Mapa `INVERTIR_LECTURA = {id_viejo: id_nuevo}` (12 entradas: 8 de la ronda T30 + 4 de la ronda T30b).
+- Transformación **trailing** al final de `derive()` (después del armado del eje, las reglas de validación y la inserción de ocultos):
+  1. filas en orden inverso, con `ida`↔`vuelta` intercambiadas (oculto/compartido quedan simétricas),
+  2. `tipo` `solo-ida`↔`solo-vuelta` (la fila cambia de lateral conservando confianza y criterio; para 128 y 143 los solos confirmados también cambian de lateral automáticamente),
+  3. `orden` renumerado 1..n en el nuevo orden (estrictamente creciente),
+  4. `puntaArriba`↔`puntaAbajo`, `banderas.ida`↔`banderas.vuelta`, `notasRamales` invertidas, `id` renombrado,
+  5. **`color` NO se re-deriva**: hereda el color del id viejo (identidad visual estable durante el cambio de nombre); por eso el mapa `COLORS` del builder conserva las claves viejas (se consulta antes del renombre), mientras el `COLORS` de `index.html` fue renombrado (claves nuevas) porque el front consulta por `cor.id` post-rename.
+- Las tablas `PATRON_*`, `VALIDACIONES_INSPECTOR` y `OCULTOS_ALINEACION` **no requieren cambios**: siguen expresadas en la orientación vieja y se aplican ANTES de la transformación. Los 8 son lote 2/3, todos pasan por el camino `newbyline` (no tocan el reuso de lote 1).
+
+**Verificación (golden test):** para cada corredor invertido se comparó el eje nuevo contra un golden del estado previo con la transformación espejo (reversado + swap): **12/12 idénticos** — ronda T30 (126-CELA-LACE 9 filas; 126-CEOV-OVCE 9; 130-ROAC-ACCE 9; 133/125-FUCO-OCFU 21; 133/125-WICO-OCWI 18; 142-NSFU-NNFU 28; 142-RS-RN 28; 102/144-BONS-NNBO 12) y ronda T30b (128-NEAS-NECE 10; 128-ROFR-ROCE 11; 143-GBCA-CAGB 15; 143-RUCA-CARU 12). Alineación canónica intra-par tras la inversión: 126 ida 5/5 y vuelta 6/6; **133/125 ida 15/15 y vuelta 15/15** (antes de T30 ese par estaba 0/15 desalineado — la inversión lo corrigió de paso); 142 ida 13/13 y vuelta 16/16 (espejo exacto del estado pre-T30, ida 16/16 / vu 13/13); 128 ida 6/7 y vuelta 7/7 (su descalce preexistente espeja de canal id↔vu); 143 conserva 1/8 en ambos canales (desalineación preexistente espejada — pendiente ronda del inspector). `estado-emparejamientos.md` regenerado con la orientación nueva.
+
+**Consecuencia en horarios (el emparejamiento ida/vuelta por banda se invierte con el eje):** `horarios-habiles.json`, `horarios-mediofestivo.json` y `horarios-festivo.json` se transformaron con el mismo mapa, en ambas rondas: **id renombrado + bloque `ida`↔`vuelta` intercambiado** para los 12 (verificado 8/8 en T30 y 4/4 en T30b en cada archivo). El script `fetch-horarios.js` **no necesita cambios**: lee el JSON del builder en runtime (`c.id`, `c.banderas.lado`), así el próximo fetch sale con ids nuevos y bloques coherentes con la orientación nueva.
+
+**También en estas rondas:** `meta.version` pasa a `7-prototipo-2026-10-26-t30-inversion-12-ejes` (nota menor de §13 resuelta) y el chip del calendario `festivo` quedó activo ('festivo (dom 25/10)'; fetch ya cargado — 6.1 MB, 26 ids con datos, 0 vacíos).

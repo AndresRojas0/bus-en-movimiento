@@ -98428,8 +98428,8 @@
    "TipoInforme": 0
   }
  },
- "126-LACE-CELA": {
-  "ida": {
+ "126-CELA-LACE": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -99945,7 +99945,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -101701,8 +101701,8 @@
    "TipoInforme": 0
   }
  },
- "126-OVCE-CEOV": {
-  "ida": {
+ "126-CEOV-OVCE": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -103136,7 +103136,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -104797,8 +104797,8 @@
    "TipoInforme": 0
   }
  },
- "128-NECE-NEAS": {
-  "ida": {
+ "128-NEAS-NECE": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -107515,7 +107515,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -110233,8 +110233,8 @@
    "TipoInforme": 0
   }
  },
- "128-ROCE-ROFR": {
-  "ida": {
+ "128-ROFR-ROCE": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -113072,7 +113072,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -115607,8 +115607,8 @@
    "TipoInforme": 0
   }
  },
- "130-ACCE-ROAC": {
-  "ida": {
+ "130-ROAC-ACCE": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -118436,7 +118436,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -121712,8 +121712,8 @@
    "TipoInforme": 0
   }
  },
- "133/125-OCFU-FUCO": {
-  "ida": {
+ "133/125-FUCO-OCFU": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -126336,7 +126336,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -130960,8 +130960,8 @@
    "TipoInforme": 0
   }
  },
- "133/125-OCWI-WICO": {
-  "ida": {
+ "133/125-WICO-OCWI": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -134443,7 +134443,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -160752,8 +160752,8 @@
    "TipoInforme": 0
   }
  },
- "142-NNFU-NSFU": {
-  "ida": {
+ "142-NSFU-NNFU": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -169415,7 +169415,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -177366,8 +177366,8 @@
    "TipoInforme": 0
   }
  },
- "142-RN-RS": {
-  "ida": {
+ "142-RS-RN": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -187043,7 +187043,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -195574,8 +195574,8 @@
    "TipoInforme": 0
   }
  },
- "143-CAGB-GBCA": {
-  "ida": {
+ "143-GBCA-CAGB": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -199375,7 +199375,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -202911,8 +202911,8 @@
    "TipoInforme": 0
   }
  },
- "143-CARU-RUCA": {
-  "ida": {
+ "143-RUCA-CARU": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -205917,7 +205917,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -208923,8 +208923,8 @@
    "TipoInforme": 0
   }
  },
- "102/144-NNBO-BONS": {
-  "ida": {
+ "102/144-BONS-NNBO": {
+  "vuelta": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,
@@ -213399,7 +213399,7 @@
    ],
    "TipoInforme": 0
   },
-  "vuelta": {
+  "ida": {
    "Linea": null,
    "LineaId": 0,
    "Empresa": null,

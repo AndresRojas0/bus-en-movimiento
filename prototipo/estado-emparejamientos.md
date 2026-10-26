@@ -182,138 +182,138 @@ Tipos: compartido (misma esquina), emparejado (par por calle/clave), solo-ida / 
 | 14 | emparejado | inferida-alta | Necochea y Uriburu | Pavón y Uriburu | ✓
 | 15 | compartido | exacta | Ayacucho y MPolo | Ayacucho y MPolo | 
 
-## Línea 126 — 126-LACE-CELA · 126-OVCE-CEOV
+## Línea 126 — 126-CELA-LACE · 126-CEOV-OVCE
 
-### 126-LACE-CELA (OLagos y Quintana → SLorenzo y Laprida)
-
-| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
-|---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | OLagos y Quintana | OLagos y Quintana | 
-| 2 | emparejado | exacta | Avellaneda y Segui | Cafferata y Segui | ✓
-| 3 | emparejado | exacta | Avellaneda y 27Febrero | Cafferata y Rueda | ✓
-| 4 | solo-vuelta | - | — | OLagos y 27Febrero | ✓
-| 5 | emparejado | exacta | Francia y Pellegrini | OLagos y Pellegrini | ✓
-| 6 | emparejado | exacta | Mendoza y Oroño | TFebrero y Oroño | ✓
-| 7 | solo-ida | - | SLorenzo e Italia | — | ✓
-| 8 | solo-vuelta | - | — | TFebrero y Mitre | ✓
-| 9 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
-
-
-### 126-OVCE-CEOV (OLagos y Quintana → SLorenzo y Laprida)
+### 126-CELA-LACE (SLorenzo y Laprida → OLagos y Quintana)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | OLagos y Quintana | OLagos y Quintana | 
-| 2 | emparejado | exacta | SNicolás y Riva | Avellaneda y Segui | ✓
-| 3 | emparejado | exacta | SNicolás y 27Febrero | 27Febrero y Avellaneda | ✓
-| 4 | solo-vuelta | - | — | OLagos y 27Febrero | ✓
-| 5 | emparejado | exacta | Francia y Pellegrini | OLagos y Pellegrini | ✓
-| 6 | emparejado | exacta | Mendoza y Oroño | TFebrero y Oroño | ✓
-| 7 | solo-ida | - | SLorenzo e Italia | — | ✓
-| 8 | solo-vuelta | - | — | TFebrero y Mitre | ✓
-| 9 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 1 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 2 | solo-ida | - | TFebrero y Mitre | — | ✓
+| 3 | solo-vuelta | - | — | SLorenzo e Italia | ✓
+| 4 | emparejado | exacta | TFebrero y Oroño | Mendoza y Oroño | ✓
+| 5 | emparejado | exacta | OLagos y Pellegrini | Francia y Pellegrini | ✓
+| 6 | solo-ida | - | OLagos y 27Febrero | — | ✓
+| 7 | emparejado | exacta | Cafferata y Rueda | Avellaneda y 27Febrero | ✓
+| 8 | emparejado | exacta | Cafferata y Segui | Avellaneda y Segui | ✓
+| 9 | compartido | exacta | OLagos y Quintana | OLagos y Quintana | 
 
-## Línea 128 — 128-NECE-NEAS · 128-ROCE-ROFR
 
-### 128-NECE-NEAS (Urquiza y Francia → SLorenzo y Laprida)
+### 126-CEOV-OVCE (SLorenzo y Laprida → OLagos y Quintana)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
-| 2 | emparejado | exacta | SantaFe y Avellaneda | Avellaneda y Córdoba | ✓
-| 3 | emparejado | exacta | Avellaneda y Cerrito | Avellaneda y Montevideo | ✓
-| 4 | emparejado | exacta | Avellaneda y Uruguay | Avellaneda y DeanFunes | ✓
-| 5 | emparejado | exacta | Biedma y OLagos | Segui y OLagos | ✓
+| 1 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 2 | solo-ida | - | TFebrero y Mitre | — | ✓
+| 3 | solo-vuelta | - | — | SLorenzo e Italia | ✓
+| 4 | emparejado | exacta | TFebrero y Oroño | Mendoza y Oroño | ✓
+| 5 | emparejado | exacta | OLagos y Pellegrini | Francia y Pellegrini | ✓
+| 6 | solo-ida | - | OLagos y 27Febrero | — | ✓
+| 7 | emparejado | exacta | 27Febrero y Avellaneda | SNicolás y 27Febrero | ✓
+| 8 | emparejado | exacta | Avellaneda y Segui | SNicolás y Riva | ✓
+| 9 | compartido | exacta | OLagos y Quintana | OLagos y Quintana | 
+
+## Línea 128 — 128-NEAS-NECE · 128-ROFR-ROCE
+
+### 128-NEAS-NECE (SLorenzo y Laprida → Urquiza y Francia)
+
+| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
+|---|------|-----------|------------|---------------|----------|
+| 1 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 2 | emparejado | exacta | SJuan y EntreRios | Mitre y SLuis | ✓
+| 3 | emparejado | exacta | EntreRios y Pellegrini | Mitre y Pellegrini | ✓
+| 4 | emparejado | exacta | EntreRios y Ayolas | Mitre y Ayolas | ✓
+| 5 | compartido | exacta | Segui y Oroño | Segui y Oroño | 
+| 6 | emparejado | exacta | Segui y OLagos | Biedma y OLagos | ✓
+| 7 | emparejado | exacta | Avellaneda y DeanFunes | Avellaneda y Uruguay | ✓
+| 8 | emparejado | exacta | Avellaneda y Montevideo | Avellaneda y Cerrito | ✓
+| 9 | emparejado | exacta | Avellaneda y Córdoba | SantaFe y Avellaneda | ✓
+| 10 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
+
+
+### 128-ROFR-ROCE (SLorenzo y Laprida → Urquiza y Francia)
+
+| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
+|---|------|-----------|------------|---------------|----------|
+| 1 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 2 | solo-ida | - | SJuan y EntreRios | — | ✓
+| 3 | solo-vuelta | - | — | Mitre y SLuis | ✓
+| 4 | emparejado | inferida-alta | EntreRios y Pellegrini | Mitre y Pellegrini | ✓
+| 5 | emparejado | inferida-alta | EntreRios y Ayolas | Mitre y Ayolas | ✓
 | 6 | compartido | exacta | Segui y Oroño | Segui y Oroño | 
-| 7 | emparejado | exacta | Mitre y Ayolas | EntreRios y Ayolas | ✓
-| 8 | emparejado | exacta | Mitre y Pellegrini | EntreRios y Pellegrini | ✓
-| 9 | emparejado | exacta | Mitre y SLuis | SJuan y EntreRios | ✓
-| 10 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
+| 7 | emparejado | inferida-alta | Segui y OLagos | Biedma y OLagos | ✓
+| 8 | emparejado | exacta | SNicolás y Garay | Cafferata y Saavedra | ✓
+| 9 | emparejado | exacta | SNicolás y Zeballos | Cafferata y Montevideo | ✓
+| 10 | solo-vuelta | - | — | Cafferata y Córdoba | ✓
+| 11 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
 
+## Línea 130 — 130-ROAC-ACCE
 
-### 128-ROCE-ROFR (Urquiza y Francia → SLorenzo y Laprida)
-
-| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
-|---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Urquiza y Francia | Urquiza y Francia | 
-| 2 | solo-ida | - | Cafferata y Córdoba | — | ✓
-| 3 | emparejado | exacta | Cafferata y Montevideo | SNicolás y Zeballos | ✓
-| 4 | emparejado | exacta | Cafferata y Saavedra | SNicolás y Garay | ✓
-| 5 | emparejado | inferida-alta | Biedma y OLagos | Segui y OLagos | ✓
-| 6 | compartido | exacta | Segui y Oroño | Segui y Oroño | 
-| 7 | emparejado | inferida-alta | Mitre y Ayolas | EntreRios y Ayolas | ✓
-| 8 | emparejado | inferida-alta | Mitre y Pellegrini | EntreRios y Pellegrini | ✓
-| 9 | solo-ida | - | Mitre y SLuis | — | ✓
-| 10 | solo-vuelta | - | — | SJuan y EntreRios | ✓
-| 11 | compartido | exacta | SLorenzo y Laprida | SLorenzo y Laprida | 
-
-## Línea 130 — 130-ACCE-ROAC
-
-### 130-ACCE-ROAC (Winter y Cipolletti → Italia y San Lorenzo)
+### 130-ROAC-ACCE (Italia y San Lorenzo → Winter y Cipolletti)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Winter y Cipolletti | Winter y Cipolletti | 
-| 2 | emparejado | exacta | FragataSarmiento y OLagos | Uriburu y Suipacha | ✓
-| 3 | emparejado | exacta | Oroño y Ameghino | Oroño y Uriburu | ✓
-| 4 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
-| 5 | solo-ida | - | Italia y 27Febrero | — | ✓
-| 6 | emparejado | exacta | Italia y Pellegrini | Dorrego y Pellegrini | ✓
-| 7 | solo-vuelta | - | — | SJuan y Dorrego | ✓
-| 8 | solo-vuelta | - | — | Laprida y Rioja | ✓
-| 9 | compartido | exacta | Italia y San Lorenzo | Italia y San Lorenzo | 
+| 1 | compartido | exacta | Italia y San Lorenzo | Italia y San Lorenzo | 
+| 2 | solo-ida | - | Laprida y Rioja | — | ✓
+| 3 | solo-ida | - | SJuan y Dorrego | — | ✓
+| 4 | emparejado | exacta | Dorrego y Pellegrini | Italia y Pellegrini | ✓
+| 5 | solo-vuelta | - | — | Italia y 27Febrero | ✓
+| 6 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
+| 7 | emparejado | exacta | Oroño y Uriburu | Oroño y Ameghino | ✓
+| 8 | emparejado | exacta | Uriburu y Suipacha | FragataSarmiento y OLagos | ✓
+| 9 | compartido | exacta | Winter y Cipolletti | Winter y Cipolletti | 
 
-## Línea 133/125 — 133/125-OCFU-FUCO · 133/125-OCWI-WICO
+## Línea 133/125 — 133/125-FUCO-OCFU · 133/125-WICO-OCWI
 
-### 133/125-OCFU-FUCO (Rueda y PUnidas → Ruta9 y Angelomé)
-
-| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
-|---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Rueda y PUnidas | Rueda y PUnidas | 
-| 2 | emparejado | inferida-media | Segui y Barra | Garzón y Segui | ✓
-| 3 | solo-ida | - | Segui y Aldao | — | ✓
-| 4 | emparejado | exacta | PPerón y FMoré | 27Febrero y Matienzo | ✓
-| 5 | emparejado | exacta | PPerón y Cafferata | SNicolás y PPerón | ✓
-| 6 | emparejado | exacta | Francia y Cerrito | OLagos y Viamonte | ✓
-| 7 | solo-vuelta | - | — | Montevideo y OLagos | ✓
-| 8 | emparejado | exacta | Montevideo y Oroño | Balcarce y Pellegrini | ✓
-| 9 | emparejado | exacta | Moreno y San Luis | SJuan y Balcarce | ✓
-| 10 | emparejado | exacta | Corrientes y SantaFe | SLorenzo y EntreRíos | ✓
-| 11 | emparejado | inferida-media | SantaFe y Oroño | SLorenzo y Oroño | ✓
-| 12 | emparejado | inferida-media | SantaFe y Francia | Córdoba y Francia | ✓
-| 13 | emparejado | inferida-media | SantaFe y Avellaneda | Córdoba y Avellaneda | ✓
-| 14 | emparejado | inferida-media | SantaFe y Agneta | Córdoba y Agneta | ✓
-| 15 | compartido | exacta | EvaPerón y PUnidas | EvaPerón y PUnidas | 
-| 16 | compartido | exacta | EvaPerón y Donado | EvaPerón y Donado | 
-| 17 | compartido | exacta | EvaPerón y Wilde | EvaPerón y Wilde | 
-| 18 | compartido | exacta | Ruta9 y JCelman | Ruta9 y JCelman | 
-| 19 | compartido | exacta | Ruta9 y ArroyoLudueña | Ruta9 y ArroyoLudueña | 
-| 20 | compartido | exacta | Ruta9 y Perón | Perón y Ruta9 | 
-| 21 | compartido | exacta | Ruta9 y Angelomé | Ruta9 y Angelomé | 
-
-
-### 133/125-OCWI-WICO (Rueda y PUnidas → Wilde y Mendoza)
+### 133/125-FUCO-OCFU (Ruta9 y Angelomé → Rueda y PUnidas)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Rueda y PUnidas | Rueda y PUnidas | 
-| 2 | emparejado | inferida-media | Segui y Barra | Garzón y Segui | ✓
-| 3 | solo-ida | - | Segui y Aldao | — | ✓
-| 4 | emparejado | exacta | PPerón y FMoré | 27Febrero y Matienzo | ✓
-| 5 | emparejado | exacta | PPerón y Cafferata | SNicolás y PPerón | ✓
-| 6 | emparejado | exacta | Francia y Cerrito | OLagos y Viamonte | ✓
-| 7 | solo-vuelta | - | — | Montevideo y OLagos | ✓
-| 8 | emparejado | exacta | Montevideo y Oroño | Balcarce y Pellegrini | ✓
-| 9 | emparejado | exacta | Moreno y San Luis | SJuan y Balcarce | ✓
-| 10 | emparejado | exacta | Corrientes y SantaFe | SLorenzo y EntreRíos | ✓
-| 11 | emparejado | inferida-media | SantaFe y Oroño | SLorenzo y Oroño | ✓
-| 12 | emparejado | inferida-media | SantaFe y Francia | Córdoba y Francia | ✓
-| 13 | emparejado | inferida-media | SantaFe y Avellaneda | Córdoba y Avellaneda | ✓
-| 14 | emparejado | inferida-media | SantaFe y Agneta | Córdoba y Agneta | ✓
-| 15 | compartido | exacta | EvaPerón y PUnidas | EvaPerón y PUnidas | 
-| 16 | compartido | exacta | EvaPerón y Donado | EvaPerón y Donado | 
-| 17 | emparejado | inferida-alta | Navarro y Wilde | Wilde y Benegas | ✓
-| 18 | compartido | exacta | Wilde y Mendoza | Wilde y Mendoza | 
+| 1 | compartido | exacta | Ruta9 y Angelomé | Ruta9 y Angelomé | 
+| 2 | compartido | exacta | Perón y Ruta9 | Ruta9 y Perón | 
+| 3 | compartido | exacta | Ruta9 y ArroyoLudueña | Ruta9 y ArroyoLudueña | 
+| 4 | compartido | exacta | Ruta9 y JCelman | Ruta9 y JCelman | 
+| 5 | compartido | exacta | EvaPerón y Wilde | EvaPerón y Wilde | 
+| 6 | compartido | exacta | EvaPerón y Donado | EvaPerón y Donado | 
+| 7 | compartido | exacta | EvaPerón y PUnidas | EvaPerón y PUnidas | 
+| 8 | emparejado | inferida-media | Córdoba y Agneta | SantaFe y Agneta | ✓
+| 9 | emparejado | inferida-media | Córdoba y Avellaneda | SantaFe y Avellaneda | ✓
+| 10 | emparejado | inferida-media | Córdoba y Francia | SantaFe y Francia | ✓
+| 11 | emparejado | inferida-media | SLorenzo y Oroño | SantaFe y Oroño | ✓
+| 12 | emparejado | exacta | SLorenzo y EntreRíos | Corrientes y SantaFe | ✓
+| 13 | emparejado | exacta | SJuan y Balcarce | Moreno y San Luis | ✓
+| 14 | emparejado | exacta | Balcarce y Pellegrini | Montevideo y Oroño | ✓
+| 15 | solo-ida | - | Montevideo y OLagos | — | ✓
+| 16 | emparejado | exacta | OLagos y Viamonte | Francia y Cerrito | ✓
+| 17 | emparejado | exacta | SNicolás y PPerón | PPerón y Cafferata | ✓
+| 18 | emparejado | exacta | 27Febrero y Matienzo | PPerón y FMoré | ✓
+| 19 | solo-vuelta | - | — | Segui y Aldao | ✓
+| 20 | emparejado | inferida-media | Garzón y Segui | Segui y Barra | ✓
+| 21 | compartido | exacta | Rueda y PUnidas | Rueda y PUnidas | 
+
+
+### 133/125-WICO-OCWI (Wilde y Mendoza → Rueda y PUnidas)
+
+| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
+|---|------|-----------|------------|---------------|----------|
+| 1 | compartido | exacta | Wilde y Mendoza | Wilde y Mendoza | 
+| 2 | emparejado | inferida-alta | Wilde y Benegas | Navarro y Wilde | ✓
+| 3 | compartido | exacta | EvaPerón y Donado | EvaPerón y Donado | 
+| 4 | compartido | exacta | EvaPerón y PUnidas | EvaPerón y PUnidas | 
+| 5 | emparejado | inferida-media | Córdoba y Agneta | SantaFe y Agneta | ✓
+| 6 | emparejado | inferida-media | Córdoba y Avellaneda | SantaFe y Avellaneda | ✓
+| 7 | emparejado | inferida-media | Córdoba y Francia | SantaFe y Francia | ✓
+| 8 | emparejado | inferida-media | SLorenzo y Oroño | SantaFe y Oroño | ✓
+| 9 | emparejado | exacta | SLorenzo y EntreRíos | Corrientes y SantaFe | ✓
+| 10 | emparejado | exacta | SJuan y Balcarce | Moreno y San Luis | ✓
+| 11 | emparejado | exacta | Balcarce y Pellegrini | Montevideo y Oroño | ✓
+| 12 | solo-ida | - | Montevideo y OLagos | — | ✓
+| 13 | emparejado | exacta | OLagos y Viamonte | Francia y Cerrito | ✓
+| 14 | emparejado | exacta | SNicolás y PPerón | PPerón y Cafferata | ✓
+| 15 | emparejado | exacta | 27Febrero y Matienzo | PPerón y FMoré | ✓
+| 16 | solo-vuelta | - | — | Segui y Aldao | ✓
+| 17 | emparejado | inferida-media | Garzón y Segui | Segui y Barra | ✓
+| 18 | compartido | exacta | Rueda y PUnidas | Rueda y PUnidas | 
 
 ## Línea 138/139 — 138/139-TFCA-CATF
 
@@ -354,133 +354,133 @@ Tipos: compartido (misma esquina), emparejado (par por calle/clave), solo-ida / 
 | 12 | compartido | exacta | SMartín y Ceibo | Ceibo y SMartín | 
 | 13 | compartido | exacta | Clavel y Hortensia | Clavel y Hortensia | 
 
-## Línea 142 — 142-NNFU-NSFU · 142-RN-RS
+## Línea 142 — 142-NSFU-NNFU · 142-RS-RN
 
-### 142-NNFU-NSFU (SanDiego y JDPerón → MdelPlata y Ruta9)
-
-| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
-|---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | SanDiego y JDPerón | SanDiego y JDPerón | 
-| 2 | oculto | exacta | sector-oculto | sector-oculto | ✓
-| 3 | oculto | exacta | sector-oculto | sector-oculto | ✓
-| 4 | oculto | exacta | sector-oculto | sector-oculto | ✓
-| 5 | compartido | exacta | JDPerón y SEstero | JDPerón y SEstero | 
-| 6 | compartido | exacta | JDPerón y ArroyoSaladillo | JDPerón y ArroyoSaladillo | 
-| 7 | emparejado | exacta | Arijón y Andes | Arijón y Lituania | ✓
-| 8 | emparejado | exacta | Bustamante y SanMartín | SMartín y Arijón | ✓
-| 9 | emparejado | inferida-alta | SanMartín y Uriburu | SMartín y Uriburu | 
-| 10 | compartido | exacta | SMartín y Segui | SMartín y Segui | 
-| 11 | emparejado | exacta | PJunta y 27Febrero | Laprida y 27Febrero | ✓
-| 12 | emparejado | exacta | Maipú y Pellegrini | Laprida y Pellegrini | ✓
-| 13 | emparejado | exacta | Maipú y SanJuan | SLuis y Laprida | ✓
-| 14 | solo-ida | - | SantaFe y Corrientes | — | ✓
-| 15 | emparejado | exacta | SantaFe y Oroño | Córdoba y Oroño | ✓
-| 16 | emparejado | exacta | SantaFe y Constitución | Córdoba y Cafferata | ✓
-| 17 | emparejado | exacta | SanJuan y Avellaneda | Mendoza y Avellaneda | ✓
-| 18 | solo-ida | - | SanJuan y Agneta | — | ✓
-| 19 | compartido | exacta | Mendoza y PUnidas | Mendoza y PUnidas | 
-| 20 | compartido | exacta | Mendoza y Donado | Mendoza y Donado | 
-| 21 | compartido | exacta | Mendoza y Wilde | Mendoza y Wilde | 
-| 22 | compartido | exacta | Calasanz y Suinda | Calasanz y Suinda | 
-| 23 | compartido | exacta | Berheim y Urquiza | Urquiza y Berheim | 
-| 24 | compartido | exacta | Illia y AJPaz | Illia y AJPaz | 
-| 25 | compartido | exacta | Illia e Yrigoyen | Illia e Yrigoyen | 
-| 26 | compartido | exacta | Illia y JHernández | JHernández e Illia | 
-| 27 | compartido | exacta | JHernández y SJosé | JHernández y SJosé | 
-| 28 | compartido | exacta | MdelPlata y Ruta9 | MdelPlata y Ruta9 | 
-
-
-### 142-RN-RS (Cementerio VGG → Rucci)
+### 142-NSFU-NNFU (MdelPlata y Ruta9 → SanDiego y JDPerón)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Cementerio VGG | Cementerio VGG | 
-| 2 | compartido | exacta | Filippini y Mosconi | Filippini y Mosconi | 
-| 3 | compartido | exacta | JDPerón y SMartín | JDPerón y SMartín | 
-| 4 | emparejado | inferida-alta | SanDiego y 17OCtubre | 17Octubre y SDiego | 
-| 5 | compartido | exacta | SEstero y JDPerón | JDPerón y SEstero | 
-| 6 | compartido | exacta | JDPerón y ArroyoSaladillo | JDPerón y ArroyoSaladillo | 
-| 7 | emparejado | exacta | Arijón y Andes | Arijón y Lituania | ✓
-| 8 | emparejado | exacta | Bustamante y SanMartín | SMartín y Arijón | ✓
-| 9 | emparejado | inferida-alta | SanMartín y Uriburu | SMartín y Uriburu | 
-| 10 | compartido | exacta | SMartín y Segui | SMartín y Seguí | 
-| 11 | emparejado | exacta | PJunta y 27Febrero | Laprida y 27Febrero | ✓
-| 12 | emparejado | exacta | Maipú y Pellegrini | Laprida y Pellegrini | ✓
-| 13 | emparejado | exacta | Maipú y SanJuan | SLuis y Laprida | ✓
-| 14 | solo-ida | - | SantaFe y Corrientes | — | ✓
-| 15 | emparejado | exacta | SantaFe y Oroño | Córdoba y Oroño | ✓
-| 16 | emparejado | exacta | SantaFe y Constitución | Córdoba y Cafferata | ✓
-| 17 | emparejado | exacta | SanJuan y Avellaneda | Mendoza y Avellaneda | ✓
-| 18 | solo-ida | - | SanJuan y Agneta | — | ✓
-| 19 | compartido | exacta | Mendoza y PUnidas | Mendoza y PUnidas | 
-| 20 | compartido | exacta | Mendoza y Donado | Mendoza y Donado | 
-| 21 | solo-ida | - | Donado y EvaPerón | — | ✓
-| 22 | compartido | exacta | Donado y JJPaso | JJPaso y Donado | 
-| 23 | emparejado | exacta | SLoria y JNewbery | MEstrada y SLoria | ✓
-| 24 | emparejado | exacta | JNewbery y JPabloII | Circu y Colectora | ✓
+| 1 | compartido | exacta | MdelPlata y Ruta9 | MdelPlata y Ruta9 | 
+| 2 | compartido | exacta | JHernández y SJosé | JHernández y SJosé | 
+| 3 | compartido | exacta | JHernández e Illia | Illia y JHernández | 
+| 4 | compartido | exacta | Illia e Yrigoyen | Illia e Yrigoyen | 
+| 5 | compartido | exacta | Illia y AJPaz | Illia y AJPaz | 
+| 6 | compartido | exacta | Urquiza y Berheim | Berheim y Urquiza | 
+| 7 | compartido | exacta | Calasanz y Suinda | Calasanz y Suinda | 
+| 8 | compartido | exacta | Mendoza y Wilde | Mendoza y Wilde | 
+| 9 | compartido | exacta | Mendoza y Donado | Mendoza y Donado | 
+| 10 | compartido | exacta | Mendoza y PUnidas | Mendoza y PUnidas | 
+| 11 | solo-vuelta | - | — | SanJuan y Agneta | ✓
+| 12 | emparejado | exacta | Mendoza y Avellaneda | SanJuan y Avellaneda | ✓
+| 13 | emparejado | exacta | Córdoba y Cafferata | SantaFe y Constitución | ✓
+| 14 | emparejado | exacta | Córdoba y Oroño | SantaFe y Oroño | ✓
+| 15 | solo-vuelta | - | — | SantaFe y Corrientes | ✓
+| 16 | emparejado | exacta | SLuis y Laprida | Maipú y SanJuan | ✓
+| 17 | emparejado | exacta | Laprida y Pellegrini | Maipú y Pellegrini | ✓
+| 18 | emparejado | exacta | Laprida y 27Febrero | PJunta y 27Febrero | ✓
+| 19 | compartido | exacta | SMartín y Segui | SMartín y Segui | 
+| 20 | emparejado | inferida-alta | SMartín y Uriburu | SanMartín y Uriburu | 
+| 21 | emparejado | exacta | SMartín y Arijón | Bustamante y SanMartín | ✓
+| 22 | emparejado | exacta | Arijón y Lituania | Arijón y Andes | ✓
+| 23 | compartido | exacta | JDPerón y ArroyoSaladillo | JDPerón y ArroyoSaladillo | 
+| 24 | compartido | exacta | JDPerón y SEstero | JDPerón y SEstero | 
 | 25 | oculto | exacta | sector-oculto | sector-oculto | ✓
 | 26 | oculto | exacta | sector-oculto | sector-oculto | ✓
-| 27 | compartido | exacta | Baigorria y Circu | Baigorria y Circu | 
-| 28 | compartido | exacta | Rucci | Rucci | 
-
-## Línea 143 — 143-CAGB-GBCA · 143-CARU-RUCA
-
-### 143-CAGB-GBCA (BatlleOrdóñez y Oroño → TallerBaigorria)
-
-| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
-|---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
-| 2 | compartido | exacta | BatlleOrdóñez y SMartín | BatlleOrdóñez y SMartín | 
-| 3 | emparejado | exacta | BatlleOrdóñez y Ayacucho | Ayacucho y Arijón | ✓
-| 4 | compartido | exacta | Ayacucho y Uriburu | Uriburu y Ayacucho | 
-| 5 | emparejado | exacta | BuenosAires y Segui | Laprida y Segui | ✓
-| 6 | emparejado | exacta | BuenosAires y Pellegrini | Laprida y Pellegrini | ✓
-| 7 | emparejado | exacta | SJuan y Maipú | SLuis y Laprida | ✓
-| 8 | emparejado | exacta | Corrientes y SantaFe | España y SLuis | ✓
-| 9 | emparejado | exacta | SantaFe y Oroño | Tucumán y Oroño | ✓
-| 10 | emparejado | exacta | SNicolás y Catamarca | Alberdi y Salta | ✓
-| 11 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
-| 12 | solo-ida | - | Rondeau y Núñez | — | 
-| 13 | compartido | exacta | Ruta11 y Ciudadela | Ruta11 y Ciudadela | 
-| 14 | emparejado | exacta | EvaPerón y Ruta11 | Arenales y Ruta11 | ✓
-| 15 | compartido | exacta | TallerBaigorria | TallerBaigorria | 
+| 27 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 28 | compartido | exacta | SanDiego y JDPerón | SanDiego y JDPerón | 
 
 
-### 143-CARU-RUCA (BatlleOrdóñez y Oroño → Rucci)
+### 142-RS-RN (Rucci → Cementerio VGG)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
-| 2 | compartido | exacta | Oroño y Uriburu | Oroño y Uriburu | 
-| 3 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
-| 4 | emparejado | exacta | Segui y BuenosAires | Laprida y Segui | ✓
-| 5 | emparejado | exacta | BuenosAires y Pellegrini | Laprida y Pellegrini | ✓
-| 6 | emparejado | exacta | SJuan y Maipú | SLuis y Laprida | ✓
-| 7 | emparejado | exacta | Corrientes y SantaFe | España y SLuis | ✓
-| 8 | emparejado | exacta | SantaFe y Oroño | Tucumán y Oroño | ✓
-| 9 | emparejado | exacta | SNicolás y Catamarca | Alberdi y Salta | ✓
-| 10 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
-| 11 | compartido | exacta | CCasas y Baigorria | Baigorria y CCasas | 
-| 12 | compartido | exacta | Rucci | Rucci | 
+| 1 | compartido | exacta | Rucci | Rucci | 
+| 2 | compartido | exacta | Baigorria y Circu | Baigorria y Circu | 
+| 3 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 4 | oculto | exacta | sector-oculto | sector-oculto | ✓
+| 5 | emparejado | exacta | Circu y Colectora | JNewbery y JPabloII | ✓
+| 6 | emparejado | exacta | MEstrada y SLoria | SLoria y JNewbery | ✓
+| 7 | compartido | exacta | JJPaso y Donado | Donado y JJPaso | 
+| 8 | solo-vuelta | - | — | Donado y EvaPerón | ✓
+| 9 | compartido | exacta | Mendoza y Donado | Mendoza y Donado | 
+| 10 | compartido | exacta | Mendoza y PUnidas | Mendoza y PUnidas | 
+| 11 | solo-vuelta | - | — | SanJuan y Agneta | ✓
+| 12 | emparejado | exacta | Mendoza y Avellaneda | SanJuan y Avellaneda | ✓
+| 13 | emparejado | exacta | Córdoba y Cafferata | SantaFe y Constitución | ✓
+| 14 | emparejado | exacta | Córdoba y Oroño | SantaFe y Oroño | ✓
+| 15 | solo-vuelta | - | — | SantaFe y Corrientes | ✓
+| 16 | emparejado | exacta | SLuis y Laprida | Maipú y SanJuan | ✓
+| 17 | emparejado | exacta | Laprida y Pellegrini | Maipú y Pellegrini | ✓
+| 18 | emparejado | exacta | Laprida y 27Febrero | PJunta y 27Febrero | ✓
+| 19 | compartido | exacta | SMartín y Seguí | SMartín y Segui | 
+| 20 | emparejado | inferida-alta | SMartín y Uriburu | SanMartín y Uriburu | 
+| 21 | emparejado | exacta | SMartín y Arijón | Bustamante y SanMartín | ✓
+| 22 | emparejado | exacta | Arijón y Lituania | Arijón y Andes | ✓
+| 23 | compartido | exacta | JDPerón y ArroyoSaladillo | JDPerón y ArroyoSaladillo | 
+| 24 | compartido | exacta | JDPerón y SEstero | SEstero y JDPerón | 
+| 25 | emparejado | inferida-alta | 17Octubre y SDiego | SanDiego y 17OCtubre | 
+| 26 | compartido | exacta | JDPerón y SMartín | JDPerón y SMartín | 
+| 27 | compartido | exacta | Filippini y Mosconi | Filippini y Mosconi | 
+| 28 | compartido | exacta | Cementerio VGG | Cementerio VGG | 
 
-## Línea 102/144 — 102/144-NNBO-BONS
+## Línea 143 — 143-GBCA-CAGB · 143-RUCA-CARU
 
-### 102/144-NNBO-BONS (Grandoli y Gutiérrez → Barrio Olímpico)
+### 143-GBCA-CAGB (TallerBaigorria → BatlleOrdóñez y Oroño)
 
 | # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
 |---|------|-----------|------------|---------------|----------|
-| 1 | compartido | exacta | Grandoli y Gutiérrez | Grandoli y Gutiérrez | 
-| 2 | compartido | exacta | Beruti y Ayolas | Ayolas y Beruti | 
-| 3 | emparejado | exacta | Necochea y Pellegrini | Pellegrini y Colón | ✓
-| 4 | compartido | exacta | Pellegrini y Corrientes | Pellegrini y Corrientes | 
-| 5 | emparejado | exacta | Alvear y Córdoba | Balcarce y Córdoba | ✓
-| 6 | emparejado | exacta | Catamarca y Cafferata | Salta y Francia | ✓
-| 7 | compartido | exacta | Alberdi y Avellaneda | Alberdi y Avellaneda | 
-| 8 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
-| 9 | compartido | exacta | Rondeau y Puccio | Rondeau y Puccio | 
-| 10 | emparejado | exacta | Rondeau y Núñez | Salvat y Rondeau | ✓
-| 11 | compartido | exacta | Palestina y Granaderos | Palestina y Granaderos | 
-| 12 | compartido | exacta | Barrio Olímpico | Barrio Olímpico | 
+| 1 | compartido | exacta | TallerBaigorria | TallerBaigorria | 
+| 2 | emparejado | exacta | Arenales y Ruta11 | EvaPerón y Ruta11 | ✓
+| 3 | compartido | exacta | Ruta11 y Ciudadela | Ruta11 y Ciudadela | 
+| 4 | solo-vuelta | - | — | Rondeau y Núñez | 
+| 5 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
+| 6 | emparejado | exacta | Alberdi y Salta | SNicolás y Catamarca | ✓
+| 7 | emparejado | exacta | Tucumán y Oroño | SantaFe y Oroño | ✓
+| 8 | emparejado | exacta | España y SLuis | Corrientes y SantaFe | ✓
+| 9 | emparejado | exacta | SLuis y Laprida | SJuan y Maipú | ✓
+| 10 | emparejado | exacta | Laprida y Pellegrini | BuenosAires y Pellegrini | ✓
+| 11 | emparejado | exacta | Laprida y Segui | BuenosAires y Segui | ✓
+| 12 | compartido | exacta | Uriburu y Ayacucho | Ayacucho y Uriburu | 
+| 13 | emparejado | exacta | Ayacucho y Arijón | BatlleOrdóñez y Ayacucho | ✓
+| 14 | compartido | exacta | BatlleOrdóñez y SMartín | BatlleOrdóñez y SMartín | 
+| 15 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
+
+
+### 143-RUCA-CARU (Rucci → BatlleOrdóñez y Oroño)
+
+| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
+|---|------|-----------|------------|---------------|----------|
+| 1 | compartido | exacta | Rucci | Rucci | 
+| 2 | compartido | exacta | Baigorria y CCasas | CCasas y Baigorria | 
+| 3 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
+| 4 | emparejado | exacta | Alberdi y Salta | SNicolás y Catamarca | ✓
+| 5 | emparejado | exacta | Tucumán y Oroño | SantaFe y Oroño | ✓
+| 6 | emparejado | exacta | España y SLuis | Corrientes y SantaFe | ✓
+| 7 | emparejado | exacta | SLuis y Laprida | SJuan y Maipú | ✓
+| 8 | emparejado | exacta | Laprida y Pellegrini | BuenosAires y Pellegrini | ✓
+| 9 | emparejado | exacta | Laprida y Segui | Segui y BuenosAires | ✓
+| 10 | compartido | exacta | Oroño y Segui | Oroño y Segui | 
+| 11 | compartido | exacta | Oroño y Uriburu | Oroño y Uriburu | 
+| 12 | compartido | exacta | BatlleOrdóñez y Oroño | BatlleOrdóñez y Oroño | 
+
+## Línea 102/144 — 102/144-BONS-NNBO
+
+### 102/144-BONS-NNBO (Barrio Olímpico → Grandoli y Gutiérrez)
+
+| # | tipo | confianza | ida (baja) | vuelta (sube) | validada |
+|---|------|-----------|------------|---------------|----------|
+| 1 | compartido | exacta | Barrio Olímpico | Barrio Olímpico | 
+| 2 | compartido | exacta | Palestina y Granaderos | Palestina y Granaderos | 
+| 3 | emparejado | exacta | Salvat y Rondeau | Rondeau y Núñez | ✓
+| 4 | compartido | exacta | Rondeau y Puccio | Rondeau y Puccio | 
+| 5 | compartido | exacta | Rondeau y Sorrento | Rondeau y Sorrento | 
+| 6 | compartido | exacta | Alberdi y Avellaneda | Alberdi y Avellaneda | 
+| 7 | emparejado | exacta | Salta y Francia | Catamarca y Cafferata | ✓
+| 8 | emparejado | exacta | Balcarce y Córdoba | Alvear y Córdoba | ✓
+| 9 | compartido | exacta | Pellegrini y Corrientes | Pellegrini y Corrientes | 
+| 10 | emparejado | exacta | Pellegrini y Colón | Necochea y Pellegrini | ✓
+| 11 | compartido | exacta | Ayolas y Beruti | Beruti y Ayolas | 
+| 12 | compartido | exacta | Grandoli y Gutiérrez | Grandoli y Gutiérrez | 
 
 ## Línea 145/133 — 145/133-CACE-CECA · 145/133-SOCE-CESO
 

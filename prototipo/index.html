@@ -116,22 +116,22 @@ const COLORS = {
   // lote 2 (provisionales, ajustar a mano como en T8)
   '122-RICE-CERI':     '#ef6c00',   // naranja
   '122-SECE-CESE':     '#ffb300',   // ámbar
-  '126-LACE-CELA':     '#ba68c8',   // amatista claro
-  '126-OVCE-CEOV':     '#880e4f',   // burdeos/vino
-  '128-NECE-NEAS':     '#8e24aa',   // violeta
-  '128-ROCE-ROFR':     '#c2185b',   // magenta
-  '130-ACCE-ROAC':     '#ba68c8',   // amatista claro
-  '133/125-OCFU-FUCO': '#5d4037',   // marrón
-  '133/125-OCWI-WICO': '#8d6e63',   // marrón claro
+  '126-CELA-LACE':     '#ba68c8',   // amatista claro
+  '126-CEOV-OVCE':     '#880e4f',   // burdeos/vino
+  '128-NEAS-NECE':     '#8e24aa',   // violeta
+  '128-ROFR-ROCE':     '#c2185b',   // magenta
+  '130-ROAC-ACCE':     '#ba68c8',   // amatista claro
+  '133/125-FUCO-OCFU': '#5d4037',   // marrón
+  '133/125-WICO-OCWI': '#8d6e63',   // marrón claro
   '138/139-TFCA-CATF': '#64b5f6',   // azul claro
   '140-TFFL-FLTF':     '#1565c0',   // azul
   // lote 3 (borrador 2026-10-23; hexes provisionales, la paleta final la define el inspector).
   // ids del parseo: primer ramal listado = ida (142 NNFU va primero; compuestas '102/144' y '145/133')
-  '142-NNFU-NSFU':     '#455a64',   // azul pizarra
-  '142-RN-RS':         '#00695c',   // teal
-  '143-CAGB-GBCA':     '#0277bd',   // azul (provisorio)
-  '143-CARU-RUCA':     '#00897b',   // teal claro (provisorio)
-  '102/144-NNBO-BONS': '#039be5',   // celeste (provisorio)
+  '142-NSFU-NNFU':     '#455a64',   // azul pizarra
+  '142-RS-RN':         '#00695c',   // teal
+  '143-GBCA-CAGB':     '#0277bd',   // azul (provisorio)
+  '143-RUCA-CARU':     '#00897b',   // teal claro (provisorio)
+  '102/144-BONS-NNBO': '#039be5',   // celeste (provisorio)
   '145/133-CACE-CECA': '#ff7043',   // coral (provisorio)
   '145/133-SOCE-CESO': '#607d8b',   // gris azulado (provisorio)
   '146-NS-NN':         '#5c6bc0',   // índigo (provisorio)
@@ -152,7 +152,7 @@ window.pick = idx => { const c = corridas[idx]; if (!c) return;
 const CALENDARIOS = {
   habiles:      { archivo: 'horarios-habiles.json',      etiqueta: 'día hábil (mar 20/10)' },
   mediofestivo: { archivo: 'horarios-mediofestivo.json', etiqueta: 'mediofestivo (sáb)' },
-  festivo:      { archivo: 'horarios-festivo.json',      etiqueta: 'festivo (fetch pendiente)' },
+  festivo:      { archivo: 'horarios-festivo.json',      etiqueta: 'festivo (dom 25/10)' },
 };
 let calendarioSel = (() => { try { return localStorage.getItem('calendarioSel') || 'mediofestivo'; } catch(_) { return 'mediofestivo'; } })();
 let calendarioToken = 0;
