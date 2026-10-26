@@ -557,43 +557,65 @@ function render(min){
 
 function dibujarCorrida(g, c, idx, min){
   const Ts = c.times, Ms = c.marks;
-  if (min < Ts[0]-3) return;
-  let y, parked = false;
-  let j = 0; while (j < Ts.length-1 && Ts[j+1] <= min) j++;
-  if (j >= Ts.length-1 && min > Ts[Ts.length-1]){
-    // fin del tramo: estaciona en la punta de llegada hasta que arranca el próximo tramo
-    const nxt = c.segs && c.segs[c.segPos+1];
-    if (!nxt || min >= nxt.times[0]) return;   // terminó el día / ya arrancó el próximo tramo
-    y = Ms[Ms.length-1].y; parked = true;
+  const nxt = c.segs && c.segs[c.segPos+1];
+  const prv = c.segs && c.segs[c.segPos-1];
+
+  // PERSISTENCIA del servicio (T33 rev. + límite ±7 min del inspector): el punto
+  // se muestra estacionado MIENTRAS espera en una punta, con persistencia acotada:
+  // desde 7 min antes de que comience a moverse (cada partida) y hasta 7 min tras
+  // finalizar el servicio (última llegada). Esperas largas no mantienen el punto
+  // en el medio del hueco. Si el servicio cambia de ramal (próximo tramo en otro
+  // eje), la espera se pinta en el eje donde va a continuar su servicio — punta
+  // de origen del próximo tramo, con el lado de ESE ramal. En movimiento, sin
+  // persistencia en el extremo.
+  const PERSIST = 7;   // ventanas de estacionamiento, en minutos
+  let st;   // {ejeId, lado, y, parked} — estado del punto en este minuto
+  if (min > Ts[Ts.length-1]){
+    if (nxt){
+      if (min >= nxt.times[0]-3 || min < nxt.times[0]-PERSIST) return;   // handoff / hueco largo sin estacionado
+      st = { ejeId:nxt.ejeId, lado:nxt.lado, y:nxt.marks[0].y, parked:true };
+    } else {
+      if (min > Ts[Ts.length-1] + PERSIST) return;   // ya pasó la ventana de 7 min tras finalizar
+      st = { ejeId:c.ejeId, lado:c.lado, y:Ms[Ms.length-1].y, parked:true };
+    }
+  } else if (min < Ts[0]-3){
+    // espera en la punta de origen antes de la primera partida; la espera ENTRE tramos
+    // la dibuja el tramo anterior (ya sobre el eje de este): sólo en la ventana
+    // de 7 min previa a la partida
+    if (prv || min < Ts[0]-PERSIST) return;
+    st = { ejeId:c.ejeId, lado:c.lado, y:Ms[0].y, parked:true };
   } else {
+    let j = 0; while (j < Ts.length-1 && Ts[j+1] <= min) j++;
     const i = Math.min(j, Ts.length-2);
     const f = Math.min(1, Math.max(0, (min - Ts[i]) / ((Ts[i+1]-Ts[i]) || 1)));
-    y = Ms[i].y + (Ms[i+1].y - Ms[i].y)*f;
+    st = { ejeId:c.ejeId, lado:c.lado, y:Ms[i].y + (Ms[i+1].y - Ms[i].y)*f, parked:false };
   }
-  const ej = ejes.find(e=>e.id===c.ejeId);
-  const cx = ej.x + (c.lado==='ida' ? -14 : 14);
+  const ej = ejes.find(e=>e.id===st.ejeId);
+  if (!ej) return;
+  const y = st.y, parked = st.parked, lado = st.lado;
+  const cx = ej.x + (lado==='ida' ? -14 : 14);
   const sel = c.srv === seleccion;
-
+  const color = ej.color || c.color;
   mk(g,'circle',{ class:'dot', cx, cy:y, r: parked? 4 : 5,
-                  fill:c.color, opacity: parked? (sel? .85 : .45) : .92, style:'cursor:pointer',
+                  fill:color, opacity: parked? (sel? .85 : .55) : .92, style:'cursor:pointer',
                   onclick:`window.pick(${idx})` });
 
   if (!parked || sel){
     // badge = número línea-servicio + TRIÁNGULO SVG (el carácter Unicode ↓/↑ no se renderiza
     // en la fuente del badge; un polígono es determinista en cualquier font)
     const badge = c.srv;
-    const tx = cx + (c.lado==='ida'? -9 : 9);
+    const tx = cx + (lado==='ida'? -9 : 9);
     const W = badge.length*7.6;                   // ancho estimado del texto (calibrado a font-size 12)
-    if (sel) mk(g,'rect',{ x: c.lado==='ida'? tx-W-14 : tx-4, y: y-11.5, width:W+18, height:19, rx:8,
-                           fill:c.color, opacity:.22 });
+    if (sel) mk(g,'rect',{ x: lado==='ida'? tx-W-14 : tx-4, y: y-11.5, width:W+18, height:19, rx:8,
+                           fill:color, opacity:.22 });
     const lbl = mk(g,'text',{ x: tx, y: y+4.3, 'font-size':12, fill: sel?'#111':'#222', opacity: parked? .6 : 1,
-                              'font-weight':700, 'text-anchor': c.lado==='ida'?'end':'start' });
+                              'font-weight':700, 'text-anchor': lado==='ida'?'end':'start' });
     lbl.style.cursor = 'pointer';
     lbl.textContent = badge;
     lbl.setAttribute('onclick',`window.pick(${idx})`);
     // triángulo dirección, espejado respecto al eje: ida ↓ (a la izquierda) / vuelta ↑ (a la derecha)
-    const triX = c.lado==='ida' ? tx-W-8 : tx+W+8;
-    const tri = c.lado==='ida'
+    const triX = lado==='ida' ? tx-W-8 : tx+W+8;
+    const tri = lado==='ida'
       ? `${triX-3.5},${y-2.4} ${triX+3.5},${y-2.4} ${triX},${y+3}`     // apunta abajo
       : `${triX-3.5},${y+2.4} ${triX+3.5},${y+2.4} ${triX},${y-3}`;   // apunta arriba
     const pg = mk(g,'polygon',{ points:tri, fill: sel?'#111':'#222', opacity: parked? .6 : 1 });
@@ -611,6 +633,16 @@ function dibujarServicio(g, segs){
   if (!ej) return;
   const x  = ej.x + (act.lado==='ida'? -14 : 14);
   const Ts = act.times, Ms = act.marks;
+  const PERSIST = 7;   // ventana de estacionamiento, en minutos (T33 rev. del inspector)
+  const nx = segs[segs.indexOf(act)+1];
+
+  // ventana de representación del servicio: desde 7 min antes de la primera
+  // partida hasta 7 min después de finalizar; las esperas largas NO mantienen
+  // el punto estacionado en el medio del hueco
+  if (simT > Ts[Ts.length-1]){
+    if (!nx){ if (simT > Ts[Ts.length-1]+PERSIST) return; }
+    else    { if (simT < nx.times[0]-PERSIST) return; }
+  } else if (simT < Ts[0]-PERSIST) return;
 
   // línea punteada del tramo activo con la hora de paso de cada sector (centrada bajo el punto)
   mk(g,'polyline',{ points: Ms.map(m=>`${x},${m.y}`).join(' '),
@@ -622,8 +654,11 @@ function dibujarServicio(g, segs){
   });
 
   // aro fino del servicio seleccionado: interpolado dentro del tramo activo;
-  // estaciona en la punta de origen antes de partir, en la de llegada entre tramos
-  // y en la última punta al terminar el día — persiste hacia atrás y hacia adelante en el tiempo
+  // en espera entre tramos estaciona en la punta de origen del PRÓXIMO tramo (T33):
+  // si cambia de ramal, el aro pasa al eje donde va a continuar el servicio, con
+  // el lado de ese ramal; antes de la primera partida, en su punta de origen;
+  // tras finalizar, estacionado hasta 7 min después de la última llegada (rev.).
+  let ringEje = ej, ringLado = act.lado;
   let y;
   if (simT < Ts[0])                y = Ms[0].y;
   else if (simT <= Ts[Ts.length-1]){
@@ -631,15 +666,39 @@ function dibujarServicio(g, segs){
     if (i > Ts.length-2) i = Ts.length-2;
     const f = Math.min(1, Math.max(0, (simT - Ts[i]) / ((Ts[i+1]-Ts[i]) || 1)));
     y = Ms[i].y + (Ms[i+1].y - Ms[i].y)*f;
-  } else                           y = Ms[Ms.length-1].y;
-  mk(g,'circle',{ cx:x, cy:y, r:9, fill:'none', stroke:'#111', 'stroke-width':1.4, opacity:.95 });
+  } else {
+    if (!nx) y = Ms[Ms.length-1].y;
+    else { ringEje = ejes.find(e=>e.id===nx.ejeId); ringLado = nx.lado; y = nx.marks[0].y; }
+  }
+  mk(g,'circle',{ cx: ringEje.x + (ringLado==='ida'? -14 : 14), cy:y, r:9, fill:'none', stroke:'#111', 'stroke-width':1.4, opacity:.95 });
 }
 
 /* ---------- Panel de info ---------- */
 window.cerrarPanel = () => {
   // la X sólo cierra el cuadro: la selección del servicio permanece en la gráfica
-  // (aro fino) hasta volver a tocar el punto/badge para deseleccionar
+  // (aro fino) hasta volver a tocar el punto/badge para deseleccionar.
+  // Excepción (T33 rev.): si el servicio ya terminó su día ya no tiene punto en el
+  // mapa para deseleccionarlo — la X limpia también la selección para no dejarla
+  // pegada sin representación visual.
   document.getElementById('panel').style.display = 'none';
+  if (seleccion !== null){
+    const segs = servicioSegs[seleccion];
+    const visible = segs && segs.some(c=>{
+      const Ts = c.times;
+      const nxt = c.segs && c.segs[c.segPos+1], prv = c.segs && c.segs[c.segPos-1];
+      const PERSIST = 7;   // ventana de estacionamiento, en minutos (rev. del inspector)
+      if (simT > Ts[Ts.length-1]){
+        if (!nxt) return simT <= Ts[Ts.length-1]+PERSIST;                  // estacionado hasta 7 min tras finalizar
+        return simT >= nxt.times[0]-PERSIST;                               // estacionado desde 7 min antes de la siguiente partida
+      }
+      if (simT < Ts[0]-3)         return !prv && simT >= Ts[0]-PERSIST;    // espera pre-1.ª partida (ventana 7 min)
+      return true;                                                          // en movimiento / pre-roll
+    });
+    if (!visible){
+      seleccion = null;
+      render(simT);
+    }
+  }
 };
 
 function pintaInfo(srv){
@@ -668,10 +727,10 @@ function pintaInfo(srv){
     const head = `<tr class="segh"><td colspan="2">${segs.length>1 ? (i+1)+'. ' : ''}${flecha} · ${c.marks[0][c.lado]} → ${c.marks[c.marks.length-1][c.lado]} · ${fmt(c.times[0])}</td></tr>`;
     return head + filas;
   }).join('');
-  const x = `<span class="x" title="Cerrar cuadro (la selección permanece)" onclick="window.cerrarPanel()">✕</span>`;
+  const x = `<span class="x" title="Cerrar cuadro (la selección permanece; si el servicio ya terminó su día se limpia)" onclick="window.cerrarPanel()">✕</span>`;
   e.innerHTML = `<h3>${srv} · línea ${segs[0].cor.linea} · ${segs.length} tramo(s)${x}</h3>
     <table>${bloques}</table>
-    <div style="margin-top:6px;color:#999">X cierra este cuadro · tocá el punto otra vez para deseleccionar</div>`;
+    <div style="margin-top:6px;color:#999">X cierra este cuadro · tocá el punto otra vez para deseleccionar (si el servicio ya terminó, la X lo deselecciona)</div>`;
 }
 
 // refresco SOLO de estados del cuadro abierto (sin reconstruir el DOM, conserva el scroll del panel)
