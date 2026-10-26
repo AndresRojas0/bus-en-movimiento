@@ -658,7 +658,8 @@ function pintaInfo(srv){
   // itinerario completo: un bloque por tramo (la banda puede cambiar durante el servicio)
   const bloques = segs.map((c,i)=>{
     const filas = c.marks.map((m,j)=>{
-      const nombre = (m.ida && m.vuelta && m.ida!==m.vuelta) ? `${m.ida} ⇄ ${m.vuelta}` : (m.ida||m.vuelta);
+      // cada tramo lista SOLO los sectores del lado en que circula el servicio (T32)
+      const nombre = m[c.lado] || m[c.lado==='ida' ? 'vuelta' : 'ida'];
       const proxEste = prox && prox[0]===i && prox[1]===j;
       const estado = proxEste ? 'prox' : (c.times[j] <= simT ? 'pas' : 'fut');
       return `<tr class="${estado}" data-t="${c.times[j]}"><td>${nombre}</td><td>${fmt(c.times[j])}</td></tr>`;
