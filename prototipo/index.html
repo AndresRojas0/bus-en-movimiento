@@ -46,6 +46,10 @@
   #panel tr.fut td { color:#111; }
   #panel .x { float:right; cursor:pointer; font-size:13px; color:#999; font-weight:700; }
   #panel .x:hover { color:#333; }
+  #panel .km { color:#777; font-size:10px; margin:2px 0 4px; }
+  #panel .cDot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:4px; vertical-align:middle; }
+  #panel table.secc tr td:nth-child(2) { color:#555; white-space:nowrap; }
+  #panel table.secc tr td:last-child { width:38px; }
   circle.dot { cursor:pointer; }
   @media (max-width:720px) { #panel { right:8px; top:8px; } }
 </style>
@@ -104,6 +108,7 @@ let seleccion = null;   // srv del servicio seleccionado — persiste aunque cam
 let servicioSegs = {};  // srv -> [tramos (corridas) ordenados por hora de partida]
 let SVG_H = 0;
 let corredoresAll = [], seleccionados = new Set(), realByCorredor = {};
+let sectorSel = null;   // sector o punta seleccionados por clic en su tick/texto (T34): ver pickSector/pickPunta
 
 // color POR CORREDOR (no por línea): cada ramal se distingue, incluso dentro de la misma línea
 const COLORS = {
@@ -139,6 +144,7 @@ const COLORS = {
 };
 
 window.pick = idx => { const c = corridas[idx]; if (!c) return;
+  if (sectorSel){ sectorSel = null; pintarSectorSel(); }   // la selección de servicio reemplaza a la del sector
   if (seleccion === c.srv){
     seleccion = null;
     document.getElementById('panel').style.display = 'none';   // deselección por re-touch del punto
@@ -238,7 +244,7 @@ function rebuild(){
   const sel = corredoresAll.filter(c=> seleccionados.has(c.id));
   const svg = document.getElementById('svg');
   svg.innerHTML = '';
-  ejes = []; corridas = []; seleccion = null; servicioSegs = {};
+  ejes = []; corridas = []; seleccion = null; servicioSegs = {}; sectorSel = null;
   document.getElementById('panel').style.display='none';
   if (!sel.length){
     SVG_H = 300;
@@ -281,8 +287,12 @@ function dibujarEje(svg, eje, ci){
   txt(g, 0, PAD_TOP-64, `${cor.linea}`, {size:42, weight:700, fill:color, anchor:'middle'});
   txt(g, 0, PAD_TOP-44, `${cor.banderas.ida}⇄${cor.banderas.vuelta}`, {size:14, weight:700, fill:color, anchor:'middle'});
 
-  txt(g, 0, PAD_TOP-26, `▲ ${cor.puntaArriba}`, {size:11, fill:'#555', anchor:'middle'});
-  txt(g, 0, yFin+16, `▼ ${cor.puntaAbajo}`, {size:11, fill:'#555', anchor:'middle'});
+  // puntas y sectores seleccionables por clic (T34). La punta muestra llegadas+salidas;
+  // el sector despliega línea-servicio-bandera-hora filtrado por el LATERAL tocado.
+  const paTxt = txt(g, 0, PAD_TOP-26, `▲ ${cor.puntaArriba}`, {size:11, fill:'#555', anchor:'middle'});
+  paTxt.setAttribute('onclick',`window.pickPunta('${eje.id}','arriba')`); paTxt.style.cursor='pointer';
+  const pbTxt = txt(g, 0, yFin+16, `▼ ${cor.puntaAbajo}`, {size:11, fill:'#555', anchor:'middle'});
+  pbTxt.setAttribute('onclick',`window.pickPunta('${eje.id}','abajo')`); pbTxt.style.cursor='pointer';
   if (ci === 0) txt(g, -52, (PAD_TOP+yFin)/2, '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀▼ IDA⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀|⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀VUELTA ▲', {size:9.5, fill:'#999', anchor:'middle'});
 
   mk(g,'line',{ x1:0, y1:PAD_TOP, x2:0, y2:yFin, stroke:color, 'stroke-width':2.2 });
@@ -306,6 +316,16 @@ function dibujarEje(svg, eje, ci){
     if (m.vuelta) rot(g, +20, m.y+3.5, m.vuelta, -35, {size:11, weight:500, fill:'#777', anchor:'start'});
     const ti = mk(g,'title',{});
     ti.textContent = `orden ${m.orden} · ida: ${m.ida||'—'} · vuelta: ${m.vuelta||'—'} · ${m.confianza}${m.validadaUsuario?' · validada':''}`;
+    // zonas de clic por LATERAL (T34): izquierda = ida, derecha = vuelta; transparentes al render
+    // (pointer-events all) y cubren el rótulo diagonal cercano para dar buen blanco táctil
+    if (m.tipo !== 'oculto'){
+      if (m.ida)   mk(g,'rect',{ x:-26, y:m.y-9, width:26, height:18, fill:'#000', 'fill-opacity':0,
+                                 'pointer-events':'all', style:'cursor:pointer',
+                                 onclick:`window.pickSector('${eje.id}',${i},'ida')` });
+      if (m.vuelta) mk(g,'rect',{ x:0, y:m.y-9, width:26, height:18, fill:'#000', 'fill-opacity':0,
+                                  'pointer-events':'all', style:'cursor:pointer',
+                                  onclick:`window.pickSector('${eje.id}',${i},'vuelta')` });
+    }
   });
 }
 
@@ -369,8 +389,10 @@ function corridaDesdeReal(eje, lado, dto){
       horas = asegurarCreciente(side.map((_,i)=> comb[Math.min(comb.length-1, Math.round(i*(comb.length-1)/(side.length-1)))]));
     }
     const srv = String(row.Servicio ?? ('s'+(k+1))).replace(/\s+/g,'');
+    // row adjunta el dto original: pintaSector/pintaPunta leen Bandera (la banda que el
+    // backend reportó ESE día, p.ej. el mismo tramo puede mostrarse con otra banda según calendario)
     corridas.push({ ejeId:eje.id, cor:eje.cor, lado, color:eje.color,
-                    srv:`${eje.cor.linea}-${srv}`, marks:side, times:horas });
+                    srv:`${eje.cor.linea}-${srv}`, marks:side, times:horas, row });
   });
 }
 
@@ -734,15 +756,204 @@ function pintaInfo(srv){
 }
 
 // refresco SOLO de estados del cuadro abierto (sin reconstruir el DOM, conserva el scroll del panel)
+// gobierna tanto el panel de servicio (seleccion) como los de sector/punta (sectorSel, T34):
+// filas con hora ya pasada → 'pas' (gris), la más próxima sin pasar → 'prox', el resto 'fut'
 function panelDinamica(){
   const e = document.getElementById('panel');
-  if (!seleccion || e.style.display === 'none') return;
+  if (!seleccion && !sectorSel) return;
+  if (e.style.display === 'none') return;
   const filas = e.querySelectorAll('tr[data-t]');
   let proxIdx = filas.length;
   for (let k=0; k<filas.length; k++)
     if (+filas[k].dataset.t > simT){ proxIdx = k; break; }
   filas.forEach((tr,k)=> tr.setAttribute('class',
     k===proxIdx ? 'prox' : (k < proxIdx ? 'pas' : 'fut')));
+}
+
+/* ---------- Selección de sector y de punta (T34) ----------
+   Clic en el lateral ida/vuelta de un sector (o en la ▲/▼ punta) lo marca como
+   seleccionado y abre el panel con línea-servicio-bandera-hora. Si la esquina es
+   común a varios ejes visibles (cánones iguales), el panel lista los ramales de
+   TODOS esos ejes; la banda que se muestra por fila es la que reportó el backend
+   para el calendario cargado (row.Bandera, p.ej. la vuelta de 142 puede venir con
+   otra banda según día). Re-tocar el mismo sector/punta deselecciona. La capa de
+   resaltado vive en sectorSelLayer: render() sólo renueva dotsLayer. */
+function CAN(s){ return String(s||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .split(/[^A-Z0-9]+/).filter(Boolean).map(t=> ALIAS_TOK[t] || t).sort().join('|'); }   // misma esquina aunque cambie el orden de calles
+// abreviaturas del corpus que conviven con su forma larga en otros corredores (derivado del corpus 26/10):
+// 'SanMartín' (142) ⇄ 'SMartín' (103), 'SanJuan' ⇄ 'SJuan', 'SanDiego' ⇄ 'SDiego' — la tabla la une
+const ALIAS_TOK = { SANMARTIN:'SMARTIN', SANJUAN:'SJUAN', SANDIEGO:'SDIEGO' };
+
+window.pickSector = (cid, filaIdx, lado) => {
+  if (sectorSel && !sectorSel.punta && sectorSel.ori &&
+      sectorSel.ori.cid===cid && sectorSel.ori.filaIdx===filaIdx && sectorSel.ori.lado===lado){
+    sectorSel = null;                                          // re-tocar el mismo sector: deselección
+    document.getElementById('panel').style.display = 'none';
+    pintarSectorSel(); return;
+  }
+  const ej = ejes.find(e=>e.id===cid); const mark = ej && ej.marks[filaIdx];
+  const nombre = mark && mark[lado];
+  if (!nombre) return;
+  sectorSel = { punta:false, lado, canon:CAN(nombre), nombre, ori:{cid,filaIdx,lado} };
+  sectorSel.hits = ecuHits('sector');
+  // una sola selección activa a la vez: abrir el sector deselecciona el servicio (y vice-versa en window.pick)
+  seleccion = null; render(simT);
+  pintaSector(); pintarSectorSel();
+};
+
+window.pickPunta = (cid, pos) => {
+  const ej = ejes.find(e=>e.id===cid); if (!ej) return;
+  if (sectorSel && sectorSel.punta && sectorSel.ori.cid===cid && sectorSel.ori.pos===pos){
+    sectorSel = null;
+    document.getElementById('panel').style.display = 'none';
+    pintarSectorSel(); return;
+  }
+  const nombre = pos==='arriba' ? ej.cor.puntaArriba : ej.cor.puntaAbajo;
+  sectorSel = { punta:true, pos, canon:CAN(nombre), nombre, ori:{cid,pos} };
+  sectorSel.hits = ecuHits('punta');
+  seleccion = null; render(simT);
+  pintaPunta(); pintarSectorSel();
+};
+
+function ecuHits(kind){
+  const S = sectorSel;
+  return ejes.filter(e=> seleccionados.has(e.id))
+    .map(e=>{
+      if (kind==='sector'){
+        for (let j=0; j<e.marks.length; j++){
+          const m = e.marks[j];
+          if (m.tipo!=='oculto' && m[S.lado] && CAN(m[S.lado])===S.canon) return {cid:e.id, filaIdx:j};
+        }
+      } else {
+        const punta = S.pos==='arriba' ? e.cor.puntaArriba : e.cor.puntaAbajo;
+        if (CAN(punta)===S.canon) return {cid:e.id, filaIdx:null};
+      }
+      return null;
+    }).filter(Boolean);
+}
+
+// banda de la fila: la que reportó el backend para el día cargado (row.Bandera);
+// corredor simulado (sin datos reales): la banda propia del corredor
+const bandaDe = c => (c.row && String(c.row.Bandera||'').trim()) || c.cor.banderas[c.lado];
+
+function pintaSector(){
+  const e = document.getElementById('panel'), S = sectorSel;
+  const filas = [];
+  S.hits.forEach(h=>{
+    const ej2 = ejes.find(x=>x.id===h.cid), cor = ej2.cor, mark = ej2.marks[h.filaIdx];
+    corridas.filter(c=> c.ejeId===h.cid && c.lado===S.lado).forEach(c=>{
+      const j = c.marks.indexOf(mark);           // mismos objetos de marca → el índice está alineado por orden
+      if (j < 0 || c.times[j]==null) return;
+      filas.push({ srv:c.srv, banda:bandaDe(c), hora:c.times[j], color:c.color });
+    });
+  });
+  filas.sort((a,b)=> a.hora-b.hora || a.srv.localeCompare(b.srv));
+  const ramales = S.hits.map(h=>{
+    const ej2 = ejes.find(x=>x.id===h.cid);
+    return `${ej2.cor.linea}-${ej2.cor.banderas[S.lado]}`;
+  });
+  const variantes = [...new Set(S.hits.map(h=>{
+    const ej2 = ejes.find(x=>x.id===h.cid);
+    return ej2.marks[h.filaIdx][S.lado];
+  }))];
+  const x = `<span class="x" title="Cerrar cuadro (el sector sigue marcado; re-tocá el sector para deseleccionar)" onclick="window.cerrarPanel()">✕</span>`;
+  e.innerHTML = `<h3>${S.nombre}${x}</h3>
+    <div class="km">sector · lateral ${S.lado==='ida' ? 'izquierdo (ida ↓)' : 'derecho (vuelta ↑)'} · ramales: ${ramales.join(' · ')}</div>
+    ${variantes.length>1 ? `<div class="km">también rotulado: ${variantes.join(' / ')}</div>` : ''}
+    <table class="secc">${filas.map(f=>
+      `<tr data-t="${f.hora}"><td><span class="cDot" style="background:${f.color}"></span>${f.srv}</td><td>${f.banda}</td><td>${fmt(f.hora)}</td></tr>`).join('')}</table>
+    <div style="margin-top:6px;color:#999">la banda es la que reportó el backend para el calendario cargado · ${filas.length} paso(s) · las horas ya pasadas quedan en gris a medida que avanza el tiempo</div>`;
+  e.style.display = 'block';
+  panelDinamica();
+}
+
+function pintaPunta(){
+  const e = document.getElementById('panel'), S = sectorSel;
+  const filas = [];
+  S.hits.forEach(h=>{
+    const ej2 = ejes.find(x=>x.id===h.cid), cor = ej2.cor;
+    for (const lado of ['ida','vuelta']){
+      const lus = corridas.filter(c=> c.ejeId===h.cid && c.lado===lado);
+      if (!lus.length || !lus[0].marks.length) continue;
+      // las corridas del lado ya están alineadas al orden de viaje:
+      // ida sale de puntaArriba (índice 0) y llega a puntaAbajo (último); vuelta al revés
+      const jPunta = (lado==='ida') === (S.pos==='arriba') ? 0 : lus[0].marks.length-1;
+      const tipo   = (lado==='ida') === (S.pos==='arriba') ? 'sale' : 'llega';
+      const bandita= lado==='ida' ? cor.banderas.ida : cor.banderas.vuelta;
+      lus.forEach(c=>{
+        const t = c.times[jPunta];
+        if (t==null) return;
+        filas.push({ srv:c.srv, banda:bandaDe(c), hora:t, color:c.color,
+                     tag: tipo==='sale' ? 'sale '+ (lado==='ida'?'↓':'↑') : 'llega '+ (lado==='ida'?'↓':'↑'),
+                     bandita });
+      });
+    }
+  });
+  filas.sort((a,b)=> a.hora-b.hora || a.srv.localeCompare(b.srv));
+  const x = `<span class="x" title="Cerrar cuadro (la punta sigue marcada; re-tocá la punta para deseleccionar)" onclick="window.cerrarPanel()">✕</span>`;
+  e.innerHTML = `<h3>${S.nombre}${x}</h3>
+    <div class="km">punta ${S.pos==='arriba' ? '▲ arriba' : '▼ abajo'} · llegadas + salidas en la misma esquina · ${S.hits.length} eje(s)</div>
+    <table class="secc">${filas.map(f=>
+      `<tr data-t="${f.hora}"><td><span class="cDot" style="background:${f.color}"></span>${f.srv}</td><td>${f.tag} · ${f.bandita}</td><td>${fmt(f.hora)}</td></tr>`).join('')}</table>
+    <div style="margin-top:6px;color:#999">la banda es la que reportó el backend para el calendario cargado · ${filas.length} movimiento(s) · los movimientos ya pasados quedan en gris a medida que avanza el tiempo</div>`;
+  e.style.display = 'block';
+  panelDinamica();
+}
+
+// marca persistente del sector/punta seleccionado (capa propia: la animación no la borra)
+// T34 rev.: la marca transversal se resalta SOLO con banda + trazo grueso (sin círculos) y
+// el NOMBRE del sector seleccionado lleva un badge del color del corredor sobre su rótulo.
+const wTxt = t => Array.from(String(t)).reduce((a,ch)=> a + (ch===' ' ? 3.2 : 6.4), 0);
+function pintarSectorSel(){
+  tossOld('sectorSelLayer');
+  if (!sectorSel) return;
+  const svg = document.getElementById('svg');
+  const g0 = mk(svg,'g',{ id:'sectorSelLayer' });
+  sectorSel.hits.forEach(h=>{
+    const ej = ejes.find(e=>e.id===h.cid); if (!ej) return;
+    const g = mk(g0,'g',{ transform:`translate(${ej.x},0)` });
+    if (sectorSel.punta){
+      const ms = ej.marks.filter(m=> m.tipo!=='oculto');
+      const m = sectorSel.pos==='arriba' ? ms[0] : ms[ms.length-1];
+      if (!m) return;
+      mk(g,'line',{ x1:-14, y1:m.y, x2:14, y2:m.y, stroke:ej.color, 'stroke-width':2.8 });
+      // badge de la punta: mismo color, sobre el rótulo ▲/▼ (no rotado)
+      const textu = (sectorSel.pos==='arriba' ? '▲ ' : '▼ ')
+                  + ej.cor[sectorSel.pos==='arriba' ? 'puntaArriba' : 'puntaAbajo'];
+      const w = wTxt(textu);
+      const yT = sectorSel.pos==='arriba' ? PAD_TOP-26 : PAD_TOP+PLOT_H+16;
+      const rP = mk(g,'rect',{ x:-w/2-8, y:yT-11, width:w+16, height:15, rx:5, fill:ej.color });
+      const tP = txt(g, 0, yT, textu, {size:11, weight:600, fill:'#fff', anchor:'middle'});
+      ajustarBadge(rP, tP, 'middle');          // si el navegador mide el texto, el badge calza exacto
+      return;
+    }
+    const m = ej.marks[h.filaIdx]; if (!m) return;
+    const sideName = m[sectorSel.lado]; if (!sideName) return;
+    // marca transversal: banda translúcida + trazo grueso (sin aro circular)
+    mk(g,'rect',{ x:-16, y:m.y-9, width:32, height:18, rx:4, fill:ej.color, opacity:.16 });
+    mk(g,'line',{ x1:-12, y1:m.y, x2:12, y2:m.y, stroke:ej.color, 'stroke-width':2.8 });
+    // badge sobre el rótulo diagonal del LADO elegido: geometría idéntica a dibujarEje
+    // (rot() ancla en ±20, m.y+3.5 y rota ∓35°) → translate + rotate equivalente
+    const idaLado = sectorSel.lado==='ida';
+    const w = wTxt(sideName);
+    const gb = mk(g,'g',{ transform:`translate(${idaLado ? -20 : 20},${m.y+3.5}) rotate(${idaLado ? 35 : -35})` });
+    const rB = mk(gb,'rect',{ x: idaLado ? -(w+9) : -9, y:-7.5, width:w+17, height:15, rx:4.5, fill:ej.color });
+    const tB = txt(gb, 0, 0, sideName, {size:11, weight:600, fill:'#fff', anchor: idaLado ? 'end' : 'start'});
+    ajustarBadge(rB, tB, idaLado ? 'end' : 'start');
+  });
+}
+// el badge delante del texto: si el navegador puede medir el glifo real (getComputedTextLength),
+// recalcula el rect para que el texto blanco no sobresalga; en los stubs queda la estimación de wTxt
+function ajustarBadge(rectEl, textEl, anchor){
+  try {
+    const wr = textEl.getComputedTextLength();
+    if (!wr || !isFinite(wr)) return;
+    const marg = 4;
+    if (anchor === 'end') rectEl.setAttribute('x', -(wr + marg));
+    else if (anchor === 'start') rectEl.setAttribute('x', -marg);
+    else rectEl.setAttribute('x', -(wr/2 + marg));
+    rectEl.setAttribute('width', wr + marg*2);
+  } catch(_){}   // entorno sin medición (o módulo no layouteado): queda la estimación
 }
 
 /* ---------- Barra de tiempo ---------- */

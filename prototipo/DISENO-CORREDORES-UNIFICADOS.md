@@ -454,3 +454,74 @@ Datos: `sectores.txt` líneas 73–186 (listas completas de sectores + pares del
 **Consecuencia en horarios (el emparejamiento ida/vuelta por banda se invierte con el eje):** `horarios-habiles.json`, `horarios-mediofestivo.json` y `horarios-festivo.json` se transformaron con el mismo mapa, en ambas rondas: **id renombrado + bloque `ida`↔`vuelta` intercambiado** para los 12 (verificado 8/8 en T30 y 4/4 en T30b en cada archivo). El script `fetch-horarios.js` **no necesita cambios**: lee el JSON del builder en runtime (`c.id`, `c.banderas.lado`), así el próximo fetch sale con ids nuevos y bloques coherentes con la orientación nueva.
 
 **También en estas rondas:** `meta.version` pasa a `7-prototipo-2026-10-26-t30-inversion-12-ejes` (nota menor de §13 resuelta) y el chip del calendario `festivo` quedó activo ('festivo (dom 25/10)'; fetch ya cargado — 6.1 MB, 26 ids con datos, 0 vacíos).
+
+---
+
+## 15. Selección de sector por lateral y panel de pasos (T34 — 2026-10-26, pedido del inspector)
+
+**Comportamiento:** en el lienzo por ramal, cada sector del eje es clickeable **por LATERAL** (clic a la
+izquierda del eje = ida; a la derecha = vuelta) y las puntas `▲/▼` de arriba y abajo también. Al tocar:
+
+1. El sector queda **marcado como seleccionado** en TODOS los ejes visibles que comparten esa esquina
+   (marca transversal: banda translúcida + trazo grueso del color del corredor, **sin círculos**; y el
+   **NOMBRE del sector lleva un badge** del color de la línea-ramal, sobre el rótulo diagonal del lado
+   elegido — y sobre el rótulo `▲/▼` si se selecciona una punta), en una capa
+   propia `sectorSelLayer` que la animación no borra (`render()` sólo renueva `dotsLayer`).
+2. Se abre el **panel deslizable** (el mismo `#panel`, título + ✕ + scroll; ✕ cierra el cuadro y la
+   selección queda marcada, re-tocando el mismo sector/punta se deselecciona) con:
+   - **título** = nombre del sector (o punta) según el rótulo del corredor tocado;
+   - subtítulo con el **lateral tocado** y los **ramales** federados (`línea-banda`, p.ej. `103-VGGB · 142-NNFU · 142-RN`);
+   - si los corredores rotulan distinto la misma esquina, línea `también rotulado: …`;
+   - una lista de filas **línea-servicio · banda · hora de paso**, ordenada por hora, con un punto del
+     color de cada corredor. Un mismo servicio puede aparecer dos veces en el día por el mismo sector
+     (doble pasada con la misma banda): se registran ambas.
+3. **Puntas:** el panel lista *llegadas + salidas* en esa esquina: del lado de la ida, ida `sale ↓` en
+   `puntaArriba` / `llega ↓` en `puntaAbajo`; vuelta simétrico (`sale ↑` / `llega ↑`), horario y banda
+   de cada movimiento.
+
+**Federación de esquinas (cánones iguales):** nueva función `CAN()` en el front — mayúsculas sin
+acentos, separadores fuera y **tokens ordenados** (misma esquina aunque cambie el orden de las calles)
++ tabla de alias de abreviaturas derivadas del corpus 26/10, para unir formas que conviven entre
+corredores: `SanMartín` (142) ⇄ `SMartín` (103), `SanJuan` ⇄ `SJuan`, `SanDiego` ⇄ `SDiego`
+(`ALIAS_TOK`). De paso queda habilitado el cruce 142↔103 en `SMartín y Uriburu`, que era el ejemplo del
+inspector: con `103-GBVG-VGGB` + `142-RS-RN` + `142-NSFU-NNFU` seleccionados, el clic del lado derecho
+(Sur-Norte) lista `103-VGGB`, `142-RN` y `142-NNFU` (126 pasos en mediofestivo).
+
+**Origen de los datos del panel:** reutiliza `corridas` (ya alineadas por ORDEN de viaje, que es como
+`corridaDesdeReal` empareja dinámicas del backend — éstas traen `DescripcionSector` abreviado del backend,
+NO el rótulo del corredor, así que el matching por nombre contra la dinámica no es válido). A cada
+corrida se le adjunta su fila del dto (`row`) en `corridaDesdeReal`, y la **banda mostrada** es la que
+el backend reportó para el calendario cargado (`row.Bandera` recortado; corredor sin datos reales →
+banda propia del corredor). Nota del dominio: hoy los tres calendarios cargados reportan la vuelta del
+142 como `NNFU`/`RN` también en mediofestivo y festivo — si el backend llegase a reportar `NN42` para
+algún día, el panel lo mostrará tal cual, sin cambio de código (verificar del lado del inspector).
+
+**Interacciones:** una sola selección activa a la vez — abrir un sector/punta deselecciona el servicio
+(y viceversa); `rebuild()` limpia la selección de sector como ya hacía con la de servicio; las zonas de
+clic son rects transparentes (`fill-opacity:0`, `pointer-events:all`) sobre ambos laterales de cada
+fila no-oculta, y el texto `▲/▼` de las puntas; el drag-pan de escritorio (umbral 4 px) sigue sin
+disparar clicks.
+
+**Verificación:** sintaxis compilada con QuickJS (el `sanity check` por conteo de llaves del scanner
+propio daba 62/61 — falso positivo del lexer heurístico); y prueba **end-to-end con datos reales**
+(corredores + calendario mediofestivo) ejecutando el prototipo en QuickJS con DOM simulado:
+EJ1 `103-GBVG-VGGB + 103-RUVG-VGRU` clic vuelta `SMartín y Uriburu` → 86 filas, ramales `103-VGGB ·
+103-VGRU` ✓; EJ2 (mismo clic con 142×2) → 126 filas (VGGB 43 · NNFU 40 · RN 43) y ramales
+`103-VGGB · 142-NNFU · 142-RN` ✓; lateral ida → `103-GBVG · 142-NSFU · 142-RS` ✓; punta abajo
+`Cementerio VGG` con 2 ejes de 103 → 172 movimientos `sale`/`llega` con bandas correctas ✓; re-tocar
+deselecciona y queda el panel cerrado ✓. Golden idéntico a la simulación independiente en Python.
+Sólo-front (HTML/CSS/JS); el builder y `meta.version` no cambian.
+
+**Iteraciones sobre T34 (mismo pedido, 26-27/10; verificación QuickJS):**
+- *Badge del nombre (rev. 1):* la selección removió los aros circulares; la marca transversal es
+  banda + trazo y el nombre del sector seleccionado lleva badge opaco del color de la línea-ramal
+  (texto blanco) con geometría idéntica al rótulo diagonal (`±20, y+3.5, ∓35°`), y ancho calibrado
+  con `getComputedTextLength()` cuando el navegador puede medir (fallback: estimación por caracteres).
+  La punta elegida muestra su badge sobre `▲/▼ punta…` (sin rotar).
+- *Envejecimiento en el panel (rev. 2, pedido del inspector):* las filas del panel de sector/punta
+  llevan `data-t` (hora cruda, misma escala del slider) y `panelDinamica` — que hasta T34 sólo
+  gobernaba el panel de servicio — ahora gobierna los tres: filas con hora ya pasada → clase `pas`
+  (gris `#b8b8b8`), la próxima sin pasar → `prox` (rojo/negritas), el resto → `fut`. Se refresca en
+  cada movimiento del slider (adelante Y atrás, reversible). Verificación: sector 08:00 → 12 `pas`,
+  próx 08:09; 12:30 → 38/12:39; 20:00 → 76/20:13; retroceso 06:00 → 5/06:18 (revierte en vivo);
+  punta 20:00 → 148/20:12; panel de servicio sin cambios (115 filas, próx 10:04).
