@@ -65,6 +65,15 @@ async function api(token, route, { method = 'GET', body = null } = {}) {
 // (TFCA del prototipo es banda "3FCA (3FEBRERO-CASINO)" en ROSBUS; análogos para CATF/TFFL/FLTF)
 const ALIAS_DE_BANDA = { TFCA: '3FCA', CATF: 'CA3F', TFFL: '3FFL', FLTF: 'FL3F', NS: 'NS46', NN: 'NN46', RS: 'RS46', RN: 'RN46' };
 
+/* Banderas extra por corredor (T35, pedido del inspector 28/10): servicios que el backend
+ * lleva en una bandera aparte pero con el MISMO span de sectores que la banda principal del
+ * lado (verificado con dto: LACA = 12 dins idénticos a GBCA; CALA = 13 idénticos a CAGB).
+ * Se piden después de la banda principal y sus Items se FUSIONAN en el dto del lado;
+ * cada Item conserva su Bandera (LACA/CALA) y el panel del prototipo la muestra por fila. */
+const EXTRA_BANDERAS = {
+  '143-GBCA-CAGB': { ida: ['LACA'], vuelta: ['CALA'] },
+};
+
 const log = m => console.log(m);
 const die = (m, code) => { console.error('✖ ' + m); process.exit(code); };
 
@@ -133,16 +142,39 @@ const die = (m, code) => { console.error('✖ ' + m); process.exit(code); };
         }
         if (!hallado) {
           const cand = paresLS.map(([o, s]) => (banderasPorLineaSentido[`${o.Id}:${s.Id}`] || []).map(x => x.Description)).flat().join(', ');
-          log(`⚠ ${c.id} ${lado}: banda "${nombre}" no encontrada (candidatas: ${cand})`); continue;
+          log(`⚠ ${c.id} ${lado}: banda "${nombre}" no encontrada (candidatas: ${cand})`);
+        } else {
+          log(`${c.id} ${lado} → "${nombre}" = banda ${hallado.Id} (línea ${lnId}, sentido ${sentido.Id} ${sentido.Description})`);
+          try {
+            const filtro = { SentidoBanderaId: sentido.Id, LineaId: lnId, BanderasSeleccionadas: [hallado.Id], Fecha: FECHA };
+            const r = await api(token, '/Bandera/RecuperarHorariosSectorPorSector', { method: 'POST', body: filtro });
+            dto[lado] = r.DataObject || null;
+            const filas = dto[lado] && dto[lado].Items ? dto[lado].Items.length : 0;
+            log(`  ✔ horarios: ${filas} servicios`);
+          } catch (e) { log(`  ⚠ horarios falló: ${e.message}`); dto[lado] = null; }
         }
-        log(`${c.id} ${lado} → "${nombre}" = banda ${hallado.Id} (línea ${lnId}, sentido ${sentido.Id} ${sentido.Description})`);
-        try {
-          const filtro = { SentidoBanderaId: sentido.Id, LineaId: lnId, BanderasSeleccionadas: [hallado.Id], Fecha: FECHA };
-          const r = await api(token, '/Bandera/RecuperarHorariosSectorPorSector', { method: 'POST', body: filtro });
-          dto[lado] = r.DataObject || null;
-          const filas = dto[lado] && dto[lado].Items ? dto[lado].Items.length : 0;
-          log(`  ✔ horarios: ${filas} servicios`);
-        } catch (e) { log(`  ⚠ horarios falló: ${e.message}`); dto[lado] = null; }
+
+        // banderas extra del lado (T35): mismo span que la principal; los Items se fusionan
+        // aunque la banda principal no haya traído datos (dto[lado] null → se arma con extras)
+        const extras = EXTRA_BANDERAS[c.id] && EXTRA_BANDERAS[c.id][lado];
+        for (const code of (extras || [])) {
+          const paresExtra = (hallado && sentido) ? [[lineas.find(l => l.Id === lnId), sentido]] : paresLS;
+          let found = null;
+          for (const [o, s] of paresExtra) {
+            const bs = banderasPorLineaSentido[`${o.Id}:${s.Id}`] || [];
+            const b = bs.find(x => norm(String(x.Description).split(/[\s(]/)[0]) === norm(code));
+            if (b) { found = { b, s, ln: o.Id }; break; }
+          }
+          if (!found) { log(`  ⚠ extra "${code}" no encontrada este día (sus tramos no se traen)`); continue; }
+          try {
+            const r = await api(token, '/Bandera/RecuperarHorariosSectorPorSector', { method: 'POST',
+              body: { SentidoBanderaId: found.s.Id, LineaId: found.ln, BanderasSeleccionadas: [found.b.Id], Fecha: FECHA } });
+            const items = (r.DataObject && r.DataObject.Items) || [];
+            if (!dto[lado]) dto[lado] = { Items: [] };
+            dto[lado].Items = (dto[lado].Items || []).concat(items);
+            log(`  ✔ extra "${code}": ${items.length} servicios (fusionados en ${lado})`);
+          } catch (e) { log(`  ⚠ extra "${code}" falló: ${e.message}`); }
+        }
       }
       salida[c.id] = dto;
       if (dto.ida || dto.vuelta) ok++; else fail++;

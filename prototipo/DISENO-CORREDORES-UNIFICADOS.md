@@ -525,3 +525,49 @@ Sólo-front (HTML/CSS/JS); el builder y `meta.version` no cambian.
   cada movimiento del slider (adelante Y atrás, reversible). Verificación: sector 08:00 → 12 `pas`,
   próx 08:09; 12:30 → 38/12:39; 20:00 → 76/20:13; retroceso 06:00 → 5/06:18 (revierte en vivo);
   punta 20:00 → 148/20:12; panel de servicio sin cambios (115 filas, próx 10:04).
+
+---
+
+## 16. Banderas extra del lado: LACA/CALA en 143-GBCA-CAGB (T35 — 2026-10-28, pedido del inspector)
+
+**Pedido (verbatim):** "Línea 143 tengo faltantes tramos LACA en servicio 150 (06:53hs a 08:45hs), LACA
+en servicio 55 (10:23hs a 12:13hs), LACA en servicio 9 (16:36hs a 18:28hs), LACA en servicio 10
+(21:22hs a 23:01hs) y tramos CALA en servicio 150 (05:22hs a 06:46hs), CALA en servicio 55 (08:30hs a
+10:16hs), CALA en servicio 9 (14:45hs a 16:29hs), CALA en servicio 10 (19:04hs a 20:48hs). Deberíamos
+hacer fetch en días hábiles (día "normal") y traerlos para representar en 143-GBCA-CAGB pero en esos
+tramos y horarios deben aparecer con el nombre de bandera LACA o CALA según sea el sentido."
+
+**Causa de los faltantes:** el fetch pedía `BanderasSeleccionadas: [GBCA|CAGB]` — LACA (banda id
+3772, sentido NORTE-SUR) y CALA (id 3771, SUR-NORTE) son banderas aparte de la línea 143
+(`143/136/137 NEG`, misma descripción que GBCA/CAGB) y quedaban excluidas por el filtro. Son
+servicios de cuadro **normal** (`TipoHora 'N'`, `SubGalpon 0`) con corridas en franjas horarias
+distintas.
+
+**Hallazgo que simplificó el diseño (sondeo de dto, T35a):** los `ColumnasDinamicas` de LACA son
+**los mismos 12 sectores de GBCA ida** (`ARENA - RUT11` … `BA.OR - SMART`, lista idéntica en los 4
+items) y los de CALA **los mismos 13 de CAGB vuelta** (`BA.OR - SMART` … `EVAPE - RUT11`). No son
+tramos espaciales parciales: mismo span, otra bandera. Por lo tanto **no hizo falta tocar
+`corridaDesdeReal`**: la rama por conteo (`dins.length === side.length - 2`) los resuelve (14 horas
+ida / 15 vuelta, monótonas verificadas) y el servicio se encadena con sus otros tramos del día por
+`srv` como ya hace el prototipo.
+
+**Cambio en `fetch-horarios.js`:** nuevo mapa `EXTRA_BANDERAS` por corredor
+(`'143-GBCA-CAGB': { ida: ['LACA'], vuelta: ['CALA'] }`): después de la banda principal se pide cada
+bandera extra (misma línea y sentido donde se resolvió la principal; sin principal, busca en todos
+los pares línea-sentido) y sus `Items` se **fusionan en el dto del lado** (`Items.concat`); si la
+principal no trajo datos el dto se arma igual con los extras, y si la extra no está activa ese día
+queda advertido en el log sin fallar. Cada Item conserva `Bandera` — el panel del prototipo muestra
+esa banda por fila (`bandaDe`), que es la representación pedida: en esos tramos y horarios los
+servicios aparecen con LACA/CALA según el sentido.
+
+**Fetch regenerado:** `horarios-habiles.json` con fecha `2026-10-28` (hábil): 26 corredores con
+datos, 0 sin datos. 143-GBCA-CAGB pasa a 55 servicios ida (51 GBCA + 4 LACA) y 57 vuelta (53 CAGB +
+4 CALA). Las 8 corridas extra validadas contra el pedido: Sale/Llega exactos (LACA 06:53→08:45,
+10:23→12:13, 16:36→18:28, 21:22→23:01; CALA 05:22→06:46, 08:30→10:16, 14:45→16:29, 19:04→20:48) y
+horas crecientes en todo el itinerario. **Diferencial contra el hábil anterior (mar 20/10):** los
+otros 25 corredores salen idénticos en conteos y rama de mapeo (0 fallback, 0 full); sólo cambia
+143-GBCA-CAGB por los extras. Etiqueta del calendario actualizada a `día hábil (mié 28/10)`.
+
+**Alcance:** sólo hábil, como pidió el inspector — mediofestivo y festivo quedan con su fetch previo
+(sin LACA/CALA); si el backend llega a reportar esos tramos para otros días, agregarlos a
+`EXTRA_BANDERAS` y re-fetchear es el mismo paso.
