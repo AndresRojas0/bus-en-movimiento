@@ -571,3 +571,59 @@ otros 25 corredores salen idénticos en conteos y rama de mapeo (0 fallback, 0 f
 **Alcance:** sólo hábil, como pidió el inspector — mediofestivo y festivo quedan con su fetch previo
 (sin LACA/CALA); si el backend llega a reportar esos tramos para otros días, agregarlos a
 `EXTRA_BANDERAS` y re-fetchear es el mismo paso.
+
+---
+
+## 17. TimeBar T36: botón-hora central + tira fluyente (rev. del inspector, 2026-10-28)
+
+**Cambio de concepto (rev. del inspector):** la barra de tiempo deja de ser una guía estática con
+manija (`#clock` + `▶ Reproducir` + slider arrastrable). Ahora **la hora ES el botón**: un
+`#btnHora` fijo en el centro de la guía que muestra `HH:MM:SS` en vivo, y detrás corre una **tira de
+marcas horarias que fluye hacia arriba** — el futuro nace abajo, atraviesa el centro (el ahora) y el
+pasado sale hacia arriba.
+
+**Motor:** `simT` pasa a ser minutos flotantes continuos con **precisión de segundos**; avance
+automático a **velocidad real** (1 s de simulación por segundo de reloj) con latido de 180 ms
+(`setInterval(tickTimebar, 180)`). La formula del avance es un **ancla** que se re-fija con cada
+gesto: `simT = (TB.s0 + (Date.now()-TB.t0)/1000) / 60` (recortada a la ventana operativa
+04:00→01:00 por `clampSeg`), o sea tras un drag se retoma 1:1 **desde la hora soltada**. El render
+de la gráfica (`render(simT)`) sólo se dispara cuando cambia el segundo entero (o el drag marcó
+`TB.dirty`) — antes el play pisaba 1 minuto por tick de 60 ms (~16 min/s simulados) y el scrub era
+por minuto. Los consumidores de `simT` (puntos animados, `panelDinamica` pas/prox/fut) no cambian;
+ahora refrescan por segundo.
+
+**Gestos:**
+- **Arrastre de la tira** (no del botón: el `pointerdown` sobre `#btnHora` se ignora para el
+  scrub) = tiempo manual, con `pointer capture`; **arriba = avanzar** (`dy<0` suma tiempo,
+  `s0 - dy/(pph/3600)`). Durante el drag el ancla queda helada en la mano; al soltar se retoma el
+  avance 1:1 desde esa hora.
+- **Toque único en el botón** = pausa/reanudar (estilo `.pausa` gris mientras está pausado). Se
+  desambigua del doble toque con un temporizador de 370 ms: la pausa recién se aplica pasado ese
+  margen.
+- **Doble toque rápido** (< 350 ms entre toques) = **re-sincronizar con la hora real del reloj de
+  pared** (con segundos) y seguir avanzando 1:1 desde ahí.
+
+**La tira:** marcas cada 1 hora (`pph` = 72 px/hora; 1 s ≈ 0.02 px), geometría
+`y = cy + (tSec - sec) * pps` — el valor absoluto de la hora puede superar 24 h y el rótulo se
+modulo-24 (la medianoche sale `00:00`). Se regenera el `innerHTML` en cada latido con sólo las
+marcas visibles (~9: `ceil(cy/pph)+1` por lado; descarta fuera de [-22, alto+22]) — barato a 180 ms.
+Fades superiores/inferiores de 52 px desvanecen la entrada del futuro y la salida del pasado. El
+arranque fija el ancla a la **hora real del acceso** (recortada a la ventana) avanzando 1:1 — ya no
+es necesario apretar ▶ para arrancar.
+
+**Eliminados:** `#clock` grande, botón `▶ Reproducir/Pausa`, manija `⏱` + track estático, etiquetas
+horarias fijas cada 2 h, hint "arrastra la manija", y las funciones `bindTimebar`, `stopPlay`,
+`setearReloj` y el par `playing/playTimer` (sin referencias residuales). Hint nuevo: "tira: arrastrá
+(↑ avanza) · botón: 1 toque pausa, 2 toques hora real" (el botón además lo explica en su `title`).
+
+**Estética del mismo set de cambios (rev.):** `#timebar` 86→60 px; chips del calendario 72→52 px con
+rótulos cortos (`Hábil / Medfest / Fest`); panel fuente 11→16 px y `right` 96→72 px; badge de
+servicio en la gráfica 12→14 px; horas de itinerario del servicio seleccionado 8.5→12 px.
+
+**Limpieza asociada:** se elimina `prototipo/index-v20261026.html` (snapshot de referencia del
+26/10; T34 ya está integrado en `index.html` — sin referencias rotas en docs ni código).
+
+**Nota sobre la etiqueta del calendario hábil:** el rework volvió a `día hábil (mar 20/10)`. Confirmado
+por el inspector: el cuadro horario hábil del mié 28/10 es **idéntico** al del mar 20/10, así que el
+rótulo sigue siendo válido para los datos del archivo (mismo cuadro, fetch refrescado el 28/10 con los
+tramos LACA/CALA de T35 incluidos).
